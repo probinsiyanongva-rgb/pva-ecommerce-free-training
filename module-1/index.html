@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1: How E-commerce Works | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 1</p>
+  <h1>How E-commerce Works</h1>
+  <p style="max-width:62ch">Before you touch a task, you need to see the whole business. This module introduces Everfield Goods, the company you'll support throughout this course, and the basic mechanics of how an online sale happens.</p>
+
+  <div class="everfield-note">
+    <strong>About Everfield Goods:</strong> Everfield is a fictional company built for this training. Its people, products, and numbers are simulation details, not universal rules -- real clients you work with later may run things differently. What matters is the pattern of the work.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 7</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m1";
+var LESSONS = [
+{
+  id: "m1-l1",
+  title: "What Is E-commerce?",
+  objective: "Define e-commerce and tell it apart from traditional retail.",
+  learn: [
+    "\u201cE-commerce\u201d means buying and selling goods or services over the internet, rather than face-to-face in a physical location. The order, the payment, and often the entire customer relationship happen online.",
+    "Traditional retail usually means a customer walks into a physical store, picks up a product, and pays at a register. E-commerce replaces that physical moment with a website, an app, or an online marketplace listing."
+  ],
+  observe: [
+    "Everfield Goods LLC (consumer brand: Everfield) is an e-commerce consumer-goods company. It has no physical storefront -- every sale happens through its own online store or through a third-party online marketplace.",
+    "Everfield sources products from manufacturing partners, stores inventory through a third-party logistics provider, and sells directly to consumers online. Every part of that chain, from browsing to delivery, is digital or logistics-based -- nothing depends on a customer walking into a shop."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer finds Everfield's Stackable Storage Bin on Everfield's own website, adds it to a cart, and pays online. Is this e-commerce?",
+        options: [
+          { text: "Yes -- the entire transaction happens online.", correct: true },
+          { text: "No -- it's only e-commerce if it happens on a marketplace like the one Everfield also sells through.", correct: false }
+        ],
+        correctFeedback: "Right. E-commerce just means the transaction happens online -- a brand's own store counts just as much as a marketplace listing.",
+        incorrectFeedback: "Not quite -- a company's own online store is still e-commerce. The marketplace channel isn't required for something to count."
+      },
+      {
+        q: "A customer buys a similar storage bin at a local hardware store, in person, paying with a card at the register. Is this e-commerce?",
+        options: [
+          { text: "Yes, because a card payment was involved.", correct: false },
+          { text: "No -- the sale happened in person at a physical store, not online.", correct: true }
+        ],
+        correctFeedback: "Correct. The payment method doesn't decide it -- it's whether the sale happened online.",
+        incorrectFeedback: "Not quite -- the card payment isn't what defines e-commerce. What matters is that this sale happened in a physical store, in person."
+      }
+    ]
+  },
+  checkNote: "You've distinguished e-commerce transactions from in-person retail using real Everfield and everyday examples."
+},
+{
+  id: "m1-l2",
+  title: "How an Online Store Makes a Sale",
+  objective: "Explain the basic commercial flow behind an online sale.",
+  learn: [
+    "Every online sale follows roughly the same commercial flow, no matter the platform: a shopper finds a product, decides to buy it, provides payment and shipping details, and the store confirms the order before it moves into fulfillment.",
+    "Understanding this flow matters because most beginner VA tasks -- checking an order, following up on a delayed payment, confirming a shipping address -- are really about knowing where in this flow something sits."
+  ],
+  observe: [
+    "On Everfield's brand store (Channel A), a shopper browses the Stackable Storage Bin (EF-101), adds it to their cart, enters shipping and payment information at checkout, and the store confirms the order once payment is authorized.",
+    "From that point, the order becomes Everfield's responsibility to fulfill -- it moves out of the 'sale' stage and into the 'operations' stage you'll learn about in later modules."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Arrange the steps of an Everfield brand-store sale in the order they actually happen.",
+    items: [
+      { id: "browse", label: "Shopper browses EF-101 on Everfield's store" },
+      { id: "cart", label: "Shopper adds EF-101 to their cart" },
+      { id: "checkout", label: "Shopper enters shipping and payment details" },
+      { id: "auth", label: "Payment is authorized" },
+      { id: "confirm", label: "Order is confirmed and handed off to fulfillment" }
+    ],
+    correctOrder: ["browse", "cart", "checkout", "auth", "confirm"],
+    correctFeedback: "That's the flow. Notice how the sale ends exactly where fulfillment picks up.",
+    incorrectFeedback: "Close, but a step is out of place. A shopper always browses and adds to cart before paying, and payment has to be authorized before the order is confirmed."
+  },
+  checkNote: "You've traced a full online transaction from browsing to order confirmation."
+},
+{
+  id: "m1-l3",
+  title: "The E-commerce Customer Journey",
+  objective: "Identify the major touchpoints in an e-commerce customer journey.",
+  learn: [
+    "The customer journey is everything a shopper experiences from first hearing about a brand to using (or returning) the product. It's wider than the sale itself -- it includes discovery, research, purchase, delivery, and what happens afterward.",
+    "VAs who understand the full journey can spot where a problem is really coming from -- a shipping complaint, for example, is a post-purchase journey issue, not a listing issue."
+  ],
+  observe: [
+    "A typical Everfield customer journey: the shopper discovers Everfield through a marketplace search or a social post, browses a product page (say, the Bamboo Organizer Tray, EF-103), compares it to similar products, then adds it to their cart and checks out.",
+    "After checkout, the journey continues: the customer gets an order confirmation, receives shipping updates as Everfield's fulfillment partner, ClearPath Fulfillment, processes and ships the order, and finally receives the package -- after which they may reorder, leave a review, or, occasionally, start a return."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Build the Everfield customer journey in the order a shopper actually experiences it.",
+    items: [
+      { id: "discover", label: "Discovers Everfield via marketplace search or social post" },
+      { id: "research", label: "Compares the product to similar options" },
+      { id: "purchase", label: "Adds to cart and checks out" },
+      { id: "confirm", label: "Receives order confirmation" },
+      { id: "ship", label: "Receives shipping and tracking updates" },
+      { id: "deliver", label: "Package is delivered" },
+      { id: "after", label: "Reorders, reviews, or requests a return" }
+    ],
+    correctOrder: ["discover", "research", "purchase", "confirm", "ship", "deliver", "after"],
+    correctFeedback: "That's the journey end to end -- discovery all the way through to what happens after delivery.",
+    incorrectFeedback: "Not quite yet -- remember research happens before checkout, and shipping updates come after the order is confirmed, not before."
+  },
+  checkNote: "You've mapped a complete customer journey, not just the moment of purchase."
+},
+{
+  id: "m1-l4",
+  title: "E-commerce Business Models",
+  objective: "Distinguish DTC, marketplace, subscription, and other common e-commerce models.",
+  learn: [
+    "Direct-to-consumer (DTC) means a brand sells through its own website, controlling the whole customer experience. Marketplace selling means listing products on a third-party platform that brings its own traffic and rules. Subscription means customers pay on a recurring schedule for repeat delivery. Wholesale/B2B means selling larger quantities to other businesses rather than individual shoppers.",
+    "Many real companies -- including Everfield -- use more than one model at once. Recognizing which model applies to a given task helps you know whose rules apply."
+  ],
+  observe: [
+    "Everfield sells through three channels: its own Brand E-commerce Store (a DTC channel it fully controls), a major Online Marketplace (a third-party platform, referred to generically since the course isn't tied to one specific marketplace), and occasional B2B / bulk orders for business customers.",
+    "Everfield does not currently run a subscription channel -- so if a lesson later mentions recurring orders, that would be a B2B arrangement, not a subscription program."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each Everfield sales channel to the business model it represents.",
+    leftLabel: "Everfield channel",
+    rightLabel: "Business model",
+    left: [
+      { id: "a", label: "Everfield's own branded online store" },
+      { id: "b", label: "Everfield's listing on a major online marketplace" },
+      { id: "c", label: "Occasional bulk orders from business customers" }
+    ],
+    right: [
+      { id: "dtc", label: "Direct-to-consumer (DTC)" },
+      { id: "mkt", label: "Marketplace selling" },
+      { id: "b2b", label: "Wholesale / B2B" }
+    ],
+    pairs: { a: "dtc", b: "mkt", c: "b2b" },
+    completeFeedback: "Correct -- Everfield actually runs three models side by side."
+  },
+  checkNote: "You can now tell apart the major e-commerce business models using Everfield's real channel mix."
+},
+{
+  id: "m1-l5",
+  title: "Stores vs. Marketplaces",
+  objective: "Explain the fundamental difference between a brand's own store and a marketplace listing.",
+  learn: [
+    "A store is a website the brand owns and controls -- design, pricing, promotions, and the customer relationship all belong to the brand. A marketplace is a shared platform: the brand lists products there, but the platform controls the layout, search ranking, fees, and often the direct line to the customer.",
+    "This difference matters operationally: tasks on a brand's own store tend to have more flexibility, while marketplace tasks have to work within that platform's specific rules and formats."
+  ],
+  observe: [
+    "On Everfield's Brand E-commerce Store, Everfield decides how a product page looks, what promotions run, and how checkout works. On the Online Marketplace channel, Everfield has to follow that marketplace's listing format and policies -- and shares the page with other sellers and competing products.",
+    "A beginner E-commerce VA working on the brand store has different constraints than one working on a marketplace listing, even for what looks like the same task."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A VA wants to change the layout of a product description page. Which channel gives Everfield the most control to do that?",
+        options: [
+          { text: "The Brand E-commerce Store", correct: true },
+          { text: "The Online Marketplace listing", correct: false }
+        ],
+        correctFeedback: "Right. Everfield owns and controls its brand store, so layout changes are fully in its hands there.",
+        incorrectFeedback: "Not quite -- marketplace listings follow that platform's fixed format. Everfield only has full layout control on its own brand store."
+      },
+      {
+        q: "Which best describes a marketplace channel?",
+        options: [
+          { text: "A shared third-party platform where the seller lists products under the platform's own rules.", correct: true },
+          { text: "A website fully owned and designed by the seller.", correct: false }
+        ],
+        correctFeedback: "Correct -- that shared, rules-based structure is exactly what sets a marketplace apart from a brand's own store.",
+        incorrectFeedback: "Not quite -- that description fits a brand's own store. A marketplace is a shared, third-party platform instead."
+      }
+    ]
+  },
+  checkNote: "You can now recognize when a task depends on brand-store rules versus marketplace rules."
+},
+{
+  id: "m1-l6",
+  title: "Where E-commerce VAs Fit",
+  objective: "Identify common responsibilities of a beginner E-commerce VA.",
+  learn: [
+    "A beginner E-commerce VA typically supports store-level, customer-facing operations: keeping product information accurate, helping prepare listings, tracking orders, monitoring inventory levels, answering routine customer questions, doing light research, and helping with basic reporting.",
+    "This Foundation stays deliberately store-side. Deeper supplier coordination, purchase orders, and warehouse-level logistics belong to a separate, more advanced specialization -- not to this beginner role."
+  ],
+  observe: [
+    "At Everfield, the person most connected to store-side, customer-facing work is Sofia Ramirez, the E-commerce Manager, who handles online sales, product listings, promotions, and customer demand. A beginner E-commerce VA's tasks in this course connect most closely to the kind of information Sofia works with.",
+    "Deeper supplier and 3PL coordination -- the kind handled by Everfield's Procurement & Supply Manager or its 3PL account manager -- sits outside this Foundation's scope. You'll meet that side of the operation only if you continue into a dedicated logistics specialization later."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each task to whether it belongs to this beginner E-commerce VA Foundation or to a deeper specialization covered later.",
+    leftLabel: "Task",
+    rightLabel: "Where it belongs",
+    left: [
+      { id: "listing", label: "Tidy up a product listing's title and description" },
+      { id: "order", label: "Check whether a customer's order has shipped" },
+      { id: "inventory", label: "Flag that a SKU is showing low stock on the store" },
+      { id: "po", label: "Negotiate pricing with a manufacturing supplier" }
+    ],
+    right: [
+      { id: "found", label: "Beginner E-commerce VA (this Foundation)" },
+      { id: "deep", label: "Deeper supply-chain / logistics specialization" }
+    ],
+    pairs: { listing: "found", order: "found", inventory: "found", po: "deep" },
+    completeFeedback: "Exactly -- store-facing tasks are yours here; supplier negotiation belongs to a later, deeper track."
+  },
+  checkNote: "You can now separate beginner E-commerce VA responsibilities from deeper specialization work."
+},
+{
+  id: "m1-l7",
+  title: "The Order Lifecycle",
+  objective: "Trace an order from purchase through post-purchase using the Everfield simulation.",
+  learn: [
+    "An order lifecycle is the sequence a single order moves through, from the moment a customer pays to the moment the matter is fully closed -- including any return. Knowing this sequence lets a VA answer 'where is this order right now?' quickly and accurately.",
+    "The lifecycle you'll track most often as an E-commerce VA is the customer-facing half of the operation: everything from order placement through delivery and, sometimes, a return."
+  ],
+  observe: [
+    "At Everfield, once a customer places an order (through the Brand Store or the Marketplace), payment is confirmed and the order enters the fulfillment queue. Everfield's 3PL partner, ClearPath Fulfillment, picks and packs the order from inventory, then it moves to outbound shipping.",
+    "The customer receives tracking updates while the order is in transit, then the package is delivered. If something is wrong, the customer may start a return, which sends the item back toward ClearPath and Everfield's inventory records."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put Everfield's order lifecycle in the correct order.",
+    items: [
+      { id: "placed", label: "Customer places the order" },
+      { id: "payment", label: "Payment is confirmed" },
+      { id: "queue", label: "Order enters the fulfillment queue" },
+      { id: "pickpack", label: "ClearPath Fulfillment picks and packs the order" },
+      { id: "shipped", label: "Order ships (outbound shipping)" },
+      { id: "transit", label: "Customer receives tracking updates in transit" },
+      { id: "delivered", label: "Package is delivered" },
+      { id: "return", label: "Customer initiates a return (if needed)" }
+    ],
+    correctOrder: ["placed", "payment", "queue", "pickpack", "shipped", "transit", "delivered", "return"],
+    correctFeedback: "That's the full lifecycle -- and notice a return is the exception, not the default ending.",
+    incorrectFeedback: "Not quite -- payment has to be confirmed before the order can enter the fulfillment queue, and shipping updates only start after the order actually ships."
+  },
+  checkNote: "You can now trace a full Everfield order from purchase to (possible) return -- the foundation for every order-tracking task ahead."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 1 complete. Great work meeting Everfield Goods -- Module 2 continues the story soon.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

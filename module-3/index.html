@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3: Creating & Maintaining Product Listings | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 3</p>
+  <h1>Creating & Maintaining Product Listings</h1>
+  <p style="max-width:62ch">This module turns the product data from Module 2 into a real, publishable listing -- and teaches you to catch the errors that slip through before a customer ever sees them.</p>
+
+  <div class="everfield-note">
+    <strong>Scope note:</strong> This module covers basic keyword awareness only -- writing titles and descriptions with the obvious terms a customer would actually search for. It does not cover advanced SEO strategy, which sits outside this Foundation.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 9</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m3";
+var LESSONS = [
+{
+  id: "m3-l1",
+  title: "Anatomy of an E-commerce Listing",
+  objective: "Identify the core components of a listing.",
+  learn: [
+    "A typical e-commerce listing is built from several standard components: title, images, price, description, specifications, category/tags, and availability status. On most platforms you'll also see shipping information and, where applicable, customer reviews.",
+    "Knowing these components by name lets a VA talk precisely about what needs fixing -- 'the specs are wrong' is a very different task from 'the title is wrong.'"
+  ],
+  observe: [
+    "Everfield's brand-store listing for EF-105 (Travel Packing Pouch Set) includes all of these components in Everfield's own layout. The same product's marketplace listing (Channel B) has the same core components, just arranged inside that marketplace's fixed template instead of Everfield's own design."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer can't tell whether a set includes 3 or 5 pouches. Which listing component is most likely incomplete?",
+        options: [
+          { text: "Specifications or description", correct: true },
+          { text: "Category", correct: false }
+        ],
+        correctFeedback: "Right -- quantity/contents details belong in the specs or description, not the category.",
+        incorrectFeedback: "Not quite -- category controls where a product is grouped, not what it says about contents."
+      },
+      {
+        q: "Which of these is NOT a standard listing component?",
+        options: [
+          { text: "The supplier's internal purchase order number", correct: true },
+          { text: "Product images", correct: false }
+        ],
+        correctFeedback: "Correct -- a supplier's PO number is internal operations data, not something shown on a customer-facing listing.",
+        incorrectFeedback: "Not quite -- product images are a core, standard listing component."
+      }
+    ]
+  },
+  checkNote: "You can now name and recognize each core component of a listing."
+},
+{
+  id: "m3-l2",
+  title: "Writing Clear Product Titles",
+  objective: "Create accurate, readable titles.",
+  learn: [
+    "A clear title generally follows a simple pattern: [Product type] + [key distinguishing detail] + [optional variant or quantity info]. It should read naturally, the way a customer would describe the product out loud."
+  ],
+  observe: [
+    "For EF-106 (Closet Divider Set), a title like \u201cSet of Dividers\u201d is too vague to be useful. \u201cCloset Divider Set -- Adjustable Shelf Dividers, 6-Pack\u201d follows the pattern: product type, distinguishing detail, and quantity."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which title is the better rewrite for EF-102 (Drawer Label Set)?",
+        options: [
+          { text: "\u201cDrawer Label Set -- Write-On Labels, 40 Pieces\u201d", correct: true },
+          { text: "\u201cLabels\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it names the product type, the key detail, and the quantity.",
+        incorrectFeedback: "Not quite -- 'Labels' alone doesn't tell the customer what set they're actually looking at."
+      }
+    ]
+  },
+  checkNote: "You can now rewrite a vague title into a clear, accurate one."
+},
+{
+  id: "m3-l3",
+  title: "Writing Product Descriptions",
+  objective: "Draft useful customer-facing descriptions.",
+  learn: [
+    "A useful description covers: what the product is, the key benefit or use case, what's included, and any care or use notes. It should read like a helpful answer, not an ad."
+  ],
+  observe: [
+    "For EF-107 (Reusable Storage Bag Set), a useful description says what the bags are for, that they come in three sizes, that they're washable, and that they help reduce single-use plastic -- in that order, plainly stated."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which description is the better fit for EF-107?",
+        options: [
+          { text: "\u201cReusable, washable storage bags in three sizes for pantry and fridge use -- a simple way to cut down on single-use plastic.\u201d", correct: true },
+          { text: "\u201cThe only bag you'll ever need. Buy now!\u201d", correct: false }
+        ],
+        correctFeedback: "Correct -- it tells the customer what the product is, what's included, and why it's useful.",
+        incorrectFeedback: "Not quite -- that version doesn't actually describe the product at all."
+      }
+    ]
+  },
+  checkNote: "You can now draft a description that actually informs the customer, not just sells to them."
+},
+{
+  id: "m3-l4",
+  title: "Product Specifications",
+  objective: "Present specifications consistently.",
+  learn: [
+    "Specifications should appear as consistent label: value pairs -- same units, same format, every time. Mixing formats (inches in one spec, centimeters in another) makes a listing look unreliable, even when the underlying facts are correct."
+  ],
+  observe: [
+    "A messy spec block for EF-101 might list \u201csize: big\u201d and \u201cweight: about a kilo.\u201d A consistent one reads \u201cDimensions: 16in x 11in x 9in\u201d and \u201cWeight: 2.2 lb\u201d -- specific values, consistent units."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each messy spec entry to its properly formatted version.",
+    leftLabel: "Messy entry",
+    rightLabel: "Formatted correctly",
+    left: [
+      { id: "a", label: "\u201csize: big\u201d" },
+      { id: "b", label: "\u201cweight: about a kilo\u201d" },
+      { id: "c", label: "\u201cmaterial: bamboo-ish\u201d" }
+    ],
+    right: [
+      { id: "dim", label: "Dimensions: 16in x 11in x 9in" },
+      { id: "wt", label: "Weight: 2.2 lb" },
+      { id: "mat", label: "Material: Bamboo" }
+    ],
+    pairs: { a: "dim", b: "wt", c: "mat" },
+    completeFeedback: "Correct -- specific values in a consistent format, every time."
+  },
+  checkNote: "You can now turn a vague spec block into a consistent, trustworthy one."
+},
+{
+  id: "m3-l5",
+  title: "Images & Assets",
+  objective: "Select and organize appropriate assets for a live listing.",
+  learn: [
+    "For a live listing specifically, the primary image needs to clearly show the actual product, additional images should show it from useful angles or in use, and nothing misleading (like an unrelated lifestyle shot) should be presented as showing the product itself."
+  ],
+  observe: [
+    "For EF-103 (Bamboo Organizer Tray), a strong image set would open with a clean product-only shot, followed by an in-use shot on a desk, then a close-up of the material. A weak set might open with only a distant lifestyle photo where the tray is barely visible."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A listing's primary image is a wide lifestyle photo where the product is barely visible. What's the issue?",
+        options: [
+          { text: "The primary image should clearly show the product itself, not just imply it.", correct: true },
+          { text: "There's no issue -- lifestyle photos are always a good primary image.", correct: false }
+        ],
+        correctFeedback: "Right -- the primary image's job is to show the product clearly.",
+        incorrectFeedback: "Not quite -- a primary image that barely shows the product doesn't do its job, however nice it looks."
+      }
+    ]
+  },
+  checkNote: "You can now judge whether an image set is actually doing its job on a live listing."
+},
+{
+  id: "m3-l6",
+  title: "Categories, Tags & Collections",
+  objective: "Apply basic product organization to a finished listing.",
+  learn: [
+    "Once a listing is being finalized, the category, tags, and any collections need to be applied deliberately -- not left as defaults. This is where Module 2's category concepts get put into practice on an actual listing."
+  ],
+  observe: [
+    "When finishing the EF-200 (Home Organization Starter Kit) listing, it belongs in the Kits category, even though its components individually belong to Home Organization -- the finished, sellable item is what determines the listing's category."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each finished listing to its correct category.",
+    leftLabel: "Listing",
+    rightLabel: "Category",
+    left: [
+      { id: "ef200", label: "EF-200 -- Home Organization Starter Kit (finished listing)" },
+      { id: "ef105", label: "EF-105 -- Travel Packing Pouch Set" },
+      { id: "ef107", label: "EF-107 -- Reusable Storage Bag Set" }
+    ],
+    right: [
+      { id: "kits", label: "Kits" },
+      { id: "travel", label: "Travel Organization" },
+      { id: "home", label: "Home Organization" }
+    ],
+    pairs: { ef200: "kits", ef105: "travel", ef107: "home" },
+    completeFeedback: "Correct -- the finished kit listing belongs to Kits, not to its components' category."
+  },
+  checkNote: "You can now apply category logic to a real, finished listing."
+},
+{
+  id: "m3-l7",
+  title: "Basic Keyword Awareness",
+  objective: "Understand search terms without advanced SEO.",
+  learn: [
+    "Basic keyword awareness simply means thinking about what a customer would actually type to search for a product, and making sure those obvious, natural terms appear somewhere in the title or description. This is different from advanced SEO strategy -- keyword research tools, ranking algorithms, and optimization tactics are outside this Foundation."
+  ],
+  observe: [
+    "A shopper looking for EF-104 would likely search something like \u201ccable organizer\u201d or \u201ccord management.\u201d A title or description that never uses any version of those obvious terms would be harder for that shopper to find -- even without any deeper SEO work involved."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which set of terms would a shopper most naturally search for when looking for EF-104 (Cable Management Set)?",
+        options: [
+          { text: "\u201ccable organizer,\u201d \u201ccord management\u201d", correct: true },
+          { text: "\u201cadhesive polymer fastening solution\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- plain, obvious terms match how real customers actually search.",
+        incorrectFeedback: "Not quite -- that phrase is technical jargon a typical shopper wouldn't type into a search bar."
+      }
+    ]
+  },
+  checkNote: "You can now think in terms of what a customer would realistically search for -- without needing advanced SEO."
+},
+{
+  id: "m3-l8",
+  title: "Listing QA",
+  objective: "Check accuracy, completeness, consistency, and formatting.",
+  learn: [
+    "Before a listing goes live, it deserves a deliberate QA pass covering four things: is the information <strong>accurate</strong>? Is anything <strong>missing</strong>? Is it <strong>consistent</strong> with the rest of the catalog? Is the <strong>formatting</strong> clean and readable?"
+  ],
+  observe: [
+    "A QA pass on an EF-106 listing draft might catch: the price field is accurate, but the specs are missing a dimension; the title matches Everfield's naming pattern (consistent); and the description has an unclosed sentence (formatting)."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put these listing QA checks in the order most teams run them -- from the most fundamental question to the most surface-level.",
+    items: [
+      { id: "accurate", label: "Is the information accurate?" },
+      { id: "complete", label: "Is anything missing?" },
+      { id: "consistent", label: "Is it consistent with the rest of the catalog?" },
+      { id: "format", label: "Is the formatting clean and readable?" }
+    ],
+    correctOrder: ["accurate", "complete", "consistent", "format"],
+    correctFeedback: "That's the right priority order -- accuracy and completeness matter more than formatting polish.",
+    incorrectFeedback: "Not quite -- accuracy and completeness should be checked before consistency and formatting."
+  },
+  checkNote: "You can now run a structured QA pass on a listing before it goes live."
+},
+{
+  id: "m3-l9",
+  title: "Common Listing Errors",
+  objective: "Identify frequent listing problems.",
+  learn: [
+    "The same handful of errors show up again and again: wrong or outdated price, mismatched images, broken links, a title and description that contradict each other, the wrong category, or missing specifications."
+  ],
+  observe: [
+    "A flawed Everfield listing might show EF-101 priced correctly, but with an image of EF-103 accidentally attached, a category of \u201cTravel Organization\u201d (wrong for a Home Organization product), and no dimensions listed at all -- three separate, common errors in one listing."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A listing for a Home Organization product is filed under the Travel Organization category. What kind of error is this?",
+        options: [
+          { text: "A wrong-category error", correct: true },
+          { text: "A pricing error", correct: false }
+        ],
+        correctFeedback: "Right -- category mismatches are one of the most common, most disruptive listing errors.",
+        incorrectFeedback: "Not quite -- this is a category error, not a pricing issue."
+      },
+      {
+        q: "A listing's main image actually shows a different product entirely. What kind of error is this?",
+        options: [
+          { text: "A mismatched-image error", correct: true },
+          { text: "A keyword error", correct: false }
+        ],
+        correctFeedback: "Correct -- and it's one of the most damaging errors, since it directly misleads the customer.",
+        incorrectFeedback: "Not quite -- this is a mismatched-image error, unrelated to keyword awareness."
+      }
+    ]
+  },
+  checkNote: "You can now recognize the most common listing errors on sight -- the foundation for a fast, reliable QA pass."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 3 complete. You can now build and QA a real listing end to end -- Module 4 picks up right after a customer clicks buy.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2: Products, SKUs & Product Data | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 2</p>
+  <h1>Products, SKUs & Product Data</h1>
+  <p style="max-width:62ch">Every task you'll do later -- listings, orders, inventory -- rests on product data being organized correctly. This module teaches you how Everfield structures its catalog, and how to keep that structure clean.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> Everfield's SKUs, categories, and product fields are simulation details built for this training. Real clients structure their catalogs differently -- what matters is recognizing the pattern.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 7</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m2";
+var LESSONS = [
+{
+  id: "m2-l1",
+  title: "Products, SKUs & Variants",
+  objective: "Tell products, SKUs, and variants apart.",
+  learn: [
+    "A <strong>product</strong> is the general item being sold. A <strong>SKU</strong> (stock keeping unit) is the specific, sellable version of that product -- the exact thing that gets tracked, ordered, and shipped. A <strong>variant</strong> is a version of a product distinguished by an option, like size, color, or configuration.",
+    "A SKU is an internal identifier. It is not automatically the same as a UPC, an EAN, a marketplace listing ID, or a supplier's own SKU -- those are different identifiers that may exist alongside it."
+  ],
+  observe: [
+    "Everfield uses a simple internal SKU format: <strong>EF-###</strong>, where EF stands for Everfield and the number is the internal product identifier. EF-101 is the Stackable Storage Bin; EF-200 is the Home Organization Starter Kit.",
+    "Everfield's current core catalog is made up of standalone products (each with its own SKU) plus one kit -- there aren't yet size/color variants layered on top of any single SKU. That variant layer is still a concept worth knowing, since many real client catalogs use it heavily."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Everfield's Stackable Storage Bin has the internal identifier EF-101. What is EF-101?",
+        options: [
+          { text: "The SKU -- the specific sellable item Everfield tracks internally.", correct: true },
+          { text: "The product -- the general idea of a storage bin.", correct: false }
+        ],
+        correctFeedback: "Right. EF-101 is the specific, trackable SKU -- 'storage bin' is the more general product concept.",
+        incorrectFeedback: "Not quite -- 'storage bin' is the general product idea. EF-101 is the specific SKU used to track and sell it."
+      },
+      {
+        q: "A marketplace shows its own listing ID for Everfield's Bamboo Organizer Tray. Is that listing ID the same thing as Everfield's SKU (EF-103)?",
+        options: [
+          { text: "No -- a marketplace listing ID is a separate identifier, even though both refer to the same product.", correct: true },
+          { text: "Yes -- all identifiers for the same product are interchangeable.", correct: false }
+        ],
+        correctFeedback: "Correct. Different systems often assign their own IDs to the same underlying product -- a VA needs to know they're not automatically the same.",
+        incorrectFeedback: "Not quite -- a marketplace listing ID and an internal SKU are different identifiers, even when they point to the same product."
+      }
+    ]
+  },
+  checkNote: "You can now tell products, SKUs, and other identifiers apart -- a distinction you'll rely on constantly."
+},
+{
+  id: "m2-l2",
+  title: "Product Attributes",
+  objective: "Convert raw product information into structured fields.",
+  learn: [
+    "Raw information about a product -- a note from a supplier, a rough description -- isn't useful until it's sorted into consistent fields. A complete product record typically needs: SKU, product name, category, product type, unit of measure, supplier, standard unit cost, lead time, reorder information, storage location, status, a kit/bundle indicator, and notes.",
+    "Structured fields are what let a whole team -- and every downstream system -- work from the same accurate information."
+  ],
+  observe: [
+    "Every Everfield product record is expected to eventually carry all of those fields. For example, EF-103 (Bamboo Organizer Tray) has a supplier (Pinecrest Manufacturing), a typical lead time (14 days), a unit of measure (Each), and a category (Home Organization) -- each living in its own field, not buried in a paragraph."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each raw piece of information to the structured field it belongs in.",
+    leftLabel: "Raw info",
+    rightLabel: "Structured field",
+    left: [
+      { id: "a", label: "\u201cPinecrest Manufacturing\u201d" },
+      { id: "b", label: "\u201c14 days\u201d" },
+      { id: "c", label: "\u201cEach\u201d" },
+      { id: "d", label: "\u201cHome Organization\u201d" }
+    ],
+    right: [
+      { id: "supplier", label: "Supplier" },
+      { id: "leadtime", label: "Lead time" },
+      { id: "uom", label: "Unit of measure" },
+      { id: "category", label: "Category" }
+    ],
+    pairs: { a: "supplier", b: "leadtime", c: "uom", d: "category" },
+    completeFeedback: "Correct -- each piece of raw information has exactly one structured home."
+  },
+  checkNote: "You can now sort raw product information into the structured fields a product record actually needs."
+},
+{
+  id: "m2-l3",
+  title: "Product Categories",
+  objective: "Organize products using categories, tags, and collections.",
+  learn: [
+    "A <strong>category</strong> is usually a product's one primary grouping -- used for navigation and reporting. <strong>Tags</strong> and <strong>collections</strong> are more flexible: a product can carry several tags, or belong to more than one collection, without changing its main category."
+  ],
+  observe: [
+    "Everfield's core catalog sits in three categories: <strong>Home Organization</strong> (most of the standalone products), <strong>Travel Organization</strong> (the Travel Packing Pouch Set), and <strong>Kits</strong> (the Home Organization Starter Kit)."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each Everfield SKU to its category.",
+    leftLabel: "SKU",
+    rightLabel: "Category",
+    left: [
+      { id: "ef101", label: "EF-101 -- Stackable Storage Bin" },
+      { id: "ef105", label: "EF-105 -- Travel Packing Pouch Set" },
+      { id: "ef200", label: "EF-200 -- Home Organization Starter Kit" }
+    ],
+    right: [
+      { id: "home", label: "Home Organization" },
+      { id: "travel", label: "Travel Organization" },
+      { id: "kits", label: "Kits" }
+    ],
+    pairs: { ef101: "home", ef105: "travel", ef200: "kits" },
+    completeFeedback: "Correct -- three SKUs, three different categories."
+  },
+  checkNote: "You can now place a product into Everfield's category structure correctly."
+},
+{
+  id: "m2-l4",
+  title: "Product Titles & Descriptions",
+  objective: "Apply clear, accurate, consistent product information.",
+  learn: [
+    "A good product title is clear, accurate, and consistent -- it names what the product actually is, without vague marketing language or keyword-stuffing. A good description tells the customer what it is, what it's for, and what's included."
+  ],
+  observe: [
+    "For EF-103, \u201cNice Organizer\u201d is a poor title -- it's vague and could describe almost anything. \u201cBamboo Organizer Tray -- Desk & Drawer Storage\u201d is clear: it names the material, the product type, and where it's used."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which title is the better fit for EF-104 (Cable Management Set)?",
+        options: [
+          { text: "\u201cCable Management Set -- Adhesive Clips & Sleeves, 12-Piece\u201d", correct: true },
+          { text: "\u201cAmazing Cable Fix Kit!!\u201d", correct: false }
+        ],
+        correctFeedback: "Right. It states what the product is and what's included, without hype.",
+        incorrectFeedback: "Not quite -- that title is vague and relies on hype instead of describing the actual product."
+      },
+      {
+        q: "Which description best fits EF-107 (Reusable Storage Bag Set)?",
+        options: [
+          { text: "\u201cA set of reusable, washable storage bags for pantry and fridge use, in three sizes -- helps cut down on single-use plastic.\u201d", correct: true },
+          { text: "\u201cYou'll love these bags! Perfect for everything, everywhere, every day.\u201d", correct: false }
+        ],
+        correctFeedback: "Correct -- it tells the customer what it is, what it's for, and what's included.",
+        incorrectFeedback: "Not quite -- that description doesn't actually say what the product is or what's included."
+      }
+    ]
+  },
+  checkNote: "You can now spot the difference between vague, marketing-heavy copy and clear, accurate product information."
+},
+{
+  id: "m2-l5",
+  title: "Product Images & Digital Assets",
+  objective: "Organize and QA product assets.",
+  learn: [
+    "Product photos, lifestyle images, and other digital assets need consistent naming and organization so anyone on a team can find the right file quickly. Basic QA means checking that each asset shows the correct product, from a usable angle, without placeholder or broken files mixed in.",
+    "This is a general best practice, true for any e-commerce team -- not something unique to Everfield's simulation."
+  ],
+  observe: [
+    "Imagine an asset folder for EF-106 (Closet Divider Set) that also contains a leftover photo of EF-101 (Storage Bin), a duplicate file, and one image with a placeholder \u201cimage coming soon\u201d graphic. A VA doing basic asset QA would flag all three before the listing goes live."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "You're QA-ing an asset folder for a listing and find a photo of the wrong product mixed in. What should you do?",
+        options: [
+          { text: "Flag it and remove it from the folder before the listing goes live.", correct: true },
+          { text: "Leave it -- extra images don't hurt.", correct: false }
+        ],
+        correctFeedback: "Right. A mismatched product photo is a real error that can confuse or mislead customers.",
+        incorrectFeedback: "Not quite -- a wrong-product photo is a genuine error and should be caught, not left in place."
+      },
+      {
+        q: "An asset folder has two files with nearly identical names for two different products. What's the risk?",
+        options: [
+          { text: "Someone could easily upload the wrong image to the wrong listing.", correct: true },
+          { text: "There's no real risk as long as both files exist somewhere.", correct: false }
+        ],
+        correctFeedback: "Correct -- confusing file names are exactly how the wrong image ends up on the wrong listing.",
+        incorrectFeedback: "Not quite -- confusing, similar file names are a common cause of the wrong image ending up on the wrong listing."
+      }
+    ]
+  },
+  checkNote: "You can now spot common digital-asset organization problems before they become live-listing errors."
+},
+{
+  id: "m2-l6",
+  title: "Pricing & Product Status",
+  objective: "Identify basic pricing and availability states.",
+  learn: [
+    "A product's <strong>status</strong> marks whether it's currently sellable -- typically something like Active, Inactive, or Discontinued. A listing's status has to stay consistent with what's actually true: a product shouldn't show as available to buy if it isn't.",
+    "This connects to inventory, which you'll study in depth in a later module -- but even at a store level, a VA should notice when a listing's status doesn't match reality."
+  ],
+  observe: [
+    "Everfield only wants a SKU shown as available to sell when there's genuinely usable inventory behind it. A listing marked \u201cIn Stock\u201d for a SKU that actually has no usable inventory is exactly the kind of inconsistency a VA should catch and flag -- not fix by guessing."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A product listing shows \u201cIn Stock,\u201d but the store's inventory count for that SKU is zero. What should a VA do?",
+        options: [
+          { text: "Flag the inconsistency for the team to investigate.", correct: true },
+          { text: "Change the listing to whatever seems reasonable.", correct: false }
+        ],
+        correctFeedback: "Right. A VA flags a status/inventory mismatch rather than guessing at a fix.",
+        incorrectFeedback: "Not quite -- guessing at a fix risks making things worse. The right move is to flag the mismatch."
+      }
+    ]
+  },
+  checkNote: "You can now spot pricing and status inconsistencies between what a listing says and what's actually true."
+},
+{
+  id: "m2-l7",
+  title: "Why Product Data Accuracy Matters",
+  objective: "Connect product data to downstream operations.",
+  learn: [
+    "Product data isn't just paperwork -- it feeds directly into operations. Wrong data at the start causes real problems later: an inaccurate weight throws off shipping costs, a wrong category makes a product hard to find, and an inaccurate status can let a customer buy something that isn't actually available."
+  ],
+  observe: [
+    "Say EF-104's unit of measure was recorded incorrectly. That error could throw off an inventory count, which could make the listing show available stock that doesn't exist, which could let a customer order it, which ends in a fulfillment problem and a customer complaint -- all traced back to one inaccurate field."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put this chain of cause and effect in the correct order.",
+    items: [
+      { id: "bad", label: "A product's unit of measure is recorded incorrectly" },
+      { id: "count", label: "Inventory count becomes inaccurate" },
+      { id: "listing", label: "Listing shows stock that doesn't actually exist" },
+      { id: "order", label: "Customer places an order for it" },
+      { id: "fail", label: "Fulfillment can't complete the order" },
+      { id: "complaint", label: "Customer files a complaint" }
+    ],
+    correctOrder: ["bad", "count", "listing", "order", "fail", "complaint"],
+    correctFeedback: "Exactly -- one small data error, traced all the way to a customer complaint.",
+    incorrectFeedback: "Not quite -- remember the error has to throw off inventory before it can show up on the listing, and the listing has to be wrong before a customer can order against it."
+  },
+  checkNote: "You can now trace how a single product-data error ripples into a real operational problem."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 2 complete. You now understand how Everfield's product data is structured -- Module 3 puts it to work in real listings.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

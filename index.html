@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-commerce VA -- Beginner Foundations | PVA Free Training</title>
+<meta name="description" content="A free, self-paced foundation course teaching aspiring Virtual Assistants how an online store operates, through the simulated company Everfield Goods.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  .hero{
+    padding: 56px 0 30px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero .kicker{
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    font-size: 0.78rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .hero p.lede{ font-size: 1.08rem; max-width: 60ch; }
+  .hero-stats{
+    display:flex;
+    gap: 28px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+  }
+  .hero-stats .stat{ min-width: 120px; }
+  .hero-stats .num{ font-family: var(--font-display); font-size: 1.6rem; color: var(--forest-dark); }
+  .hero-stats .label{ font-size: 0.8rem; color: var(--ink-faint); }
+
+  .company-panel{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    margin: 34px 0 10px;
+    overflow:hidden;
+  }
+  .company-panel .side{ padding: 26px 28px; }
+  .company-panel .side.left{ border-right: 1px solid var(--line); }
+  .company-panel h3{ font-size: 1rem; text-transform:uppercase; letter-spacing:.03em; color: var(--ink-faint); margin-bottom:14px; }
+  .chan-list{ list-style:none; margin:0; padding:0; }
+  .chan-list li{ padding: 8px 0; border-bottom: 1px dashed var(--line); font-size:0.92rem; color: var(--ink-soft); }
+  .chan-list li:last-child{ border-bottom:none; }
+  .chan-list strong{ color: var(--ink); }
+  .team-row{ display:flex; gap:12px; align-items:baseline; padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 0.9rem; }
+  .team-row:last-child{ border-bottom:none; }
+  .team-row .name{ color: var(--ink); font-weight:600; min-width: 120px; }
+  .team-row .role{ color: var(--ink-faint); }
+
+  section.section{ padding: 34px 0; }
+  section.section h2{ margin-bottom: 6px; }
+  section.section > .wrap > p.section-sub{ color: var(--ink-faint); margin-bottom: 4px; }
+
+  footer{ border-top: 1px solid var(--line); padding: 28px 0 60px; color: var(--ink-faint); font-size: 0.85rem; }
+
+  @media (max-width: 760px){
+    .company-panel{ grid-template-columns: 1fr; }
+    .company-panel .side.left{ border-right:none; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="#modules">Modules</a>
+      <a href="#everfield">Meet Everfield</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Free &middot; Self-paced &middot; No account required</div>
+    <h1>E-commerce VA &mdash; Beginner Foundations</h1>
+    <p class="lede">Learn how an online store actually runs, and how a beginner Virtual Assistant supports it -- through a running simulation with a real (fictional) company, Everfield Goods.</p>
+    <a class="btn btn-primary" href="module-1/index.html">Start Module 1</a>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="num">14</div><div class="label">modules</div></div>
+      <div class="stat"><div class="num">13</div><div class="label">portfolio deliverables</div></div>
+      <div class="stat"><div class="num">1</div><div class="label">simulated company: Everfield Goods</div></div>
+      <div class="stat"><div class="num">$0</div><div class="label">tools required</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="everfield">
+  <div class="wrap">
+    <h2>Meet Everfield Goods</h2>
+    <p class="section-sub">The company you'll support for all 14 modules.</p>
+    <p style="max-width:66ch">Everfield Goods LLC sells practical home-organization and lifestyle products online, to customers across the United States. It's built to be realistic enough to learn from, but small enough that a beginner can understand the whole operation.</p>
+
+    <div class="card company-panel">
+      <div class="side left">
+        <h3>How Everfield sells</h3>
+        <ul class="chan-list">
+          <li><strong>Brand store</strong> &mdash; Everfield's own direct-to-consumer website</li>
+          <li><strong>Online marketplace</strong> &mdash; a listing on a major third-party marketplace</li>
+          <li><strong>B2B / bulk</strong> &mdash; occasional business orders</li>
+        </ul>
+      </div>
+      <div class="side">
+        <h3>Who you'll hear from</h3>
+        <div class="team-row"><span class="name">Sofia Ramirez</span><span class="role">E-commerce Manager &mdash; your closest point of contact</span></div>
+        <div class="team-row"><span class="name">Maya Collins</span><span class="role">Operations Manager</span></div>
+        <div class="team-row"><span class="name">Marcus Lee</span><span class="role">3PL Account Manager (ClearPath Fulfillment)</span></div>
+        <div class="team-row"><span class="name">Daniel Brooks</span><span class="role">Procurement &amp; Supply Manager</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="modules">
+  <div class="wrap">
+    <h2>Course map</h2>
+    <p class="section-sub">Modules unlock as they're built. Module 1 is ready now.</p>
+    <div class="module-grid" id="moduleGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    E-commerce VA &mdash; Beginner Foundations is part of PVA Free Training, a set of free foundation pathways from Probinsiyanong VA. Work produced in this course is training work, not real client work, and is labeled as such throughout.
+  </div>
+</footer>
+
+<script src="shared/progress.js"></script>
+<script>
+var MODULES = [
+  { n: 1, title: "How E-commerce Works", desc: "Meet Everfield Goods and map its customer journey.", href: "module-1/index.html", built: true, lessonIds: ["m1-l1","m1-l2","m1-l3","m1-l4","m1-l5","m1-l6","m1-l7"] },
+  { n: 2, title: "Products, SKUs & Product Data", desc: "Understand and organize Everfield's products.", href: "module-2/index.html", built: true, lessonIds: ["m2-l1","m2-l2","m2-l3","m2-l4","m2-l5","m2-l6","m2-l7"] },
+  { n: 3, title: "Creating & Maintaining Product Listings", desc: "Prepare Everfield's product listings.", href: "module-3/index.html", built: true, lessonIds: ["m3-l1","m3-l2","m3-l3","m3-l4","m3-l5","m3-l6","m3-l7","m3-l8","m3-l9"] },
+  { n: 4, title: "Orders & Fulfillment", desc: "Process Everfield's orders.", built: false },
+  { n: 5, title: "Inventory Basics", desc: "Monitor Everfield's inventory.", built: false },
+  { n: 6, title: "Customer Support in E-commerce", desc: "Support Everfield's customers.", built: false },
+  { n: 7, title: "Returns, Refunds & Exceptions", desc: "Handle Everfield's exceptions.", built: false },
+  { n: 8, title: "E-commerce Research", desc: "Research competitors and products.", built: false },
+  { n: 9, title: "E-commerce Spreadsheets & Basic Reporting", desc: "Analyze Everfield's operational data.", built: false },
+  { n: 10, title: "Inside an E-commerce Store", desc: "Dashboards, products, orders, and platform concepts.", built: false },
+  { n: 11, title: "SOPs, Workflow & Professional Practice", desc: "Improve and document a workflow.", built: false },
+  { n: 12, title: "AI-Assisted E-commerce VA Work", desc: "Use AI responsibly, with human QA.", built: false },
+  { n: 13, title: "Client Communication & Reporting", desc: "Report on Everfield's operating week.", built: false },
+  { n: 14, title: "Capstone: E-commerce VA in Practice", desc: "A simulated week of Everfield VA support.", built: false }
+];
+
+var grid = document.getElementById("moduleGrid");
+MODULES.forEach(function(m){
+  var card = document.createElement(m.built ? "a" : "div");
+  card.className = "module-card " + (m.built ? "is-open" : "is-locked");
+  if(m.built) card.href = m.href;
+
+  var num = document.createElement("div");
+  num.className = "module-num";
+  num.textContent = "MODULE " + m.n;
+  card.appendChild(num);
+
+  var h3 = document.createElement("h3");
+  h3.textContent = m.title;
+  card.appendChild(h3);
+
+  var desc = document.createElement("p");
+  desc.className = "desc";
+  desc.textContent = m.desc;
+  card.appendChild(desc);
+
+  var status = document.createElement("div");
+  status.className = "module-status";
+  if(m.built){
+    var doneCount = window.PVAEcom ? PVAEcom.lessonsDoneInModule(m.n, m.lessonIds) : 0;
+    if(doneCount === m.lessonIds.length){
+      status.textContent = "Completed";
+      status.classList.add("done");
+    } else if (doneCount > 0){
+      status.textContent = doneCount + " of " + m.lessonIds.length + " lessons done";
+      status.classList.add("active");
+    } else {
+      status.textContent = "Start module";
+      status.classList.add("active");
+    }
+  } else {
+    status.textContent = "Coming soon";
+  }
+  card.appendChild(status);
+
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>
