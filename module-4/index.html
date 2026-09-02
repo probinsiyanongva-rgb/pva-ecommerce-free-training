@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4: Orders & Fulfillment | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+  .msg-sample{
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-m);
+    padding: 14px 16px;
+    background: var(--surface-sunken);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin: 12px 0;
+    white-space: pre-line;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 4</p>
+  <h1>Orders & Fulfillment</h1>
+  <p style="max-width:62ch">Module 1 traced a single order end to end. This module slows that lifecycle down, lesson by lesson, so you can actually work with orders -- reading statuses, verifying details, spotting exceptions, and writing about them clearly.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> Everfield's order flow and communication style are simulation training patterns. Real clients may name their statuses differently -- what matters is recognizing the underlying stage.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 8</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m4";
+var LESSONS = [
+{
+  id: "m4-l1",
+  title: "What Happens After Checkout?",
+  objective: "Explain the post-purchase flow.",
+  learn: [
+    "The moment a customer clicks 'buy' is the start of a new phase, not the end. The order still has to be confirmed, verified, and handed to the people (or 3PL) who will actually get it to the customer.",
+    "This module zooms into the operational half of the order lifecycle you traced in Module 1 -- the part that starts right after payment is confirmed."
+  ],
+  observe: [
+    "At Everfield, once payment is confirmed, the order enters the fulfillment queue, where Everfield's 3PL partner, ClearPath Fulfillment, is responsible for picking, packing, and getting it shipped. Nothing about the order's status is final until that whole chain completes."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer's payment was just confirmed. Is the order finished from an operations standpoint?",
+        options: [
+          { text: "No -- it now enters the fulfillment queue for picking, packing, and shipping.", correct: true },
+          { text: "Yes -- payment confirmation is the final step.", correct: false }
+        ],
+        correctFeedback: "Right. Payment confirmation is the start of fulfillment, not the end of the order.",
+        incorrectFeedback: "Not quite -- payment confirmation just hands the order into the fulfillment queue. There's real work still ahead."
+      }
+    ]
+  },
+  checkNote: "You can now explain what actually happens to an order the moment after checkout."
+},
+{
+  id: "m4-l2",
+  title: "Order Statuses",
+  objective: "Interpret common order states.",
+  learn: [
+    "Most e-commerce systems track an order through a handful of common statuses: <strong>Pending</strong> (awaiting payment or confirmation), <strong>Processing</strong> (confirmed, being prepared), <strong>Shipped</strong> (handed to a carrier), <strong>Delivered</strong> (received by the customer), and <strong>Cancelled</strong> (order will not be fulfilled)."
+  ],
+  observe: [
+    "For an Everfield order, 'Processing' means it's sitting with ClearPath Fulfillment being picked and packed -- it hasn't shipped yet. Knowing this precisely matters, because a customer asking 'where's my order?' needs a specific, accurate answer, not a guess."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each order status to what it actually means.",
+    leftLabel: "Status",
+    rightLabel: "Meaning",
+    left: [
+      { id: "pending", label: "Pending" },
+      { id: "processing", label: "Processing" },
+      { id: "shipped", label: "Shipped" },
+      { id: "delivered", label: "Delivered" }
+    ],
+    right: [
+      { id: "m_pending", label: "Awaiting payment or confirmation" },
+      { id: "m_processing", label: "Confirmed, being picked and packed" },
+      { id: "m_shipped", label: "Handed off to a carrier" },
+      { id: "m_delivered", label: "Received by the customer" }
+    ],
+    pairs: { pending: "m_pending", processing: "m_processing", shipped: "m_shipped", delivered: "m_delivered" },
+    completeFeedback: "Correct -- each status marks a specific, distinct stage."
+  },
+  checkNote: "You can now interpret the common order statuses precisely, not just generally."
+},
+{
+  id: "m4-l3",
+  title: "Payment vs. Fulfillment",
+  objective: "Distinguish payment confirmation from fulfillment.",
+  learn: [
+    "Payment confirmation and fulfillment are two separate systems that happen to be linked. Payment confirmation means the customer's money was successfully collected. Fulfillment means the physical order is being prepared and shipped. One can be complete while the other is still pending."
+  ],
+  observe: [
+    "A customer might email Everfield asking 'why hasn't my order shipped, my card was already charged?' -- that's a customer correctly noticing that payment (done) and fulfillment (still in progress) are different things, not a sign anything is wrong."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer's card was charged three days ago, but the order still shows 'Processing.' What's the most accurate read of the situation?",
+        options: [
+          { text: "Payment succeeded; fulfillment is a separate, still-in-progress step -- this isn't automatically a problem.", correct: true },
+          { text: "Since payment succeeded, the order must be lost.", correct: false }
+        ],
+        correctFeedback: "Right. Payment success and fulfillment completion are separate things -- 'Processing' just means fulfillment isn't done yet.",
+        incorrectFeedback: "Not quite -- a charged card and an in-progress fulfillment status aren't evidence that anything is lost."
+      }
+    ]
+  },
+  checkNote: "You can now explain to a customer why payment and fulfillment don't always move at the same speed."
+},
+{
+  id: "m4-l4",
+  title: "Picking, Packing & Shipping",
+  objective: "Understand basic fulfillment stages.",
+  learn: [
+    "Fulfillment itself has stages: <strong>picking</strong> (retrieving the right items from inventory), <strong>packing</strong> (boxing them securely and accurately), and <strong>shipping</strong> (handing the package to a carrier with tracking assigned)."
+  ],
+  observe: [
+    "ClearPath Fulfillment, Everfield's 3PL, is responsible for exactly these stages: receiving and storing Everfield's inventory, then picking, packing, and completing outbound fulfillment once an order comes through."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put these fulfillment stages in the order they happen once an order is confirmed.",
+    items: [
+      { id: "pick", label: "Item is picked from inventory" },
+      { id: "pack", label: "Item is packed securely" },
+      { id: "label", label: "Shipping label and tracking are generated" },
+      { id: "handoff", label: "Package is handed to the carrier" }
+    ],
+    correctOrder: ["pick", "pack", "label", "handoff"],
+    correctFeedback: "That's the sequence -- picking always comes before packing, and a tracking number only exists once a label is generated.",
+    incorrectFeedback: "Not quite -- an item has to be picked before it can be packed, and it needs a label before it can be handed to the carrier."
+  },
+  checkNote: "You can now name and order the individual stages inside 'fulfillment.'"
+},
+{
+  id: "m4-l5",
+  title: "Tracking Information",
+  objective: "Interpret tracking and delivery information.",
+  learn: [
+    "Tracking information tells you where a package actually is -- not where it's supposed to be. Reading it accurately means distinguishing normal in-transit movement from a real problem: a tracking number that hasn't updated in several days is worth a closer look; one updating daily as expected is not."
+  ],
+  observe: [
+    "If a customer's Everfield order shows tracking that updated yesterday and is 'out for delivery,' that's on track -- no action needed. If it shows no scan for six days sitting at a single facility, that's a pattern worth flagging, not ignoring."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Tracking shows the package scanned at a sorting facility yesterday and now 'out for delivery.' What should a VA do?",
+        options: [
+          { text: "Nothing -- this is normal, expected movement.", correct: true },
+          { text: "Immediately escalate it as a delayed shipment.", correct: false }
+        ],
+        correctFeedback: "Right -- that's exactly what a healthy tracking history looks like.",
+        incorrectFeedback: "Not quite -- that pattern is normal in-transit movement, not a delay."
+      },
+      {
+        q: "Tracking hasn't updated in six days and still shows the same facility scan. What should a VA do?",
+        options: [
+          { text: "Flag it as a likely delivery exception worth investigating.", correct: true },
+          { text: "Assume it will resolve itself and take no action.", correct: false }
+        ],
+        correctFeedback: "Correct -- a stalled tracking history is exactly the kind of pattern worth flagging.",
+        incorrectFeedback: "Not quite -- a six-day stall is unusual enough to flag, not ignore."
+      }
+    ]
+  },
+  checkNote: "You can now read a tracking history and tell normal movement from a real exception."
+},
+{
+  id: "m4-l6",
+  title: "Order Verification",
+  objective: "Check orders for basic completeness and anomalies.",
+  learn: [
+    "A complete order record should have every expected field filled in and consistent: order number, order date, SKU, quantity, fulfillment status, shipment date (once shipped), tracking, and delivery status. Verifying an order means scanning for anything missing or inconsistent before it becomes a customer-facing problem."
+  ],
+  observe: [
+    "An Everfield order record missing its tracking number, even though its status already says 'Shipped,' is exactly the kind of inconsistency order verification is meant to catch -- it should be flagged, not assumed to be a system glitch."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "An order's status says 'Shipped,' but the tracking field is empty. What does order verification call for?",
+        options: [
+          { text: "Flag the missing tracking number as an inconsistency to check.", correct: true },
+          { text: "Assume the tracking number will appear on its own.", correct: false }
+        ],
+        correctFeedback: "Right -- a 'Shipped' status without tracking is a real inconsistency worth flagging.",
+        incorrectFeedback: "Not quite -- verification means catching this now, not waiting and hoping it resolves."
+      }
+    ]
+  },
+  checkNote: "You can now spot the kind of missing or inconsistent order details that verification is meant to catch."
+},
+{
+  id: "m4-l7",
+  title: "Delivery Exceptions",
+  objective: "Recognize common delivery problems.",
+  learn: [
+    "Common delivery exceptions include: a shipment that's delayed beyond its expected window, tracking information that's missing entirely, and a received quantity that doesn't match what was actually shipped. Recognizing these patterns quickly is what lets a VA respond before a customer has to ask."
+  ],
+  observe: [
+    "At Everfield, a shipment delay, a missing tracking reference, or a mismatch between shipped and received quantity are all logged as common, expected categories of delivery exception -- not rare surprises. Knowing the categories in advance makes them faster to catch."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each scenario to the type of delivery exception it represents.",
+    leftLabel: "Scenario",
+    rightLabel: "Exception type",
+    left: [
+      { id: "a", label: "Package still hasn't arrived, well past the expected delivery window" },
+      { id: "b", label: "An order has no tracking number recorded at all" },
+      { id: "c", label: "5 units shipped, but only 4 arrived" }
+    ],
+    right: [
+      { id: "delay", label: "Shipment delayed" },
+      { id: "missing", label: "Missing tracking information" },
+      { id: "mismatch", label: "Received quantity differs from shipped quantity" }
+    ],
+    pairs: { a: "delay", b: "missing", c: "mismatch" },
+    completeFeedback: "Correct -- three distinct, common delivery exception types."
+  },
+  checkNote: "You can now recognize and name the most common categories of delivery exception."
+},
+{
+  id: "m4-l8",
+  title: "Communicating Order Issues",
+  objective: "Write clear operational updates.",
+  learn: [
+    "A good operational update states: what happened, what was verified, the impact, the required action, who owns it, and the deadline. It communicates facts plainly, without unnecessary drama or hedging."
+  ],
+  observe: [
+    "Everfield's own communication style follows exactly this pattern:",
+    "\"PO EG-1047 was confirmed for 200 units with an expected arrival of September 12. The supplier has now advised that only 120 units will ship on that date, with the remaining 80 expected five days later. Current inventory provides approximately six days of coverage. Replenishment risk has been flagged for review.\""
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which message better follows Everfield's operational communication style for a delayed order?",
+        options: [
+          { text: "\u201cOrder #4021 was expected to ship September 3. ClearPath has confirmed it is now delayed to September 6 due to a packing backlog. The customer has not yet been notified. Recommend sending a shipping delay notice today -- owner: E-commerce VA, deadline: end of day.\u201d", correct: true },
+          { text: "\u201cUgh, order #4021 is a mess, ClearPath is being really slow again, hopefully it goes out soon!!\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it states what happened, what was verified, the impact, the required action, the owner, and the deadline, without drama.",
+        incorrectFeedback: "Not quite -- that version is vague and dramatic, and doesn't actually tell anyone what to do next."
+      }
+    ]
+  },
+  checkNote: "You can now write an operational update in Everfield's clear, factual communication style."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 4 complete. You can now read, verify, and communicate about a live order -- Module 5 covers the inventory sitting behind it.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

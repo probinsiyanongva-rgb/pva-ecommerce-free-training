@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5: Inventory Basics | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+  table.data-table{ width:100%; border-collapse: collapse; font-size: 0.88rem; margin: 10px 0 4px; }
+  table.data-table th, table.data-table td{ border: 1px solid var(--line-strong); padding: 8px 10px; text-align:left; }
+  table.data-table th{ background: var(--surface-sunken); font-family: var(--font-mono); font-weight:500; font-size:0.78rem; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 5</p>
+  <h1>Inventory Basics</h1>
+  <p style="max-width:62ch">Inventory is what makes every promise on a listing true or false. This module teaches store-level inventory monitoring -- reading stock data, catching problems early, and knowing when to escalate.</p>
+
+  <div class="everfield-note">
+    <strong>Scope note:</strong> This module covers store-level inventory <em>monitoring</em> only. Deeper warehouse operations, replenishment planning, and supplier-side inventory work belong to a separate, more advanced logistics specialization.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 8</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m5";
+var LESSONS = [
+{
+  id: "m5-l1",
+  title: "What Is Inventory?",
+  objective: "Explain inventory in an e-commerce context.",
+  learn: [
+    "Inventory is the physical stock of a product a company actually has on hand -- the real, countable supply behind every promise a listing makes. It's different from a listing's displayed status, which is only accurate if it reflects real inventory."
+  ],
+  observe: [
+    "Everfield doesn't operate its own warehouse -- its inventory physically sits with ClearPath Fulfillment, its 3PL. Everfield's own systems track that inventory and periodically reconcile it against what ClearPath actually reports having."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which of these is a true example of 'inventory'?",
+        options: [
+          { text: "42 physical units of EF-101 sitting at ClearPath's facility.", correct: true },
+          { text: "The word \u201cIn Stock\u201d shown on a listing page.", correct: false }
+        ],
+        correctFeedback: "Right -- inventory is the real, physical stock. A listing's displayed status is only accurate if it reflects that.",
+        incorrectFeedback: "Not quite -- the displayed text on a listing isn't inventory itself, just a claim that should reflect it."
+      }
+    ]
+  },
+  checkNote: "You can now explain what inventory actually is, as distinct from what a listing claims."
+},
+{
+  id: "m5-l2",
+  title: "SKU-Level Inventory",
+  objective: "Read basic SKU-level stock data.",
+  learn: [
+    "SKU-level inventory data shows exactly how much of a specific SKU exists, broken down by state -- not just one combined number. Reading it means knowing which numbers actually matter for a given question."
+  ],
+  observe: [
+    "<table class=\"data-table\"><tr><th>SKU</th><th>Available</th><th>Reserved</th><th>Inbound</th></tr><tr><td>EF-101</td><td>34</td><td>6</td><td>50</td></tr><tr><td>EF-103</td><td>0</td><td>2</td><td>25</td></tr></table>",
+    "For EF-103, the 25 'Inbound' units aren't sellable yet -- they haven't arrived. Right now, only the 'Available' column tells you what can actually go out on a new order."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Using the table above, how many units of EF-103 can be used to fulfill a new customer order right now?",
+        options: [
+          { text: "0", correct: true },
+          { text: "27 (2 reserved + 25 inbound)", correct: false }
+        ],
+        correctFeedback: "Right -- only the 'Available' column reflects inventory that can fulfill a new order right now.",
+        incorrectFeedback: "Not quite -- reserved units are already committed elsewhere, and inbound units haven't arrived yet. Neither is available for a new order."
+      }
+    ]
+  },
+  checkNote: "You can now read a SKU-level inventory table and know which column actually answers 'can we sell this right now?'"
+},
+{
+  id: "m5-l3",
+  title: "Available vs. Reserved",
+  objective: "Distinguish available and committed stock.",
+  learn: [
+    "<strong>Available</strong> inventory can be used to fulfill a new order right now. <strong>Reserved</strong> inventory is already committed to an existing order or purpose -- it exists, but it isn't free to promise to anyone else."
+  ],
+  observe: [
+    "If EF-101 shows 34 Available and 6 Reserved, that 6 is already spoken for -- an open order, a pending kitting run, or something similar. A VA should never treat Reserved units as if they were free to sell again."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A SKU shows 10 Available and 4 Reserved. A new customer wants to order 12 units. Can Everfield fulfill it right now?",
+        options: [
+          { text: "No -- only 10 units are actually available; the 4 reserved units are already committed.", correct: true },
+          { text: "Yes -- 10 + 4 = 14, which covers the order.", correct: false }
+        ],
+        correctFeedback: "Right -- Reserved stock is already spoken for. Only Available stock counts toward a new order.",
+        incorrectFeedback: "Not quite -- Reserved units can't be double-committed to a new order. Only the Available count applies here."
+      }
+    ]
+  },
+  checkNote: "You can now tell available stock apart from stock that's already committed elsewhere."
+},
+{
+  id: "m5-l4",
+  title: "Low Stock",
+  objective: "Identify products approaching low-stock thresholds.",
+  learn: [
+    "A low-stock flag exists to give the team enough lead time to act before a product actually runs out -- it's a warning stage, not a crisis yet. Spotting it early is what makes it useful."
+  ],
+  observe: [
+    "Recall Everfield's kit math: one EF-200 kit needs 2 x EF-101, 1 x EF-102, and 1 x EF-103. If EF-103 available inventory drops to 25 units while EF-101 and EF-102 both have plenty, EF-103 becomes the limiting component -- the one to flag first, since it caps kit production at only 25, regardless of how much of the others exist."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "EF-101 has 100 available units, EF-102 has 80, and EF-103 has 25. Given the EF-200 kit recipe (2 x EF-101, 1 x EF-102, 1 x EF-103), which component should be flagged first as a low-stock risk for kit production?",
+        options: [
+          { text: "EF-103 -- it caps total possible kits at 25, the lowest of the three.", correct: true },
+          { text: "EF-101 -- it has the highest raw unit count, so it must be the priority.", correct: false }
+        ],
+        correctFeedback: "Right -- even with the highest raw count elsewhere, EF-103 is the limiting component and caps kit output at 25.",
+        incorrectFeedback: "Not quite -- a high raw unit count doesn't matter if another component runs out first. EF-103 is the actual limiting factor here."
+      }
+    ]
+  },
+  checkNote: "You can now identify which component is the real low-stock risk, not just which has the smallest raw number."
+},
+{
+  id: "m5-l5",
+  title: "Out of Stock",
+  objective: "Recognize and document stockouts.",
+  learn: [
+    "A stockout means Available inventory has hit zero -- there is currently nothing that can be used to fulfill a new order. It's important to ask the right question here: 'can this inventory actually be used to fulfill a customer order right now?' -- not just 'does inventory of any kind exist somewhere?'"
+  ],
+  observe: [
+    "If EF-103 shows 0 Available but 25 Inbound, that's still a stockout condition today -- the inbound units don't help a customer ordering right now. A VA documenting this should record it as an active stockout with the inbound quantity noted separately, not as 'in stock.'"
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A SKU shows 0 Available and 25 Inbound. Is this a current stockout?",
+        options: [
+          { text: "Yes -- Available is what determines whether it can fulfill an order right now.", correct: true },
+          { text: "No -- 25 units exist somewhere, so it isn't really out of stock.", correct: false }
+        ],
+        correctFeedback: "Right -- inbound units don't count until they've actually arrived and become available.",
+        incorrectFeedback: "Not quite -- inventory that hasn't arrived yet can't fulfill today's orders. This is a current stockout."
+      }
+    ]
+  },
+  checkNote: "You can now recognize a true stockout, even when other inventory states show a non-zero number."
+},
+{
+  id: "m5-l6",
+  title: "Inventory Discrepancies",
+  objective: "Identify basic data discrepancies.",
+  learn: [
+    "A discrepancy is a mismatch between what one record says and what another record says about the same thing. Inventory discrepancies should always be investigated before any arbitrary correction is made -- guessing at a fix can make the underlying problem worse."
+  ],
+  observe: [
+    "Everfield's own system and ClearPath's system are reconciled periodically, precisely because gaps between them are expected and normal to check for -- not evidence that either system is broken. If Everfield's system shows 40 units of EF-104 but ClearPath reports 36, that 4-unit gap is a discrepancy to investigate, not silently correct."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Everfield's system shows 40 units of a SKU; ClearPath reports 36. What should a VA do?",
+        options: [
+          { text: "Flag the 4-unit discrepancy for investigation.", correct: true },
+          { text: "Quietly update Everfield's system to 36 to match.", correct: false }
+        ],
+        correctFeedback: "Right -- discrepancies get investigated first, not silently overwritten.",
+        incorrectFeedback: "Not quite -- correcting a number without investigating the cause can hide a real underlying problem."
+      }
+    ]
+  },
+  checkNote: "You can now spot an inventory discrepancy and respond the right way -- flag and investigate, not silently fix."
+},
+{
+  id: "m5-l7",
+  title: "Inventory Tracking",
+  objective: "Maintain a simple monitoring sheet.",
+  learn: [
+    "A useful inventory movement record needs: the date, the SKU, the quantity, the event (what happened -- a shipment out, a return in, an adjustment), a reference (what ties it to a specific order or transaction), and the resulting balance afterward."
+  ],
+  observe: [
+    "A single Everfield inventory-tracking row might read: date 9/2, SKU EF-101, quantity -2, event 'customer shipment', reference 'Order #4021', resulting balance 32. Every one of those six pieces matters -- drop any one, and the row stops being useful for reconciliation."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each piece of an inventory-tracking row to what it represents.",
+    leftLabel: "Row value",
+    rightLabel: "What it represents",
+    left: [
+      { id: "a", label: "\u201ccustomer shipment\u201d" },
+      { id: "b", label: "\u201cOrder #4021\u201d" },
+      { id: "c", label: "\u201c32\u201d" }
+    ],
+    right: [
+      { id: "event", label: "Event" },
+      { id: "ref", label: "Reference" },
+      { id: "balance", label: "Resulting balance" }
+    ],
+    pairs: { a: "event", b: "ref", c: "balance" },
+    completeFeedback: "Correct -- every field in a tracking row has a specific job."
+  },
+  checkNote: "You can now build an inventory-tracking row with all the fields it actually needs."
+},
+{
+  id: "m5-l8",
+  title: "Escalation",
+  objective: "Know when inventory issues require client attention.",
+  learn: [
+    "Not every inventory issue needs to go straight to the client -- but issues with meaningful financial, customer, compliance, or operational impact should be escalated. Part of a VA's job is judging which side of that line a given issue falls on."
+  ],
+  observe: [
+    "A single unit of EF-102 showing a 1-unit count discrepancy is worth logging, but probably doesn't need escalation on its own. A stockout on EF-101 heading into a known high-demand period -- with real customer and revenue impact -- is exactly the kind of issue Maya Collins, as Operations Manager, would need to know about right away."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A SKU shows a 1-unit inventory discrepancy with no customer or order impact. Should this be escalated immediately to Maya?",
+        options: [
+          { text: "No -- log it for the routine reconciliation process; it doesn't meet the bar for escalation on its own.", correct: true },
+          { text: "Yes -- any discrepancy at all should go straight to management.", correct: false }
+        ],
+        correctFeedback: "Right -- escalation is for issues with real impact, not every minor discrepancy.",
+        incorrectFeedback: "Not quite -- escalating every tiny discrepancy would bury the issues that actually need attention."
+      },
+      {
+        q: "A high-demand SKU just hit zero available inventory with orders still coming in. Should this be escalated?",
+        options: [
+          { text: "Yes -- this has real customer and revenue impact and needs attention now.", correct: true },
+          { text: "No -- it will probably resolve on its own.", correct: false }
+        ],
+        correctFeedback: "Correct -- meaningful customer and financial impact is exactly what escalation is for.",
+        incorrectFeedback: "Not quite -- an active stockout on a high-demand SKU has real impact and should be escalated."
+      }
+    ]
+  },
+  checkNote: "You can now judge which inventory issues cross the line into needing client attention -- and which don't."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 5 complete. You can now monitor inventory, spot real problems, and judge when to escalate -- Module 6 shifts to the customer side of these same situations.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>
