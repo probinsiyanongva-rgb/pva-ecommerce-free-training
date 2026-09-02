@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 9: E-commerce Spreadsheets & Basic Reporting | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+  table.data-table{ width:100%; border-collapse: collapse; font-size: 0.88rem; margin: 10px 0 4px; }
+  table.data-table th, table.data-table td{ border: 1px solid var(--line-strong); padding: 8px 10px; text-align:left; }
+  table.data-table th{ background: var(--surface-sunken); font-family: var(--font-mono); font-weight:500; font-size:0.78rem; }
+  code.f{ background: var(--surface-sunken); border: 1px solid var(--line-strong); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 9</p>
+  <h1>E-commerce Spreadsheets & Basic Reporting</h1>
+  <p style="max-width:62ch">Almost everything you've learned so far eventually lives in a spreadsheet. This module builds practical, no-nonsense spreadsheet skills using the same kind of product, order, and inventory data you already know.</p>
+
+  <div class="everfield-note">
+    <strong>Scope note:</strong> This module covers practical beginner spreadsheet skills -- not advanced formulas, macros, or business intelligence tools. Those sit outside this Foundation.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 10</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m9";
+var LESSONS = [
+{
+  id: "m9-l1",
+  title: "E-commerce Data Types",
+  objective: "Recognize common operational datasets.",
+  learn: [
+    "Most e-commerce operations run on a few distinct types of data: <strong>product data</strong> (what you sell), <strong>order data</strong> (what customers bought), and <strong>inventory data</strong> (what you actually have). Each has its own structure and purpose -- mixing them into one messy sheet makes all three harder to use."
+  ],
+  observe: [
+    "A row listing EF-103's category and supplier is product data. A row listing Order #4021's SKU and quantity is order data. A row listing EF-103's Available/Reserved/Inbound counts is inventory data -- three different datasets, even though they all reference the same SKU."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each data row to its type.",
+    leftLabel: "Row",
+    rightLabel: "Data type",
+    left: [
+      { id: "a", label: "SKU, category, supplier, unit cost" },
+      { id: "b", label: "Order number, SKU, quantity, fulfillment status" },
+      { id: "c", label: "SKU, Available, Reserved, Inbound" }
+    ],
+    right: [
+      { id: "product", label: "Product data" },
+      { id: "order", label: "Order data" },
+      { id: "inventory", label: "Inventory data" }
+    ],
+    pairs: { a: "product", b: "order", c: "inventory" },
+    completeFeedback: "Correct -- three different datasets, each with its own job."
+  },
+  checkNote: "You can now recognize which type of dataset you're looking at, at a glance."
+},
+{
+  id: "m9-l2",
+  title: "Product Data",
+  objective: "Organize product information in a spreadsheet.",
+  learn: [
+    "A well-organized product spreadsheet uses one row per SKU and consistent columns -- the same fields, in the same order, every time. That's what makes it possible to sort, filter, or scan it quickly."
+  ],
+  observe: [
+    "<table class=\"data-table\"><tr><th>SKU</th><th>Name</th><th>Category</th><th>Unit Cost</th></tr><tr><td>EF-101</td><td>Stackable Storage Bin</td><td>Home Organization</td><td>$4.20</td></tr><tr><td>EF-105</td><td>Travel Packing Pouch Set</td><td>Travel Organization</td><td>$3.85</td></tr></table>"
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Why does every row need the same columns in the same order?",
+        options: [
+          { text: "So the sheet can be sorted, filtered, and scanned consistently.", correct: true },
+          { text: "It doesn't really matter, as long as the information is somewhere in the row.", correct: false }
+        ],
+        correctFeedback: "Right -- consistent structure is what makes a spreadsheet actually usable at scale.",
+        incorrectFeedback: "Not quite -- inconsistent column order breaks sorting, filtering, and quick scanning."
+      }
+    ]
+  },
+  checkNote: "You can now organize product information into a consistent, usable spreadsheet structure."
+},
+{
+  id: "m9-l3",
+  title: "Order Data",
+  objective: "Work with basic order records.",
+  learn: [
+    "An order spreadsheet typically has one row per order (or per line item within an order), with consistent fields: order number, date, SKU, quantity, and status."
+  ],
+  observe: [
+    "<table class=\"data-table\"><tr><th>Order #</th><th>Date</th><th>SKU</th><th>Qty</th><th>Status</th></tr><tr><td>4021</td><td>9/2</td><td>EF-101</td><td>2</td><td>Shipped</td></tr><tr><td>4022</td><td>9/2</td><td>EF-200</td><td>1</td><td>Processing</td></tr></table>"
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Using the table above, what's the status of order #4022?",
+        options: [
+          { text: "Processing", correct: true },
+          { text: "Shipped", correct: false }
+        ],
+        correctFeedback: "Right -- reading the correct row and column matters more than it might seem.",
+        incorrectFeedback: "Not quite -- that status belongs to order #4021, not #4022. Match the row carefully."
+      }
+    ]
+  },
+  checkNote: "You can now read and work with a basic order-data table accurately."
+},
+{
+  id: "m9-l4",
+  title: "Inventory Data",
+  objective: "Interpret and organize inventory data.",
+  learn: [
+    "An inventory spreadsheet organizes stock by SKU and state -- the same Available/Reserved/Inbound structure from Module 5, just formalized into rows and columns for tracking over time."
+  ],
+  observe: [
+    "<table class=\"data-table\"><tr><th>SKU</th><th>Available</th><th>Reserved</th><th>Inbound</th></tr><tr><td>EF-102</td><td>60</td><td>5</td><td>0</td></tr><tr><td>EF-106</td><td>8</td><td>2</td><td>40</td></tr></table>",
+    "EF-106's low Available count alongside a large Inbound number tells a specific story: it's a temporary dip, not a long-term shortage -- as long as that inbound shipment actually arrives on schedule."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Using the table above, is EF-106's low stock likely a long-term problem?",
+        options: [
+          { text: "Not necessarily -- there's a large inbound shipment that should resolve it soon.", correct: true },
+          { text: "Yes -- 8 available units means it's permanently understocked.", correct: false }
+        ],
+        correctFeedback: "Right -- reading Inbound alongside Available gives a much more complete picture.",
+        incorrectFeedback: "Not quite -- looking at Available alone misses the inbound shipment that's about to arrive."
+      }
+    ]
+  },
+  checkNote: "You can now interpret inventory data by reading multiple columns together, not just one."
+},
+{
+  id: "m9-l5",
+  title: "Sorting & Filtering",
+  objective: "Use basic spreadsheet controls.",
+  learn: [
+    "<strong>Sorting</strong> reorders rows by a column's value (highest to lowest, A to Z). <strong>Filtering</strong> temporarily hides rows that don't meet a condition, so you only see what matters right now. Both are about seeing the data you need, without deleting or changing anything."
+  ],
+  observe: [
+    "To find every SKU with fewer than 10 available units, the right move is filtering the Available column to show only values under 10 -- not manually scanning every row of a long product list."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "You need to find every SKU with fewer than 10 available units in a 200-row sheet. What's the right approach?",
+        options: [
+          { text: "Filter the Available column to show only values under 10.", correct: true },
+          { text: "Scroll through all 200 rows manually.", correct: false }
+        ],
+        correctFeedback: "Right -- filtering is exactly the tool built for this.",
+        incorrectFeedback: "Not quite -- manually scanning 200 rows is slow and error-prone. Filtering solves this directly."
+      }
+    ]
+  },
+  checkNote: "You can now choose sorting or filtering to answer a specific data question quickly."
+},
+{
+  id: "m9-l6",
+  title: "Data Validation",
+  objective: "Reduce basic data-entry errors.",
+  learn: [
+    "Data validation restricts what can be typed into a field -- a dropdown of allowed categories, for example -- so people can't accidentally create inconsistent variants of the same value."
+  ],
+  observe: [
+    "Without validation, a category column might end up with 'Home Organization,' 'Home Org,' and 'home organization' scattered across different rows -- three different-looking values that are supposed to mean the same thing, breaking any filter or count that relies on them matching exactly."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A category column has 'Home Organization,' 'Home Org,' and 'home organization' used inconsistently across rows. What would prevent this?",
+        options: [
+          { text: "Data validation with a fixed dropdown of allowed category values.", correct: true },
+          { text: "Nothing -- this doesn't actually cause any problems.", correct: false }
+        ],
+        correctFeedback: "Right -- a dropdown removes the chance to type an inconsistent variant.",
+        incorrectFeedback: "Not quite -- inconsistent text values break filters and counts that expect an exact match."
+      }
+    ]
+  },
+  checkNote: "You can now explain how data validation prevents exactly this kind of inconsistency."
+},
+{
+  id: "m9-l7",
+  title: "Basic Formulas",
+  objective: "Use practical beginner formulas.",
+  learn: [
+    "A handful of simple formulas cover most beginner needs: <code class=\"f\">SUM</code> to total a column, <code class=\"f\">COUNT</code> to count entries, and simple multiplication (like unit cost times quantity) to calculate a total value."
+  ],
+  observe: [
+    "To find the total units shipped this week from an order sheet, <code class=\"f\">SUM</code> across the quantity column for shipped orders answers it directly -- no need to add each row by hand."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "You need the total number of units shipped this week from an order sheet. Which approach fits?",
+        options: [
+          { text: "SUM the quantity column for this week's shipped orders.", correct: true },
+          { text: "Manually add up each row's quantity by hand.", correct: false }
+        ],
+        correctFeedback: "Right -- SUM is built exactly for this kind of total.",
+        incorrectFeedback: "Not quite -- manual addition is slow and error-prone when a formula can do it instantly."
+      }
+    ]
+  },
+  checkNote: "You can now match a simple, practical formula to the question you're actually trying to answer."
+},
+{
+  id: "m9-l8",
+  title: "Conditional Formatting",
+  objective: "Highlight important conditions.",
+  learn: [
+    "Conditional formatting automatically highlights cells that meet a rule -- like flagging any row where Available inventory drops to zero. It turns a column of numbers into something you can scan visually in seconds."
+  ],
+  observe: [
+    "Setting Available = 0 to highlight red, and Available under a low-stock threshold to highlight yellow, means a VA can scan a 200-row inventory sheet and immediately spot every SKU that needs attention -- without reading every number."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What's a good use of conditional formatting on an inventory sheet?",
+        options: [
+          { text: "Highlight any row where Available inventory is 0.", correct: true },
+          { text: "Highlight every row a random color for visual variety.", correct: false }
+        ],
+        correctFeedback: "Right -- highlighting a real condition (stockout) makes the sheet more useful, not just more colorful.",
+        incorrectFeedback: "Not quite -- highlighting isn't decoration. It should mark a condition that actually matters."
+      }
+    ]
+  },
+  checkNote: "You can now use conditional formatting to make important conditions visible at a glance."
+},
+{
+  id: "m9-l9",
+  title: "Finding Errors",
+  objective: "Identify common data inconsistencies.",
+  learn: [
+    "Common spreadsheet errors include duplicate rows, mismatched units within the same column, and text accidentally entered into a field that should be numeric -- each of which can quietly break formulas, sorts, and filters."
+  ],
+  observe: [
+    "A quantity column with '5', '5', and '5 units' mixed together looks fine to the eye but breaks a SUM formula, since '5 units' isn't a number the spreadsheet can add."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each spreadsheet problem to its category.",
+    leftLabel: "Problem",
+    rightLabel: "Category",
+    left: [
+      { id: "a", label: "The same order row appears twice" },
+      { id: "b", label: "\u201c5 units\u201d typed into a numeric quantity field" },
+      { id: "c", label: "One row uses inches, another uses centimeters, in the same column" }
+    ],
+    right: [
+      { id: "dup", label: "Duplicate row" },
+      { id: "text", label: "Text in a numeric field" },
+      { id: "unit", label: "Mismatched units" }
+    ],
+    pairs: { a: "dup", b: "text", c: "unit" },
+    completeFeedback: "Correct -- three distinct, common error categories."
+  },
+  checkNote: "You can now recognize the most common types of spreadsheet data errors."
+},
+{
+  id: "m9-l10",
+  title: "Simple Summaries",
+  objective: "Create basic operational summaries.",
+  learn: [
+    "A summary condenses a week's worth of raw rows into a few numbers someone can actually read in seconds -- matching Everfield's own weekly rhythm: total orders, any inventory issues, and open items worth flagging."
+  ],
+  observe: [
+    "A simple weekly summary might read: total orders shipped, any SKUs that hit zero available this week, and any inventory discrepancies still open -- three short lines, not a raw export of every row from the week."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put together a simple weekly summary in a logical reading order.",
+    items: [
+      { id: "orders", label: "Total orders shipped this week" },
+      { id: "stockouts", label: "Any SKUs that hit zero available" },
+      { id: "discrepancies", label: "Any inventory discrepancies still open" },
+      { id: "flag", label: "Anything flagged for next week's attention" }
+    ],
+    correctOrder: ["orders", "stockouts", "discrepancies", "flag"],
+    correctFeedback: "That's a solid summary order -- overall volume first, then problems, then what's still open.",
+    incorrectFeedback: "Not quite -- a summary usually opens with overall volume before narrowing into specific issues."
+  },
+  checkNote: "You can now build a simple, readable weekly summary instead of dumping raw data on someone."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 9 complete. You can now organize, validate, and summarize real operational data -- Module 10 takes you inside the store platform itself.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

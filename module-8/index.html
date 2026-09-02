@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 8: E-commerce Research | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 8</p>
+  <h1>E-commerce Research</h1>
+  <p style="max-width:62ch">Good research is disciplined, not clever -- consistent formats, verified sources, and a clear line between what you observed and what you'd recommend. This module builds exactly that discipline.</p>
+
+  <div class="everfield-note">
+    <strong>Scope note:</strong> This module covers useful, basic research habits -- not advanced competitive intelligence or specialized market analysis. Those sit outside this Foundation.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 8</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m8";
+var LESSONS = [
+{
+  id: "m8-l1",
+  title: "Why E-commerce Businesses Need Research",
+  objective: "Identify common research needs.",
+  learn: [
+    "E-commerce businesses rely on research to make decisions with real information instead of guesswork -- about pricing, product positioning, catalog gaps, and how competitors are approaching the same customer."
+  ],
+  observe: [
+    "Before Sofia Ramirez (Everfield's E-commerce Manager) considers a pricing change or a new product addition, she'd want current, structured research behind it -- not just a hunch about what similar products cost elsewhere."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which situation genuinely calls for research?",
+        options: [
+          { text: "Deciding whether Everfield's storage bin pricing is still competitive.", correct: true },
+          { text: "Confirming what category EF-101 belongs to (already recorded in the product data).", correct: false }
+        ],
+        correctFeedback: "Right -- a pricing question needs current outside information; a category question is already answered by existing data.",
+        incorrectFeedback: "Not quite -- the category question already has an answer on file. Research is for questions the data doesn't already answer."
+      }
+    ]
+  },
+  checkNote: "You can now recognize when a question actually calls for research, versus when the answer already exists."
+},
+{
+  id: "m8-l2",
+  title: "Competitor Research",
+  objective: "Collect comparable competitor information.",
+  learn: [
+    "Useful competitor research is structured and comparable: same category, similar features, and a clear price point -- not a vague impression of 'what's out there.'"
+  ],
+  observe: [
+    "Researching competitors for EF-101 (a stackable storage bin) means finding other stackable storage bins in a similar category and price range, and recording their price and key features consistently -- not collecting unrelated brand impressions or marketing taglines."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which piece of information belongs in a useful competitor scan for EF-101?",
+        options: [
+          { text: "A comparable stackable bin's price and key features.", correct: true },
+          { text: "A competitor's unrelated advertising slogan.", correct: false }
+        ],
+        correctFeedback: "Right -- price and features are comparable, structured data. A slogan isn't useful for comparison.",
+        incorrectFeedback: "Not quite -- a marketing slogan doesn't help compare products. Price and features do."
+      }
+    ]
+  },
+  checkNote: "You can now identify what actually belongs in a structured competitor scan."
+},
+{
+  id: "m8-l3",
+  title: "Product Research Basics",
+  objective: "Gather basic product information.",
+  learn: [
+    "Basic product research means confirming details -- specs, materials, use case -- from a reliable, original source, rather than assuming or estimating."
+  ],
+  observe: [
+    "To confirm EF-103's material, the reliable move is checking the actual product record or the supplier's own specification -- not guessing from a photo."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What's the most reliable way to confirm a product's exact material?",
+        options: [
+          { text: "Check the product record or the supplier's own specification.", correct: true },
+          { text: "Guess based on how it looks in a photo.", correct: false }
+        ],
+        correctFeedback: "Right -- an original source beats a visual guess every time.",
+        incorrectFeedback: "Not quite -- a photo can't reliably confirm exact material. An original source can."
+      }
+    ]
+  },
+  checkNote: "You can now gather basic product information from a reliable source instead of guessing."
+},
+{
+  id: "m8-l4",
+  title: "Price Comparison",
+  objective: "Compare prices consistently.",
+  learn: [
+    "A fair price comparison uses the same basis every time: per-unit pricing (not per-pack vs. per-unit mixed together), the same currency, and a note about whether shipping is included."
+  ],
+  observe: [
+    "Comparing EF-107 (a 3-piece set) to a competitor's single-bag price without adjusting for quantity would make EF-107 look far more expensive than it actually is per unit -- a misleading comparison, not a fair one."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "EF-107 is a 3-piece set. A competitor sells single bags. What's the fair way to compare their prices?",
+        options: [
+          { text: "Convert both to a per-unit price before comparing.", correct: true },
+          { text: "Compare the sticker prices directly, since both are 'bags.'", correct: false }
+        ],
+        correctFeedback: "Right -- comparing on the same basis (per unit) is what makes the comparison meaningful.",
+        incorrectFeedback: "Not quite -- comparing a 3-piece set's price directly to a single item's price isn't a fair, like-for-like comparison."
+      }
+    ]
+  },
+  checkNote: "You can now compare prices on a consistent, fair basis instead of comparing sticker prices directly."
+},
+{
+  id: "m8-l5",
+  title: "Product Information Research",
+  objective: "Verify product details from sources.",
+  learn: [
+    "A single source, especially an unofficial one, isn't always enough to trust a claim. Verifying a detail across more than one source is what turns a claim into something you can actually rely on."
+  ],
+  observe: [
+    "If one third-party listing claims a product detail that Everfield's own product record doesn't confirm, the right move is to treat that as unverified -- not to repeat it as fact until it's checked against a reliable source."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A single unofficial listing claims a detail that isn't confirmed anywhere else. What should a VA do?",
+        options: [
+          { text: "Treat it as unverified until it's checked against a reliable source.", correct: true },
+          { text: "Repeat it as fact, since it was written down somewhere.", correct: false }
+        ],
+        correctFeedback: "Right -- one unverified source isn't enough to treat something as confirmed fact.",
+        incorrectFeedback: "Not quite -- a single unofficial source isn't strong enough evidence to repeat as confirmed fact."
+      }
+    ]
+  },
+  checkNote: "You can now judge when a product detail needs further verification before it's trusted."
+},
+{
+  id: "m8-l6",
+  title: "Review Research",
+  objective: "Extract useful patterns from reviews.",
+  learn: [
+    "One review is one opinion. A pattern -- the same issue mentioned across several reviews -- is genuinely useful information. Good review research looks for the pattern, not the loudest single comment."
+  ],
+  observe: [
+    "If one customer review of EF-104 mentions a color they didn't love, that's a single opinion. If eight separate reviews all mention the adhesive not sticking well, that's a real pattern worth reporting."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each review situation to what it actually represents.",
+    leftLabel: "Situation",
+    rightLabel: "What it represents",
+    left: [
+      { id: "a", label: "One review dislikes a color choice" },
+      { id: "b", label: "Eight separate reviews mention weak adhesive" }
+    ],
+    right: [
+      { id: "oneoff", label: "A one-off opinion" },
+      { id: "pattern", label: "A genuine pattern worth reporting" }
+    ],
+    pairs: { a: "oneoff", b: "pattern" },
+    completeFeedback: "Correct -- repetition across reviews is what turns an opinion into a pattern."
+  },
+  checkNote: "You can now tell a single opinion apart from a genuine, reportable pattern in reviews."
+},
+{
+  id: "m8-l7",
+  title: "Organizing Findings",
+  objective: "Structure research into usable information.",
+  learn: [
+    "Research is only useful if someone else can act on it quickly. That means consistent columns and labels -- not a page of loose prose notes someone has to re-read to extract the actual facts."
+  ],
+  observe: [
+    "A findings table with columns for Competitor, Price, Key Feature is something Sofia could scan in seconds. A paragraph like 'looked at a few other brands, prices seemed similar, one had a nice feature' isn't usable the same way."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which format is more usable for handing off research findings?",
+        options: [
+          { text: "A table with consistent columns: Competitor, Price, Key Feature.", correct: true },
+          { text: "A paragraph summarizing general impressions.", correct: false }
+        ],
+        correctFeedback: "Right -- structured columns let someone scan and compare instantly.",
+        incorrectFeedback: "Not quite -- a loose paragraph forces the reader to dig out the facts themselves."
+      }
+    ]
+  },
+  checkNote: "You can now organize research findings into a structured, immediately usable format."
+},
+{
+  id: "m8-l8",
+  title: "Observation vs. Recommendation",
+  objective: "Separate facts from conclusions.",
+  learn: [
+    "An observation is a verified fact: 'Competitor X prices this at $14.99.' A recommendation is a conclusion drawn from facts: 'We should lower our price.' A beginner VA's job is usually to report clear observations -- conclusions and decisions typically belong to a manager, unless a task specifically asks for a recommendation."
+  ],
+  observe: [
+    "If Sofia asks for a competitor pricing scan, the right deliverable is the observed prices and features -- not an unprompted recommendation to change Everfield's own pricing strategy."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which statement is an observation rather than a recommendation?",
+        options: [
+          { text: "\u201cThree comparable competitors price this category between $12 and $16.\u201d", correct: true },
+          { text: "\u201cWe should drop our price to $13.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- that's a verified fact about the market, not a conclusion about what Everfield should do.",
+        incorrectFeedback: "Not quite -- that statement is a conclusion (a recommendation), not a reported fact."
+      }
+    ]
+  },
+  checkNote: "You can now tell a factual observation apart from a recommendation -- and know which one is usually yours to deliver."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 8 complete. You can now do useful, disciplined research -- Module 9 turns raw data like this into organized spreadsheets and reports.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>
