@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 11: SOPs, Workflow & Professional Practice | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 11</p>
+  <h1>SOPs, Workflow & Professional Practice</h1>
+  <p style="max-width:62ch">This module isn't about a new task type -- it's about how you operate across every task you've already learned: following instructions precisely, documenting clearly, and knowing when to ask instead of guess.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> Professional practice is what makes a beginner VA trustworthy with real client work -- not speed, but consistency, clear documentation, and knowing your own limits.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 10</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m11";
+var LESSONS = [
+{
+  id: "m11-l1",
+  title: "Following an SOP",
+  objective: "Execute tasks according to documented instructions.",
+  learn: [
+    "An SOP (Standard Operating Procedure) is a documented, step-by-step set of instructions for a task. Following it means doing the steps as written, in order -- not improvising a 'better' way partway through, even if your version seems reasonable."
+  ],
+  observe: [
+    "Everfield's return workflow from Module 7 -- log, record reason, inspect condition, assign disposition, take inventory action, update refund status -- is exactly the kind of sequence an SOP would document. Skipping a step or reordering it isn't a shortcut; it's a deviation."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Follow this SOP for logging a new customer return in the correct order.",
+    items: [
+      { id: "open", label: "Open a new return record" },
+      { id: "order", label: "Link it to the original order number" },
+      { id: "reason", label: "Record the customer's stated reason" },
+      { id: "condition", label: "Note the item's condition on inspection" },
+      { id: "close", label: "Assign a disposition and close the intake step" }
+    ],
+    correctOrder: ["open", "order", "reason", "condition", "close"],
+    correctFeedback: "That's the SOP followed correctly, step by step.",
+    incorrectFeedback: "Not quite -- an SOP's steps happen in a specific order for a reason. Check the sequence again."
+  },
+  checkNote: "You can now follow a documented SOP precisely, without improvising the order."
+},
+{
+  id: "m11-l2",
+  title: "Task Queues",
+  objective: "Prioritize and track assigned work.",
+  learn: [
+    "A task queue is simply a list of pending work. Prioritizing it means handling higher-impact or more time-sensitive items first -- not always working strictly in the order tasks arrived."
+  ],
+  observe: [
+    "If a VA's queue has a routine listing update and a stockout affecting live orders, the stockout is the higher-impact item -- even if the listing update was assigned first."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A queue has a routine listing update (assigned first) and a new stockout affecting live orders (assigned second). Which should be handled first?",
+        options: [
+          { text: "The stockout -- it has higher, time-sensitive impact.", correct: true },
+          { text: "The listing update, since it was assigned first.", correct: false }
+        ],
+        correctFeedback: "Right -- prioritizing by impact, not just arrival order, is what a task queue actually calls for.",
+        incorrectFeedback: "Not quite -- arrival order alone isn't the right way to prioritize when something more urgent is waiting."
+      }
+    ]
+  },
+  checkNote: "You can now prioritize a task queue by impact, not just by the order things arrived."
+},
+{
+  id: "m11-l3",
+  title: "Checklists",
+  objective: "Create reliable, repeatable task checks.",
+  learn: [
+    "A good checklist item is specific and verifiable -- something you can clearly confirm as done or not done. A vague item like 'check everything looks good' isn't actually checkable."
+  ],
+  observe: [
+    "\u201cConfirm the SKU on the packing slip matches the SKU on the order\u201d is a real, verifiable checklist item. \u201cMake sure the order looks right\u201d isn't -- it doesn't tell you what to actually verify."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which is the stronger checklist item?",
+        options: [
+          { text: "\u201cConfirm the SKU on the packing slip matches the SKU on the order.\u201d", correct: true },
+          { text: "\u201cMake sure the order looks right.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it's specific enough that anyone could verify it the same way.",
+        incorrectFeedback: "Not quite -- that item is too vague to actually check against anything specific."
+      }
+    ]
+  },
+  checkNote: "You can now write checklist items specific enough to actually be verifiable."
+},
+{
+  id: "m11-l4",
+  title: "Documentation",
+  objective: "Record work clearly.",
+  learn: [
+    "Clear documentation records what was done, when, and the outcome -- enough detail that someone else (or you, weeks later) can understand it without having to ask."
+  ],
+  observe: [
+    "\u201cReturn #229 processed 9/2: unopened EF-101 x2, disposition Restock, refund issued\u201d tells the whole story at a glance. \u201cHandled the return\u201d doesn't."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which is the better documentation entry?",
+        options: [
+          { text: "\u201cReturn #229 processed 9/2: unopened EF-101 x2, disposition Restock, refund issued.\u201d", correct: true },
+          { text: "\u201cHandled the return.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it records exactly what happened, with enough detail to stand on its own.",
+        incorrectFeedback: "Not quite -- that entry gives no detail anyone could actually use later."
+      }
+    ]
+  },
+  checkNote: "You can now document your own work clearly enough that no one has to ask you to explain it later."
+},
+{
+  id: "m11-l5",
+  title: "File Organization",
+  objective: "Use logical file and folder structures.",
+  learn: [
+    "A logical file structure uses a consistent, predictable hierarchy and naming pattern, so anyone (including future you) can find a file without having to search or ask."
+  ],
+  observe: [
+    "A folder structure organized by module and date, with consistently named files, is something a whole team can navigate. A single folder with dozens of files named 'final,' 'final2,' and 'final_v3' is not."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which approach makes files easier for a team to find later?",
+        options: [
+          { text: "A consistent folder structure with clearly, consistently named files.", correct: true },
+          { text: "Naming files \u201cfinal,\u201d \u201cfinal2,\u201d and \u201cfinal_v3\u201d in one folder.", correct: false }
+        ],
+        correctFeedback: "Right -- consistency and predictability are what actually make files findable.",
+        incorrectFeedback: "Not quite -- vague, sequential 'final' names make it impossible to know which file is actually current."
+      }
+    ]
+  },
+  checkNote: "You can now organize files in a way a whole team could actually navigate."
+},
+{
+  id: "m11-l6",
+  title: "Quality Control",
+  objective: "Perform basic QA before submission.",
+  learn: [
+    "Before calling any task done, a quick QA pass -- comparing your finished work against what was actually asked for -- catches errors before anyone else has to. This is the same discipline as Module 3's listing QA, just applied to any task."
+  ],
+  observe: [
+    "Before submitting a finished product listing, checking it once more against the original request (right SKU, right images, right specs) is what catches a mismatched image before a customer ever sees it."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What's the point of a QA pass before submitting finished work?",
+        options: [
+          { text: "To catch errors before anyone else has to.", correct: true },
+          { text: "It's just a formality with no real purpose.", correct: false }
+        ],
+        correctFeedback: "Right -- catching your own errors early is exactly what QA is for.",
+        incorrectFeedback: "Not quite -- QA has a real purpose: catching mistakes before they become someone else's problem."
+      }
+    ]
+  },
+  checkNote: "You can now apply a basic QA pass to any finished task, not just listings."
+},
+{
+  id: "m11-l7",
+  title: "Handling Ambiguity",
+  objective: "Recognize when instructions are unclear.",
+  learn: [
+    "Not every instruction is complete. Recognizing ambiguity means noticing when a real gap exists -- a missing detail the task genuinely needs -- rather than filling that gap with an assumption and proceeding as if it were clear."
+  ],
+  observe: [
+    "\u201cUpdate the EF-104 listing\u201d without saying what to change is genuinely ambiguous. \u201cUpdate the EF-104 title to include '12-Piece'\u201d is not -- it's specific enough to just execute."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which instruction is genuinely ambiguous?",
+        options: [
+          { text: "\u201cUpdate the EF-104 listing.\u201d", correct: true },
+          { text: "\u201cUpdate the EF-104 title to include '12-Piece.'\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- that instruction doesn't say what actually needs to change.",
+        incorrectFeedback: "Not quite -- that instruction is specific enough to execute directly."
+      }
+    ]
+  },
+  checkNote: "You can now recognize a genuinely ambiguous instruction instead of guessing past it."
+},
+{
+  id: "m11-l8",
+  title: "Ask vs. Act",
+  objective: "Decide when to proceed and when to ask.",
+  learn: [
+    "Proceed independently when a task is clear and within your documented authority. Ask first when it's ambiguous, unusually high-stakes, or outside your authority -- the same boundary that's shown up across every module in this course."
+  ],
+  observe: [
+    "A clear, in-policy listing edit: proceed. A request to override a customer's return policy: ask -- that decision sits outside a beginner VA's authority, no matter how confident the VA feels about the right answer."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A request asks the VA to make an exception to Everfield's stated return policy. What should the VA do?",
+        options: [
+          { text: "Ask, rather than deciding on an exception independently.", correct: true },
+          { text: "Act on their own best judgment.", correct: false }
+        ],
+        correctFeedback: "Right -- an exception to policy is outside a beginner VA's independent authority, regardless of confidence.",
+        incorrectFeedback: "Not quite -- confidence doesn't grant authority. A policy exception needs to be asked about, not decided alone."
+      }
+    ]
+  },
+  checkNote: "You can now apply the ask-vs-act boundary consistently, not just when it happens to feel risky."
+},
+{
+  id: "m11-l9",
+  title: "Escalation",
+  objective: "Escalate issues appropriately.",
+  learn: [
+    "Escalating well means doing it promptly, with a clear description of the issue -- not after struggling alone for a long time, and not with a vague 'something's wrong' that leaves the recipient with more questions than answers."
+  ],
+  observe: [
+    "Escalating a live stockout the moment it's confirmed, with a clear note (what happened, what was verified, the impact), is far more useful to Maya than surfacing the same issue two days later after trying to solve it alone."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A VA notices a real issue that's outside their authority to resolve. What's the better approach?",
+        options: [
+          { text: "Escalate it promptly with a clear description.", correct: true },
+          { text: "Try to resolve it alone for a few days first, then mention it if it's still a problem.", correct: false }
+        ],
+        correctFeedback: "Right -- prompt, clear escalation is far more useful than a delayed one.",
+        incorrectFeedback: "Not quite -- delaying escalation on something outside your authority just delays the actual fix."
+      }
+    ]
+  },
+  checkNote: "You can now escalate an issue promptly and clearly, instead of sitting on it."
+},
+{
+  id: "m11-l10",
+  title: "Progress Communication",
+  objective: "Provide concise, useful updates.",
+  learn: [
+    "A useful progress update is short and specific: what's done, what's in progress, and what's next -- not a vague 'still working on it' that leaves the reader with no real picture of where things stand."
+  ],
+  observe: [
+    "\u201cListings for EF-101 through EF-104 are updated and live; EF-105 and EF-106 are still in QA; on track to finish by end of day\u201d gives a complete picture in one sentence. \u201cStill working on the listings\u201d doesn't."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which is the more useful progress update?",
+        options: [
+          { text: "\u201cListings for EF-101 through EF-104 are updated and live; EF-105 and EF-106 are still in QA; on track to finish by end of day.\u201d", correct: true },
+          { text: "\u201cStill working on the listings.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it tells the reader exactly what's done, what's left, and when to expect it.",
+        incorrectFeedback: "Not quite -- that update gives no real picture of where things actually stand."
+      }
+    ]
+  },
+  checkNote: "You can now give a progress update that actually tells the reader something useful -- the professional-practice thread that ties this whole module together."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 11 complete. You now operate with real professional discipline -- Module 12 adds AI as a tool into that same disciplined workflow.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

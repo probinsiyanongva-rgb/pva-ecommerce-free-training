@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 13: Client Communication & Reporting | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 13</p>
+  <h1>Client Communication & Reporting</h1>
+  <p style="max-width:62ch">Great work no one hears about might as well not have happened. This module turns everything you've done across the course into updates a client or manager can actually use.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> Reporting isn't extra work on top of the job -- it's how the person who can't see everything you did gets enough visibility to trust and act on it.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 8</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m13";
+var LESSONS = [
+{
+  id: "m13-l1",
+  title: "Why Clients Need Updates",
+  objective: "Explain the value of operational reporting.",
+  learn: [
+    "A client or manager can't see everything a VA does behind the scenes. Reporting is what gives them real visibility -- and visibility is what builds the trust that lets them hand over more responsibility over time."
+  ],
+  observe: [
+    "Maya Collins can't watch every task a VA completes in real time. A clear weekly report is her actual window into what happened, what needs attention, and what's under control."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Why does reporting matter, even when the work itself was done well?",
+        options: [
+          { text: "Because the client or manager can't see the work directly -- reporting is their only visibility into it.", correct: true },
+          { text: "It doesn't really matter if the work was done well.", correct: false }
+        ],
+        correctFeedback: "Right -- good work that's invisible to the client might as well not have happened, from their perspective.",
+        incorrectFeedback: "Not quite -- reporting is what actually makes good work visible and trustworthy to someone who wasn't watching it happen."
+      }
+    ]
+  },
+  checkNote: "You can now explain why reporting is a real part of the job, not paperwork bolted onto it."
+},
+{
+  id: "m13-l2",
+  title: "Daily vs. Weekly Updates",
+  objective: "Choose an appropriate reporting cadence.",
+  learn: [
+    "Everfield's own operational rhythm splits by cadence: daily attention goes to inventory and order monitoring and urgent follow-ups; weekly attention covers inventory review, replenishment, open POs, shipments, 3PL performance, and KPIs. Matching the right cadence to the right kind of update keeps reporting useful instead of noisy."
+  ],
+  observe: [
+    "An active stockout affecting live orders needs a same-day update, not something that waits for Friday's weekly summary. A steady, unremarkable inventory position is exactly the kind of thing that belongs in the weekly report instead."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A stockout is actively affecting live orders right now. Should this wait for the weekly report?",
+        options: [
+          { text: "No -- this needs a same-day update, not the weekly cadence.", correct: true },
+          { text: "Yes -- all updates should wait for the scheduled weekly report.", correct: false }
+        ],
+        correctFeedback: "Right -- urgency should drive cadence, not a fixed schedule alone.",
+        incorrectFeedback: "Not quite -- an active, order-affecting issue shouldn't sit unreported until the next scheduled update."
+      }
+    ]
+  },
+  checkNote: "You can now match the urgency of an update to the cadence it actually needs."
+},
+{
+  id: "m13-l3",
+  title: "Reporting Completed Tasks",
+  objective: "Summarize completed work clearly.",
+  learn: [
+    "A completed-task summary states what was actually finished, specifically enough to be useful -- the same discipline Module 11 built, applied here to reporting outward instead of just documenting internally."
+  ],
+  observe: [
+    "\u201cUpdated and QA'd 6 product listings (EF-101-EF-106)\u201d tells the reader exactly what happened. \u201cDid some listing work\u201d doesn't."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which is the better completed-task report line?",
+        options: [
+          { text: "\u201cUpdated and QA'd 6 product listings (EF-101-EF-106).\u201d", correct: true },
+          { text: "\u201cDid some listing work.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it's specific enough that the reader knows exactly what was completed.",
+        incorrectFeedback: "Not quite -- that line doesn't tell the reader anything they could act on or verify."
+      }
+    ]
+  },
+  checkNote: "You can now report completed work with the same clarity Module 11 built for documentation."
+},
+{
+  id: "m13-l4",
+  title: "Reporting Exceptions",
+  objective: "Highlight issues that require attention.",
+  learn: [
+    "An exception needs to stand out from routine, completed work -- not get buried in a long list where it's easy to miss. Reports usually separate 'what happened normally' from 'what needs your attention' for exactly this reason."
+  ],
+  observe: [
+    "Burying 'EF-101 hit a stockout affecting 3 open orders' in the middle of a long bullet list of routine completed tasks makes it easy to miss. Calling it out in its own clearly labeled section does not."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Why should exceptions be reported separately from routine completed tasks?",
+        options: [
+          { text: "So they don't get lost or overlooked inside a long list of routine items.", correct: true },
+          { text: "There's no real benefit to separating them.", correct: false }
+        ],
+        correctFeedback: "Right -- visibility is the whole point of calling out an exception separately.",
+        incorrectFeedback: "Not quite -- burying an exception in routine items defeats the purpose of reporting it at all."
+      }
+    ]
+  },
+  checkNote: "You can now make sure a real exception actually gets seen, not buried."
+},
+{
+  id: "m13-l5",
+  title: "Reporting Inventory Concerns",
+  objective: "Communicate inventory risks clearly.",
+  learn: [
+    "A useful inventory concern states the SKU, its current state, why it matters, and what attention it needs -- the same structure Module 5 and 9 already built, now aimed at a report someone else will read."
+  ],
+  observe: [
+    "\u201cEF-103: 0 available, 25 inbound expected 9/6 -- covers current backorders once it lands, no action needed yet\u201d gives a complete, calm picture. \u201cEF-103 might be an issue\u201d does not."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which inventory concern is report-ready?",
+        options: [
+          { text: "\u201cEF-103: 0 available, 25 inbound expected 9/6 -- covers current backorders once it lands, no action needed yet.\u201d", correct: true },
+          { text: "\u201cEF-103 might be an issue.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it states the SKU, the numbers, and exactly what (if anything) needs attention.",
+        incorrectFeedback: "Not quite -- that line gives the reader nothing concrete to act on or even understand."
+      }
+    ]
+  },
+  checkNote: "You can now report an inventory concern with real numbers and a clear read on whether it needs action."
+},
+{
+  id: "m13-l6",
+  title: "Reporting Customer Issues",
+  objective: "Summarize recurring or significant customer issues.",
+  learn: [
+    "Individual routine support cases usually don't need their own report line. A recurring pattern -- or one significant, high-impact case -- does, following the same pattern-recognition principle from Module 7 and 8."
+  ],
+  observe: [
+    "Three separate customers reporting damaged EF-101 units in one week is exactly the kind of pattern worth its own report line -- a single routine return isn't."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which customer-issue situation belongs in a weekly report?",
+        options: [
+          { text: "Three separate customers reporting the same damage issue on one SKU this week.", correct: true },
+          { text: "One single, routine, already-resolved return.", correct: false }
+        ],
+        correctFeedback: "Right -- a repeated pattern is genuinely reportable; a single routine case usually isn't.",
+        incorrectFeedback: "Not quite -- a single routine, resolved case doesn't need its own line in a report."
+      }
+    ]
+  },
+  checkNote: "You can now decide which customer issues are actually worth surfacing in a report."
+},
+{
+  id: "m13-l7",
+  title: "Basic E-commerce Metrics",
+  objective: "Interpret basic operational metrics.",
+  learn: [
+    "A metric on its own is just a number. Interpreting it means explaining what it actually means in plain terms -- whether it's good, concerning, or simply normal -- not just reporting the figure and leaving the reader to guess."
+  ],
+  observe: [
+    "\u201c3 stockouts this week, up from 0 last week -- worth watching\u201d interprets the number. \u201c3 stockouts\u201d alone leaves the reader to decide for themselves whether that's fine or alarming."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which is a properly interpreted metric, not just a raw number?",
+        options: [
+          { text: "\u201c3 stockouts this week, up from 0 last week -- worth watching.\u201d", correct: true },
+          { text: "\u201c3 stockouts.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it gives the number context and a read on whether it matters.",
+        incorrectFeedback: "Not quite -- a bare number leaves the reader to guess whether it's good, bad, or normal."
+      }
+    ]
+  },
+  checkNote: "You can now interpret a basic metric instead of just reporting a raw number."
+},
+{
+  id: "m13-l8",
+  title: "Writing a Useful Client Update",
+  objective: "Combine facts, issues, and next actions.",
+  learn: [
+    "A complete weekly update pulls together everything this module covered: what was completed, any exceptions, inventory concerns, customer issue patterns, and relevant metrics -- ending with clear next actions. It's the same 'what happened, what's the impact, what's next' discipline from Everfield's own communication style, scaled up to a full week."
+  ],
+  observe: [
+    "Everfield's own weekly operational rhythm -- inventory review, replenishment review, open PO review, shipment review, 3PL review, KPI report -- is essentially this same update structure, just organized around the categories that matter most to Everfield's operation."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put together a complete weekly client update in a logical order.",
+    items: [
+      { id: "completed", label: "Summary of completed work" },
+      { id: "exceptions", label: "Exceptions that need attention" },
+      { id: "inventory", label: "Inventory concerns worth noting" },
+      { id: "customer", label: "Any significant customer issue patterns" },
+      { id: "metrics", label: "Key metrics, interpreted" },
+      { id: "next", label: "Clear next actions" }
+    ],
+    correctOrder: ["completed", "exceptions", "inventory", "customer", "metrics", "next"],
+    correctFeedback: "That's a genuinely complete weekly update -- everything the course has built, in one coherent report.",
+    incorrectFeedback: "Not quite -- a useful update usually opens with completed work and closes with clear next actions, with the specific concerns in between."
+  },
+  checkNote: "You can now write a complete weekly client update -- the same skill you'll use for the course's Final Portfolio Weekly Operations Report."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 13 complete. You can now turn a week of real work into a report someone can actually use -- Module 14 is the Capstone, where everything comes together.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 14: Capstone -- E-commerce VA in Practice | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 20px 22px;
+    font-size: 0.95rem;
+  }
+  main{ padding: 34px 0 80px; }
+  .portfolio-list{
+    columns: 2;
+    gap: 24px;
+    margin: 10px 0 0;
+    padding-left: 20px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .portfolio-list li{ margin-bottom: 6px; break-inside: avoid; }
+  @media (max-width: 640px){ .portfolio-list{ columns: 1; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 14 -- Capstone</p>
+  <h1>Capstone: E-commerce VA in Practice</h1>
+  <p style="max-width:62ch">One simulated operating week at Everfield Goods, pulling together everything from Modules 1-13. Each task below draws on a different skill you've already built -- this is where it all comes together.</p>
+
+  <div class="everfield-note">
+    <strong>The scenario:</strong> Everfield's regular team is stretched thin this week, and you're covering store-side E-commerce VA support. Nothing here is new -- every task below is a skill you've already practiced, just arriving the way real work actually arrives: mixed together, on the same desk.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Tasks in this capstone"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Task 1 of 11</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    <div id="doneBannerContent"></div>
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m14";
+var LESSONS = [
+{
+  id: "m14-brief",
+  title: "Capstone Brief",
+  objective: "Understand the Everfield Goods operating-week scenario.",
+  learn: [
+    "This week, you're the E-commerce VA covering Everfield's store-side operations. Ten tasks are on your desk, each pulling on a skill from earlier in this course. As always: you handle what's clear and within your documented authority, and you flag what isn't -- nothing here changes that boundary."
+  ],
+  observe: [
+    "The same people from Module 1 are still there: Sofia Ramirez (E-commerce Manager) is your closest point of contact, Maya Collins (Operations Manager) handles anything that needs escalation, and ClearPath Fulfillment is still Everfield's 3PL partner."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "This week's capstone tasks include something clearly outside a beginner E-commerce VA's authority, like approving a large policy exception. What should you do with it?",
+        options: [
+          { text: "Flag it for escalation, exactly as every earlier module taught.", correct: true },
+          { text: "Handle it independently, since it's just a simulation.", correct: false }
+        ],
+        correctFeedback: "Right -- the capstone doesn't change the authority boundaries you've already learned; it applies them.",
+        incorrectFeedback: "Not quite -- the whole point of the capstone is applying what you've learned, including your real authority boundaries."
+      }
+    ]
+  },
+  checkNote: "You're ready to start the week. Ten tasks ahead, each one a skill you already have."
+},
+{
+  id: "m14-t1",
+  title: "Task 1 -- Product Data",
+  objective: "Organize and verify product information.",
+  learn: [
+    "First up: a product record that needs a clean, structured review before it's trusted for anything downstream -- straight out of Module 2."
+  ],
+  observe: [
+    "A draft record for EF-104 lists its unit of measure as \u201ceach set\u201d instead of a clean \u201cSet,\u201d and its category field is blank."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What should happen with EF-104's draft record before it's trusted for use?",
+        options: [
+          { text: "Clean up the unit-of-measure formatting and fill in the missing category.", correct: true },
+          { text: "Leave it as-is -- close enough is fine.", correct: false }
+        ],
+        correctFeedback: "Right -- exactly the structured-field discipline Module 2 built.",
+        incorrectFeedback: "Not quite -- inconsistent formatting and missing fields are exactly what product data QA is meant to catch."
+      }
+    ]
+  },
+  checkNote: "Product Master Sheet skill: confirmed."
+},
+{
+  id: "m14-t2",
+  title: "Task 2 -- Product Listings",
+  objective: "Prepare and QA three listings.",
+  learn: [
+    "Three draft listings are ready for a final QA pass before publishing -- the same accuracy-completeness-consistency-formatting check from Module 3."
+  ],
+  observe: [
+    "One of the three drafts, for EF-107, has a product photo that actually shows EF-106 attached to it."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "EF-107's draft listing has EF-106's photo attached. What should QA catch here?",
+        options: [
+          { text: "A mismatched-image error that needs fixing before publishing.", correct: true },
+          { text: "Nothing -- it's close enough since both are Everfield products.", correct: false }
+        ],
+        correctFeedback: "Right -- a mismatched image is exactly the kind of error Module 3's QA pass is built to catch.",
+        incorrectFeedback: "Not quite -- a wrong-product image is a real, customer-facing error, not a minor detail."
+      }
+    ]
+  },
+  checkNote: "Listing Pack skill: confirmed."
+},
+{
+  id: "m14-t3",
+  title: "Task 3 -- Order Processing",
+  objective: "Process simulated orders and identify exceptions.",
+  learn: [
+    "A batch of orders needs review. Most are routine; one isn't -- exactly the normal-vs-exception judgment from Modules 4 and 7."
+  ],
+  observe: [
+    "Order #5310 shows 'Shipped' status but has no tracking number recorded at all -- everything else in the batch looks normal."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What should happen with order #5310?",
+        options: [
+          { text: "Flag it as an exception -- a 'Shipped' status needs a tracking number.", correct: true },
+          { text: "Treat it the same as the routine orders in the batch.", correct: false }
+        ],
+        correctFeedback: "Right -- exactly the order-verification skill from Module 4.",
+        incorrectFeedback: "Not quite -- a shipped order missing its tracking number is a real inconsistency, not a routine case."
+      }
+    ]
+  },
+  checkNote: "Order Log skill: confirmed."
+},
+{
+  id: "m14-t4",
+  title: "Task 4 -- Inventory Monitoring",
+  objective: "Identify inventory concerns.",
+  learn: [
+    "A quick scan of this week's inventory table for anything worth flagging -- straight out of Module 5."
+  ],
+  observe: [
+    "EF-103 shows 0 Available and 0 Inbound this week -- unlike the earlier example where inbound stock was already on the way."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "EF-103 shows 0 Available and 0 Inbound. How should this be flagged?",
+        options: [
+          { text: "As an active stockout with no replenishment currently scheduled -- worth real attention.", correct: true },
+          { text: "As a minor, temporary dip not worth mentioning.", correct: false }
+        ],
+        correctFeedback: "Right -- unlike a dip with inbound stock on the way, this is a real, unaddressed stockout.",
+        incorrectFeedback: "Not quite -- with nothing inbound, this isn't a temporary dip. It needs real attention."
+      }
+    ]
+  },
+  checkNote: "Inventory Tracker skill: confirmed."
+},
+{
+  id: "m14-t5",
+  title: "Task 5 -- Customer Support",
+  objective: "Respond to customer scenarios.",
+  learn: [
+    "A short queue of support messages, each needing an answer grounded in real data -- the Module 6 discipline of answering from systems, not guesses."
+  ],
+  observe: [
+    "One customer asks for the exact dimensions of EF-101, which the product record already states clearly."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "How should this dimensions question be answered?",
+        options: [
+          { text: "With the exact dimensions from the product record.", correct: true },
+          { text: "With a vague, approximate description.", correct: false }
+        ],
+        correctFeedback: "Right -- the data has the exact answer, so that's what the customer gets.",
+        incorrectFeedback: "Not quite -- when exact data exists, a vague answer is a missed opportunity to actually help."
+      }
+    ]
+  },
+  checkNote: "Customer Response Pack skill: confirmed."
+},
+{
+  id: "m14-t6",
+  title: "Task 6 -- Exception Handling",
+  objective: "Document and escalate problem cases.",
+  learn: [
+    "One case this week needs full documentation and a clear escalation decision -- Module 7's exception discipline in action."
+  ],
+  observe: [
+    "A customer reports a damaged EF-101, and it's the third similar report this week -- a pattern, not a one-off."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "How should this third damaged-item report be handled?",
+        options: [
+          { text: "Document it and escalate the pattern -- it could point to a packaging or handling issue.", correct: true },
+          { text: "Handle it in isolation, same as any single case.", correct: false }
+        ],
+        correctFeedback: "Right -- a repeated pattern is exactly what Module 7 taught you to escalate.",
+        incorrectFeedback: "Not quite -- treating this as an isolated case would miss a real, repeating pattern."
+      }
+    ]
+  },
+  checkNote: "Exception Log skill: confirmed."
+},
+{
+  id: "m14-t7",
+  title: "Task 7 -- Research",
+  objective: "Conduct basic competitor and product research.",
+  learn: [
+    "Sofia wants a structured competitor scan for EF-105's category -- Module 8's research discipline, observation over opinion."
+  ],
+  observe: [
+    "Draft research notes include one entry that's just a marketing slogan, with no price or feature comparison attached."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What should happen to the slogan-only entry before this research is handed off?",
+        options: [
+          { text: "Drop it or replace it with actual comparable price/feature data.", correct: true },
+          { text: "Leave it in -- more entries always looks more thorough.", correct: false }
+        ],
+        correctFeedback: "Right -- a slogan isn't comparable data, exactly as Module 8 covered.",
+        incorrectFeedback: "Not quite -- padding a research table with non-comparable entries makes it less useful, not more thorough."
+      }
+    ]
+  },
+  checkNote: "Research Report skill: confirmed."
+},
+{
+  id: "m14-t8",
+  title: "Task 8 -- SOP",
+  objective: "Document a repeatable e-commerce task.",
+  learn: [
+    "Maya wants this week's return-handling process written up as a real SOP -- Module 11's precise, ordered documentation."
+  ],
+  observe: [
+    "The return process needs to be captured in the exact order it actually happens, so anyone could follow it without guessing."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Write the SOP for handling a customer return in the correct order.",
+    items: [
+      { id: "log", label: "Log the return against the original order" },
+      { id: "reason", label: "Record the customer's stated reason" },
+      { id: "condition", label: "Inspect and record the item's condition" },
+      { id: "disposition", label: "Assign a disposition" },
+      { id: "refund", label: "Update the refund status" }
+    ],
+    correctOrder: ["log", "reason", "condition", "disposition", "refund"],
+    correctFeedback: "That's a correct, usable SOP -- exactly the order Module 7 and 11 both built toward.",
+    incorrectFeedback: "Not quite -- an SOP needs the real, dependent order: condition has to be known before a disposition can be assigned."
+  },
+  checkNote: "Task SOP skill: confirmed."
+},
+{
+  id: "m14-t9",
+  title: "Task 9 -- AI + QA",
+  objective: "Use AI appropriately and verify the result.",
+  learn: [
+    "An AI-drafted product description is ready for review -- Module 12's verification habit, applied one more time."
+  ],
+  observe: [
+    "The AI draft for EF-106 states a piece count that doesn't match the actual product record."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "The AI draft's piece count doesn't match the real product record. What's the right move?",
+        options: [
+          { text: "Correct it to match the verified product record before publishing.", correct: true },
+          { text: "Publish it as written, since AI drafted it.", correct: false }
+        ],
+        correctFeedback: "Right -- verification against real data is the whole point of Module 12's discipline.",
+        incorrectFeedback: "Not quite -- an AI draft's confidence doesn't make an incorrect fact correct."
+      }
+    ]
+  },
+  checkNote: "AI + QA Record skill: confirmed."
+},
+{
+  id: "m14-t10",
+  title: "Task 10 -- Client Reporting",
+  objective: "Prepare a concise weekly client update.",
+  learn: [
+    "The final task: pull this whole simulated week into one Weekly Operations Report -- Module 13's structure, one last time."
+  ],
+  observe: [
+    "This week alone touched product data, listings, orders, inventory, support, an escalated exception, research, an SOP, and an AI-assisted task -- a full week's worth of real operational content to report on."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Assemble this week's report in a logical order.",
+    items: [
+      { id: "completed", label: "Summary of completed work" },
+      { id: "exceptions", label: "This week's escalated exception" },
+      { id: "inventory", label: "The EF-103 stockout concern" },
+      { id: "next", label: "Next actions for the coming week" }
+    ],
+    correctOrder: ["completed", "exceptions", "inventory", "next"],
+    correctFeedback: "That's a complete, well-ordered Weekly Operations Report -- the final piece of your Final Portfolio.",
+    incorrectFeedback: "Not quite -- a report reads best starting from completed work and ending on next actions, with the specific concerns in between."
+  },
+  checkNote: "Weekly Operations Report skill: confirmed -- and with it, the full Final Portfolio."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+var doneBannerContent = document.getElementById("doneBannerContent");
+
+var practiceComplete = false;
+
+var PORTFOLIO = [
+  "Customer Journey Map", "Product Master Sheet", "Listing Pack", "Order Log",
+  "Inventory Tracker", "Customer Response Pack", "Exception Log", "Research Report",
+  "Operations Tracker", "Task SOP", "AI + QA Record", "Weekly Operations Report"
+];
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = lesson.title.replace("Task ", "T").replace("Capstone Brief", "Brief");
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = (i === 0 ? "Capstone Brief" : "Task " + i + " of 10");
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next task" : "Finish capstone";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      var html = "<p><strong>Capstone complete.</strong> You've now practiced every skill in this course inside one simulated Everfield operating week. Here's the Final Portfolio you've built the skills for:</p>";
+      html += "<ul class=\"portfolio-list\">" + PORTFOLIO.map(function(p){ return "<li>" + p + "</li>"; }).join("") + "</ul>";
+      html += "<p style=\"margin-top:14px\">That's the full E-commerce VA -- Beginner Foundations course. From here, the path continues into platform specializations -- Shopify VA and Amazon VA -- and, for deeper operational work, the E-commerce Supply Chain & Logistics course.</p>";
+      doneBannerContent.innerHTML = html;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

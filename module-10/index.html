@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10: Inside an E-commerce Store | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 10</p>
+  <h1>Inside an E-commerce Store</h1>
+  <p style="max-width:62ch">Every store platform looks a little different, but they all organize around the same handful of ideas. This module teaches those ideas directly, so any admin dashboard you meet later already feels familiar.</p>
+
+  <div class="everfield-note">
+    <strong>Scope note:</strong> This module teaches platform-agnostic dashboard concepts, not any one specific tool (Shopify, WooCommerce, or otherwise). Learning a particular platform's exact interface is a later, separate specialization.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 10</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m10";
+var LESSONS = [
+{
+  id: "m10-l1",
+  title: "The Store Dashboard",
+  objective: "Understand the purpose of a store admin environment.",
+  learn: [
+    "A store's admin dashboard is the control center behind the storefront a customer sees -- where someone manages products, orders, customers, and inventory. Every platform's dashboard exists to do the same basic job, even when it looks different."
+  ],
+  observe: [
+    "Whatever platform Everfield's brand store runs on, its dashboard would organize around the same core areas -- products, orders, customers, inventory -- since every store needs to manage those same things, regardless of the specific software."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What is a store admin dashboard fundamentally for?",
+        options: [
+          { text: "Managing the store's products, orders, customers, and inventory from one place.", correct: true },
+          { text: "Only for changing the storefront's visual design.", correct: false }
+        ],
+        correctFeedback: "Right -- design is one piece, but the dashboard's core job is operational control.",
+        incorrectFeedback: "Not quite -- design is only a small part of what a dashboard manages."
+      }
+    ]
+  },
+  checkNote: "You can now explain what any store's admin dashboard is fundamentally there to do."
+},
+{
+  id: "m10-l2",
+  title: "Products",
+  objective: "Identify product-management functions.",
+  learn: [
+    "Inside a dashboard, product-management functions typically include: creating or editing a listing, managing variants, setting pricing, and publishing or unpublishing a product."
+  ],
+  observe: [
+    "Everything you learned about listings in Modules 2 and 3 -- titles, descriptions, specs, categories -- is exactly what these dashboard functions are built to manage and publish."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each dashboard action to what it actually does.",
+    leftLabel: "Action",
+    rightLabel: "What it does",
+    left: [
+      { id: "a", label: "Publish" },
+      { id: "b", label: "Edit listing" },
+      { id: "c", label: "Set pricing" }
+    ],
+    right: [
+      { id: "live", label: "Makes the product visible to customers" },
+      { id: "content", label: "Changes the listing's title, description, or specs" },
+      { id: "price", label: "Sets what the product costs" }
+    ],
+    pairs: { a: "live", b: "content", c: "price" },
+    completeFeedback: "Correct -- three distinct product-management functions."
+  },
+  checkNote: "You can now identify the core product-management functions inside any store dashboard."
+},
+{
+  id: "m10-l3",
+  title: "Orders",
+  objective: "Identify order-management functions.",
+  learn: [
+    "Order-management functions typically include: viewing an order's details, updating its status, printing a packing slip or shipping label, and issuing a refund."
+  ],
+  observe: [
+    "Everything you learned in Module 4 -- statuses, tracking, verification -- maps directly onto specific actions inside a dashboard's order screen."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put these dashboard order-management actions in the order a VA would typically use them for a new order.",
+    items: [
+      { id: "view", label: "View the order's details" },
+      { id: "verify", label: "Verify the order for completeness" },
+      { id: "label", label: "Print the packing slip and shipping label" },
+      { id: "status", label: "Update the order status to Shipped" }
+    ],
+    correctOrder: ["view", "verify", "label", "status"],
+    correctFeedback: "That's the natural workflow -- check the order, verify it, prepare it, then update its status.",
+    incorrectFeedback: "Not quite -- an order should be viewed and verified before labels are printed, and the status update comes last, once it's actually shipped."
+  },
+  checkNote: "You can now walk through a dashboard's order-management functions in a sensible workflow order."
+},
+{
+  id: "m10-l4",
+  title: "Customers",
+  objective: "Understand basic customer-management functions.",
+  learn: [
+    "A dashboard's customer area usually holds a customer's order history, contact information, and any internal notes -- exactly the kind of record a support VA (Module 6) would check before responding to a question."
+  ],
+  observe: [
+    "Before answering a customer's question about a past order, checking their customer record for order history is far more reliable than asking them to describe what happened from memory."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer asks about an order from a few weeks ago. What's the most reliable first step?",
+        options: [
+          { text: "Check their customer record for the actual order history.", correct: true },
+          { text: "Just ask them to describe everything from memory.", correct: false }
+        ],
+        correctFeedback: "Right -- the customer record is a much more reliable source than memory alone.",
+        incorrectFeedback: "Not quite -- the customer record already has the accurate order history on file."
+      }
+    ]
+  },
+  checkNote: "You can now use a customer record as the reliable source it's meant to be."
+},
+{
+  id: "m10-l5",
+  title: "Inventory",
+  objective: "Recognize store-level inventory controls.",
+  learn: [
+    "Store-level inventory controls typically include: adjusting stock counts, setting low-stock alerts, and marking an item as out of stock -- the dashboard-side actions that put Module 5's inventory concepts into practice."
+  ],
+  observe: [
+    "Setting a low-stock alert threshold on a SKU is a direct, practical application of the low-stock reasoning from Module 5 -- it just automates the flagging instead of a VA checking manually."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each inventory control to what it's for.",
+    leftLabel: "Control",
+    rightLabel: "What it's for",
+    left: [
+      { id: "a", label: "Low-stock alert threshold" },
+      { id: "b", label: "Mark as out of stock" },
+      { id: "c", label: "Adjust stock count" }
+    ],
+    right: [
+      { id: "warn", label: "Automatically flags a SKU before it runs out" },
+      { id: "block", label: "Prevents new orders for a SKU with none available" },
+      { id: "correct", label: "Updates the recorded quantity for a SKU" }
+    ],
+    pairs: { a: "warn", b: "block", c: "correct" },
+    completeFeedback: "Correct -- each control does a distinct, specific job."
+  },
+  checkNote: "You can now recognize the store-level controls that put inventory monitoring into practice."
+},
+{
+  id: "m10-l6",
+  title: "Discounts & Promotions",
+  objective: "Understand basic promotional controls.",
+  learn: [
+    "Basic promotional controls include discount codes (percentage or fixed amount off), time-limited sales, and minimum-purchase requirements. These are configuration settings, not something a VA typically decides the strategy behind."
+  ],
+  observe: [
+    "Setting up a 10%-off code that Sofia has already decided on is a configuration task. Deciding whether Everfield should run that promotion at all is a strategic call outside a beginner VA's scope."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Sofia asks a VA to set up a 15%-off code she's already decided on. What's the VA's role here?",
+        options: [
+          { text: "Configure the discount code as specified.", correct: true },
+          { text: "Decide independently whether 15% is the right discount.", correct: false }
+        ],
+        correctFeedback: "Right -- configuring an already-decided promotion is squarely the VA's job.",
+        incorrectFeedback: "Not quite -- the discount strategy has already been decided; the VA's job is to configure it accurately."
+      }
+    ]
+  },
+  checkNote: "You can now tell configuring a promotion apart from deciding its strategy."
+},
+{
+  id: "m10-l7",
+  title: "Store Content",
+  objective: "Recognize common content-management areas.",
+  learn: [
+    "Beyond individual product listings, a store usually has other content areas to manage: static pages (About, FAQ, Shipping Policy), homepage banners, and sometimes a blog."
+  ],
+  observe: [
+    "Everfield's shipping policy page and homepage banner are both content areas separate from any single product listing -- they need their own review and updates, on their own schedule."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which of these is a store content area, separate from an individual product listing?",
+        options: [
+          { text: "A shipping policy page", correct: true },
+          { text: "The price field on a single SKU", correct: false }
+        ],
+        correctFeedback: "Right -- a policy page is store-wide content, not tied to one product.",
+        incorrectFeedback: "Not quite -- a SKU's price field belongs to that one product's listing, not general store content."
+      }
+    ]
+  },
+  checkNote: "You can now recognize store content areas that exist outside individual product listings."
+},
+{
+  id: "m10-l8",
+  title: "Apps & Integrations",
+  objective: "Understand why stores use integrations.",
+  learn: [
+    "Stores connect to outside tools -- integrations -- to extend what the platform can do without building custom software: shipping and fulfillment connections, email marketing, accounting, and review platforms are common examples."
+  ],
+  observe: [
+    "Everfield's connection to ClearPath Fulfillment is exactly this kind of integration -- it lets order and inventory data flow between Everfield's store and its 3PL without anyone manually re-entering it."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What's the main reason a store connects to a 3PL like ClearPath through an integration?",
+        options: [
+          { text: "So order and inventory data can flow automatically, without manual re-entry.", correct: true },
+          { text: "Purely for visual design purposes.", correct: false }
+        ],
+        correctFeedback: "Right -- integrations exist to move data and functionality, not for visual styling.",
+        incorrectFeedback: "Not quite -- integrations are about functionality and data flow, not visual design."
+      }
+    ]
+  },
+  checkNote: "You can now explain why a store connects to outside tools instead of doing everything manually."
+},
+{
+  id: "m10-l9",
+  title: "Users & Permissions",
+  objective: "Understand why access control matters.",
+  learn: [
+    "Not everyone with dashboard access should be able to do everything. Permissions limit what each person can see or change -- a VA might be able to edit listings without having access to financial settings or payment information, for example."
+  ],
+  observe: [
+    "This mirrors the authority boundaries you've seen throughout the course: a beginner E-commerce VA's dashboard access should match what they're actually authorized to do -- editing listings, yes; changing payment settings, no."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Why would a beginner VA's dashboard account have listing-edit access but not payment-settings access?",
+        options: [
+          { text: "Permissions should match what the VA is actually authorized to do.", correct: true },
+          { text: "There's no real reason -- everyone should have full access by default.", correct: false }
+        ],
+        correctFeedback: "Right -- access control exists precisely to match permissions to actual authority.",
+        incorrectFeedback: "Not quite -- giving everyone full access defeats the purpose of permissions entirely."
+      }
+    ]
+  },
+  checkNote: "You can now explain why dashboard permissions should match a role's actual authority."
+},
+{
+  id: "m10-l10",
+  title: "Why Platforms Differ",
+  objective: "Explain why workflows vary by platform.",
+  learn: [
+    "Different store platforms organize these same core concepts -- products, orders, customers, inventory, content, users -- under different names and layouts. Learning the concepts, not just one platform's menu structure, is what lets a VA adapt quickly to whichever tool a client actually uses."
+  ],
+  observe: [
+    "A function that one platform calls 'Fulfillment' might be labeled 'Shipping' on another -- different label, same underlying concept you already understand from Module 10."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Why does this course teach dashboard concepts instead of one specific platform's exact menus?",
+        options: [
+          { text: "Because the underlying concepts stay consistent even though platforms label and organize them differently.", correct: true },
+          { text: "Because all platforms are actually identical, so it doesn't matter.", correct: false }
+        ],
+        correctFeedback: "Right -- understanding the concept is what transfers across different platforms.",
+        incorrectFeedback: "Not quite -- platforms genuinely differ in layout and naming, which is exactly why the concepts matter more than any one menu."
+      }
+    ]
+  },
+  checkNote: "You can now explain why concept-level understanding transfers across different store platforms."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 10 complete. You can now navigate any store dashboard conceptually -- Module 11 turns to how you operate professionally within one.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>
