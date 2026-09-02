@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 7: Returns, Refunds & Exceptions | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 7</p>
+  <h1>Returns, Refunds & Exceptions</h1>
+  <p style="max-width:62ch">Most orders go fine. This module is about the ones that don't -- building a calm, consistent way to handle cancellations, returns, damaged items, and missing packages without guessing.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> Exception handling is documentation first, decisions second. A beginner E-commerce VA records what actually happened and follows policy -- and escalates the moment a case falls outside it.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 10</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m7";
+var LESSONS = [
+{
+  id: "m7-l1",
+  title: "Normal vs. Exception Paths",
+  objective: "Distinguish routine from exception workflows.",
+  learn: [
+    "A normal order path runs: placed, confirmed, fulfilled, shipped, delivered -- nothing unusual required. An exception path branches off that when something doesn't go as expected: a cancellation, a return, a damaged item, a missing package. Recognizing which path you're on shapes everything that happens next."
+  ],
+  observe: [
+    "An Everfield order that ships and arrives on schedule never leaves the normal path. An order the customer wants to cancel, or one that arrives damaged, immediately branches into an exception path with its own steps."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Classify each scenario as a normal path or an exception path.",
+    leftLabel: "Scenario",
+    rightLabel: "Path",
+    left: [
+      { id: "a", label: "Order ships and is delivered on schedule" },
+      { id: "b", label: "Customer requests a cancellation" },
+      { id: "c", label: "Item arrives damaged" }
+    ],
+    right: [
+      { id: "normal", label: "Normal path" },
+      { id: "exception", label: "Exception path" }
+    ],
+    pairs: { a: "normal", b: "exception", c: "exception" },
+    completeFeedback: "Correct -- only the first scenario stays on the normal path."
+  },
+  checkNote: "You can now tell at a glance whether an order is still on the normal path or has branched into an exception."
+},
+{
+  id: "m7-l2",
+  title: "Cancellation Requests",
+  objective: "Apply basic cancellation logic.",
+  learn: [
+    "A cancellation is only possible before an order has shipped. Once it has shipped, the request has to be handled as a return instead, since the package is already on its way."
+  ],
+  observe: [
+    "If a customer asks to cancel an Everfield order that's still 'Processing' (not yet shipped), a straightforward cancellation is possible. If the same request comes in after the order shows 'Shipped,' it needs to be redirected into the return process instead."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer requests a cancellation. The order status is 'Shipped.' What's the correct next step?",
+        options: [
+          { text: "Explain that it's too late to cancel, and offer the return process instead.", correct: true },
+          { text: "Cancel the order as requested.", correct: false }
+        ],
+        correctFeedback: "Right -- a shipped order can't be cancelled outright; it has to go through the return process.",
+        incorrectFeedback: "Not quite -- once an order has shipped, it can no longer be simply cancelled."
+      }
+    ]
+  },
+  checkNote: "You can now judge whether a cancellation request is still possible, or needs to become a return."
+},
+{
+  id: "m7-l3",
+  title: "Returns",
+  objective: "Follow a basic return workflow.",
+  learn: [
+    "A return record tracks: return ID, order number, SKU, quantity, return reason, condition, disposition, inventory action, and refund status. The workflow follows a logical order -- you can't decide a disposition before you know the item's condition, and you can't update inventory before the disposition is set."
+  ],
+  observe: [
+    "For a returned Everfield item, the sequence runs: log the return against the original order, record the reason the customer gave, inspect and record its condition, assign a disposition, take the resulting inventory action, then update the refund status."
+  ],
+  practiceKind: "sequence",
+  practiceData: {
+    prompt: "Put Everfield's return workflow in the correct order.",
+    items: [
+      { id: "log", label: "Log the return against the original order" },
+      { id: "reason", label: "Record the customer's return reason" },
+      { id: "condition", label: "Inspect and record the item's condition" },
+      { id: "disposition", label: "Assign a disposition (Restock, Damaged, etc.)" },
+      { id: "inventory", label: "Take the resulting inventory action" },
+      { id: "refund", label: "Update the refund status" }
+    ],
+    correctOrder: ["log", "reason", "condition", "disposition", "inventory", "refund"],
+    correctFeedback: "That's the correct workflow -- each step depends on the one before it.",
+    incorrectFeedback: "Not quite -- you need the item's condition before you can assign a disposition, and a disposition before you can take an inventory action."
+  },
+  checkNote: "You can now walk a return through Everfield's workflow in the correct order, start to finish."
+},
+{
+  id: "m7-l4",
+  title: "Exchanges",
+  objective: "Process exchange scenarios appropriately.",
+  learn: [
+    "An exchange combines a return and a new order: the original item still needs a disposition, just like any return, and the replacement item's availability needs to be checked before it's promised to the customer."
+  ],
+  observe: [
+    "If a customer wants to exchange EF-105 for a different color and EF-105 shows 0 available inventory, the VA shouldn't promise a replacement is coming -- the availability has to be checked first, the same way any new order would be."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer wants to exchange an item, but the replacement SKU shows 0 available inventory. What should the VA do?",
+        options: [
+          { text: "Check availability before promising the exchange, and inform the customer if it isn't currently available.", correct: true },
+          { text: "Promise the replacement will ship right away regardless.", correct: false }
+        ],
+        correctFeedback: "Right -- an exchange still depends on real inventory, exactly like a new order would.",
+        incorrectFeedback: "Not quite -- promising an item that isn't available creates the same problem a wrong inventory status would."
+      }
+    ]
+  },
+  checkNote: "You can now process an exchange without accidentally promising unavailable inventory."
+},
+{
+  id: "m7-l5",
+  title: "Refunds",
+  objective: "Handle refund requests according to policy.",
+  learn: [
+    "A refund's status is tracked as part of the return record, and it's tied to the disposition -- a Restock disposition supports a straightforward refund; a Damaged or Inspection Required disposition may need a decision from someone with more authority before the refund is finalized."
+  ],
+  observe: [
+    "A returned EF-106 with a Restock disposition can move to a standard refund without further review. A returned EF-106 marked Inspection Required shouldn't have its refund finalized until that inspection actually happens."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A returned item is marked 'Inspection Required.' Should its refund be finalized right away?",
+        options: [
+          { text: "No -- the refund should wait until the inspection is actually complete.", correct: true },
+          { text: "Yes -- finalize it immediately regardless of disposition.", correct: false }
+        ],
+        correctFeedback: "Right -- the disposition determines whether a refund is ready to finalize.",
+        incorrectFeedback: "Not quite -- an 'Inspection Required' disposition means the refund isn't ready to finalize yet."
+      }
+    ]
+  },
+  checkNote: "You can now connect a return's disposition to whether its refund is actually ready to process."
+},
+{
+  id: "m7-l6",
+  title: "Damaged Items",
+  objective: "Document and escalate damaged-item cases.",
+  learn: [
+    "A damaged-item case needs to be documented clearly -- what's damaged, how the customer described it, any evidence provided -- and then escalated if it involves meaningful cost or a pattern worth investigating. A VA documents and flags; a VA doesn't decide write-offs."
+  ],
+  observe: [
+    "If several customers report damaged EF-101 units in the same week, that pattern -- not just any single case -- is exactly what's worth escalating to Maya Collins, since it could point to a packaging or 3PL handling issue."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Three customers report damaged units of the same SKU within one week. What should the VA do?",
+        options: [
+          { text: "Document each case and escalate the pattern -- it could point to a bigger packaging or handling issue.", correct: true },
+          { text: "Handle each case in isolation and not mention the pattern.", correct: false }
+        ],
+        correctFeedback: "Right -- a repeated pattern is exactly the kind of thing operations needs to know about.",
+        incorrectFeedback: "Not quite -- treating each case as isolated could let a real handling problem go unnoticed."
+      }
+    ]
+  },
+  checkNote: "You can now document a damaged-item case and recognize when a pattern deserves escalation."
+},
+{
+  id: "m7-l7",
+  title: "Wrong Items",
+  objective: "Handle incorrect-item scenarios.",
+  learn: [
+    "When a customer receives the wrong item, the resolution path doesn't require figuring out exactly how the mistake happened -- it requires documenting what was ordered versus what arrived, and following the policy for getting the customer the right item (and handling the wrong one) from there."
+  ],
+  observe: [
+    "If a customer receives EF-104 instead of the EF-107 they ordered, the resolution starts the same way regardless of cause: document the mismatch, follow policy to send the correct item, and determine the disposition of the wrongly-shipped one."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What does resolving a wrong-item case require the VA to determine first?",
+        options: [
+          { text: "The exact cause of the mistake at the warehouse.", correct: false },
+          { text: "What was ordered versus what actually arrived.", correct: true }
+        ],
+        correctFeedback: "Right -- clear documentation of the mismatch is what drives the resolution, not root-cause investigation.",
+        incorrectFeedback: "Not quite -- figuring out the exact cause isn't necessary to resolve the case; documenting the mismatch is."
+      }
+    ]
+  },
+  checkNote: "You can now resolve a wrong-item case by documenting the mismatch, without needing to investigate its cause."
+},
+{
+  id: "m7-l8",
+  title: "Missing Packages",
+  objective: "Identify next steps for missing deliveries.",
+  learn: [
+    "A 'missing package' case is one where tracking shows delivered, but the customer says they never received it. The next step is usually to double-check the tracking details with the customer (exact address, delivery photo if available) before escalating to the carrier or 3PL."
+  ],
+  observe: [
+    "If an Everfield order's tracking shows 'Delivered' but the customer says nothing arrived, the VA's next step is confirming details with the customer first -- not immediately assuming the tracking data is wrong."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Tracking shows 'Delivered,' but the customer says they never got the package. What's the right next step?",
+        options: [
+          { text: "Confirm delivery details with the customer first (address, any delivery photo) before escalating further.", correct: true },
+          { text: "Immediately assume the tracking system is broken.", correct: false }
+        ],
+        correctFeedback: "Right -- confirming the details first is what actually moves the case forward.",
+        incorrectFeedback: "Not quite -- jumping straight to 'the system is broken' skips a step that often resolves the case faster."
+      }
+    ]
+  },
+  checkNote: "You can now identify the right first step for a missing-package case."
+},
+{
+  id: "m7-l9",
+  title: "Failed Deliveries",
+  objective: "Recognize failed-delivery cases.",
+  learn: [
+    "A failed delivery is different from a delay or a missing package: it's a case where the carrier was unable to complete delivery -- returned to sender, refused, or repeated failed attempts -- and the package's status reflects that failure, not an ongoing delay."
+  ],
+  observe: [
+    "An Everfield package marked 'Returned to Sender' after three failed delivery attempts is a failed delivery, not a delay -- it needs a different next step (usually reshipping once a workable address is confirmed), not just more waiting."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each tracking situation to the correct case type.",
+    leftLabel: "Tracking situation",
+    rightLabel: "Case type",
+    left: [
+      { id: "a", label: "Still moving normally through the carrier network" },
+      { id: "b", label: "Shows delivered, but customer says nothing arrived" },
+      { id: "c", label: "Marked \u201cReturned to Sender\u201d after failed attempts" }
+    ],
+    right: [
+      { id: "normal", label: "Normal in-transit (not an exception)" },
+      { id: "missing", label: "Missing package" },
+      { id: "failed", label: "Failed delivery" }
+    ],
+    pairs: { a: "normal", b: "missing", c: "failed" },
+    completeFeedback: "Correct -- three different tracking patterns, three different case types."
+  },
+  checkNote: "You can now tell a failed delivery apart from a missing package or a normal delay."
+},
+{
+  id: "m7-l10",
+  title: "Escalation & Documentation",
+  objective: "Document cases clearly and escalate appropriately.",
+  learn: [
+    "A well-documented exception case follows the same pattern as any good Everfield update: what happened, what was verified, the impact, the required action, the owner, and the deadline. Clear documentation is what makes escalation actually useful to whoever picks the case up next."
+  ],
+  observe: [
+    "A vague note like 'customer upset about order, might need to look into it' isn't useful to Maya or Sofia. A note stating the order number, what was verified, the impact, and a clear recommended action is something they can act on immediately."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "Which case note is ready to hand off for escalation?",
+        options: [
+          { text: "\u201cOrder #5192: customer reports 2 units of EF-101 arrived damaged, photos received and verified. Refund policy applies once disposition is confirmed. Requesting Maya's review of a possible packaging pattern -- 3 similar reports this week. Owner: Maya, needed by Friday.\u201d", correct: true },
+          { text: "\u201cCustomer upset about order, might need to look into it at some point.\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it states what happened, what was verified, the impact, the action needed, the owner, and the deadline.",
+        incorrectFeedback: "Not quite -- that note doesn't give whoever picks it up enough to actually act on it."
+      }
+    ]
+  },
+  checkNote: "You can now write a case note that's actually ready for someone else to act on -- the same discipline as any Everfield operational update."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 7 complete. You can now handle the full range of order exceptions calmly and consistently -- Module 8 shifts to research skills.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>

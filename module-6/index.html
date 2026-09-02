@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 6: Customer Support in E-commerce | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .module-crumb a:hover{ color: var(--forest); }
+  .done-banner{
+    display:none;
+    margin-top: 26px;
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+    border-radius: var(--radius-m);
+    padding: 16px 18px;
+    font-size: 0.92rem;
+  }
+  main{ padding: 34px 0 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="mark">Probinsiyanong VA</span>
+      <span class="sub">PVA Free Training</span>
+    </a>
+    <nav>
+      <a href="../index.html">Course map</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 6</p>
+  <h1>Customer Support in E-commerce</h1>
+  <p style="max-width:62ch">Support questions are really questions about the systems you've already learned -- orders, products, inventory. This module teaches you to answer accurately from real data, and to know your own limits.</p>
+
+  <div class="everfield-note">
+    <strong>Reminder:</strong> A beginner E-commerce VA answers from real information and documented policy -- never by guessing. When something falls outside policy or your authority, the right move is to escalate, not improvise.
+  </div>
+
+  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard">
+    <div class="lesson-title-row">
+      <span class="k" id="lessonKicker">Lesson 1 of 9</span>
+    </div>
+    <h2 id="lessonTitle">--</h2>
+    <p class="lesson-objective" id="lessonObjective">--</p>
+
+    <div class="step-bar" id="stepBar"></div>
+    <div class="step-label" id="stepLabel">LEARN</div>
+
+    <div class="step-panel active" data-step="0" id="panelLearn"></div>
+    <div class="step-panel" data-step="1" id="panelObserve"></div>
+    <div class="step-panel" data-step="2" id="panelPractice"></div>
+    <div class="step-panel" data-step="3" id="panelCheck"></div>
+
+    <div class="step-actions">
+      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+    </div>
+  </section>
+
+  <div class="done-banner" id="doneBanner">
+    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
+  </div>
+</main>
+
+<script src="../shared/progress.js"></script>
+<script src="../shared/activities.js"></script>
+<script>
+/* ================= LESSON DATA ================= */
+var MODULE_ID = "m6";
+var LESSONS = [
+{
+  id: "m6-l1",
+  title: "The E-commerce Customer Support Role",
+  objective: "Explain how support fits into store operations.",
+  learn: [
+    "Customer support isn't a separate silo -- it's a lens on everything you've already learned. Every support question is really a question about order status, product data, or inventory. A support VA's job is to find the real answer in those systems, not to invent a plausible one."
+  ],
+  observe: [
+    "At Everfield, Sofia Ramirez, the E-commerce Manager, is the closest point of contact for support issues that need attention beyond a VA's documented authority -- since customer demand and online sales are core to her role."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each type of customer question to the system that actually holds the answer.",
+    leftLabel: "Customer question",
+    rightLabel: "Source of truth",
+    left: [
+      { id: "a", label: "\u201cWhere is my order?\u201d" },
+      { id: "b", label: "\u201cWhat material is this tray made of?\u201d" },
+      { id: "c", label: "\u201cIs this back in stock?\u201d" }
+    ],
+    right: [
+      { id: "order", label: "Order status / tracking" },
+      { id: "product", label: "Product data" },
+      { id: "inventory", label: "Inventory" }
+    ],
+    pairs: { a: "order", b: "product", c: "inventory" },
+    completeFeedback: "Correct -- every support answer traces back to a real system, not a guess."
+  },
+  checkNote: "You can now see customer support as an application of the order, product, and inventory skills you already have."
+},
+{
+  id: "m6-l2",
+  title: "Order Status Questions",
+  objective: "Respond using order information and policy.",
+  learn: [
+    "A good order-status answer states the actual current status, in plain language, using real data -- not a vague reassurance."
+  ],
+  observe: [
+    "If an Everfield order shows 'Processing' with no tracking yet, the accurate answer is that it's being prepared for shipment and hasn't shipped yet -- not a guess about when it will arrive."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer asks where their order is. The order status shows 'Processing,' no tracking yet. Which response is accurate?",
+        options: [
+          { text: "\u201cYour order is being prepared for shipment and hasn't shipped yet -- I'll share tracking as soon as it's available.\u201d", correct: true },
+          { text: "\u201cIt's on the truck already, should be there any day now!\u201d", correct: false }
+        ],
+        correctFeedback: "Right -- it states the real status accurately, without inventing details that aren't true yet.",
+        incorrectFeedback: "Not quite -- that response invents a shipping status that isn't actually true yet."
+      }
+    ]
+  },
+  checkNote: "You can now answer an order-status question using only what the data actually shows."
+},
+{
+  id: "m6-l3",
+  title: "Shipping Questions",
+  objective: "Handle common shipping inquiries.",
+  learn: [
+    "Common shipping questions include delivery estimates, carrier information, and address changes. Not all of these can always be honored -- once an order has shipped, the address on the label can no longer be changed."
+  ],
+  observe: [
+    "If a customer asks to change their shipping address the day after their Everfield order shipped, the honest answer is that it's too late to change the label -- the next step is to help with a redirect through the carrier, or plan for a return, not to promise something that can't happen."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer wants to change their shipping address, but the order shipped yesterday. What should a VA say?",
+        options: [
+          { text: "That the address on the shipping label can no longer be changed, and offer next-step options instead.", correct: true },
+          { text: "That the address will be updated right away.", correct: false }
+        ],
+        correctFeedback: "Right -- once shipped, the label is set. Promising an update that can't happen only creates a bigger problem later.",
+        incorrectFeedback: "Not quite -- once an order has shipped, its label can't be changed. That promise can't be kept."
+      }
+    ]
+  },
+  checkNote: "You can now recognize which shipping requests are still possible, and which aren't."
+},
+{
+  id: "m6-l4",
+  title: "Product Questions",
+  objective: "Use product data to answer accurately.",
+  learn: [
+    "Product questions should be answered from the actual structured product data -- specs, materials, dimensions -- not from a best guess. If the data doesn't answer the question, say so rather than filling in a plausible-sounding detail."
+  ],
+  observe: [
+    "If a customer asks about EF-103's exact dimensions and the product record specifies 16in x 11in x 9in, the accurate answer states those numbers -- not an approximate 'pretty spacious!'"
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer asks for the exact dimensions of EF-103. The product record lists 16in x 11in x 9in. What should the VA say?",
+        options: [
+          { text: "State the exact dimensions from the product record.", correct: true },
+          { text: "Say it's \u201cpretty spacious\u201d without giving numbers.", correct: false }
+        ],
+        correctFeedback: "Right -- when the data has the exact answer, give the exact answer.",
+        incorrectFeedback: "Not quite -- a vague description isn't useful when the exact data is right there in the product record."
+      }
+    ]
+  },
+  checkNote: "You can now answer product questions with real data instead of a vague approximation."
+},
+{
+  id: "m6-l5",
+  title: "Returns & Exchanges",
+  objective: "Explain and apply basic policies.",
+  learn: [
+    "A return means the customer sends the item back and gets their money back. An exchange means the item comes back and a different item goes out. Every returned item gets a disposition -- a decision about what happens to it: Restock, Damaged, Dispose, Hold, or Inspection Required."
+  ],
+  observe: [
+    "If a returned EF-107 comes back unopened and in sellable condition, its disposition would be Restock. If it comes back visibly damaged, the disposition would be Damaged -- which affects whether that inventory can ever be resold."
+  ],
+  practiceKind: "match",
+  practiceData: {
+    prompt: "Match each returned-item condition to its correct disposition.",
+    leftLabel: "Condition",
+    rightLabel: "Disposition",
+    left: [
+      { id: "a", label: "Unopened, resellable condition" },
+      { id: "b", label: "Visibly broken or unusable" },
+      { id: "c", label: "Condition unclear, needs a closer look" }
+    ],
+    right: [
+      { id: "restock", label: "Restock" },
+      { id: "damaged", label: "Damaged" },
+      { id: "inspect", label: "Inspection Required" }
+    ],
+    pairs: { a: "restock", b: "damaged", c: "inspect" },
+    completeFeedback: "Correct -- the item's actual condition determines its disposition."
+  },
+  checkNote: "You can now tell a return from an exchange, and apply the right disposition to a returned item."
+},
+{
+  id: "m6-l6",
+  title: "Refund Requests",
+  objective: "Respond within policy and authority.",
+  learn: [
+    "A refund request that clearly fits documented policy can be processed directly. A request that's ambiguous, unusually large, or outside policy should be escalated rather than decided on the spot."
+  ],
+  observe: [
+    "A standard, policy-covered refund for a returned, unopened EF-101 is something a VA can process directly. A customer requesting a refund without returning the item, or asking for an exception to policy, is a case to escalate -- not to approve independently."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer returns an unopened item and requests a standard refund that clearly matches policy. What should the VA do?",
+        options: [
+          { text: "Process the refund directly.", correct: true },
+          { text: "Escalate it, just to be safe.", correct: false }
+        ],
+        correctFeedback: "Right -- a clear, policy-covered case doesn't need escalation.",
+        incorrectFeedback: "Not quite -- escalating every routine case would bury the ones that actually need attention."
+      },
+      {
+        q: "A customer wants a refund without returning the item, which isn't covered by standard policy. What should the VA do?",
+        options: [
+          { text: "Escalate it rather than approving an exception independently.", correct: true },
+          { text: "Approve it anyway, to keep the customer happy.", correct: false }
+        ],
+        correctFeedback: "Correct -- a case outside policy needs a decision from someone with the authority to grant an exception.",
+        incorrectFeedback: "Not quite -- approving an exception to policy isn't within a beginner VA's authority."
+      }
+    ]
+  },
+  checkNote: "You can now tell a routine, in-policy refund apart from one that needs to be escalated."
+},
+{
+  id: "m6-l7",
+  title: "Damaged/Wrong Orders",
+  objective: "Handle common fulfillment problems.",
+  learn: [
+    "When a customer reports a damaged or wrong item, the job is to document exactly what they reported, not to guess at the cause. The disposition and next steps follow from that documentation -- Damaged or Inspection Required, plus whatever resolution policy calls for."
+  ],
+  observe: [
+    "If a customer reports receiving EF-104 instead of the EF-102 they ordered, the right first step is documenting the mismatch clearly (order number, item ordered, item received) -- not speculating about whether it was a picking error at ClearPath."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer says they received the wrong item. What should the VA do first?",
+        options: [
+          { text: "Document exactly what was ordered versus what was received.", correct: true },
+          { text: "Guess at what went wrong at the warehouse and tell the customer.", correct: false }
+        ],
+        correctFeedback: "Right -- clear documentation of the actual mismatch comes first, before any explanation of cause.",
+        incorrectFeedback: "Not quite -- speculating about the cause isn't the VA's job. Documenting the facts is."
+      }
+    ]
+  },
+  checkNote: "You can now handle a damaged- or wrong-item report by documenting first, not guessing first."
+},
+{
+  id: "m6-l8",
+  title: "Marketplace Messages",
+  objective: "Recognize the communication context of marketplaces.",
+  learn: [
+    "Messages on a marketplace channel aren't private, one-to-one emails the way a brand-store message often is -- they typically follow the marketplace's own messaging rules, response-time expectations, and tone standards. A VA needs to recognize that context shifts what 'appropriate' looks like."
+  ],
+  observe: [
+    "A response sent through Everfield's marketplace channel (Channel B) needs to stay within that marketplace's own policies and format -- the same casual tone that might work in a brand-store email could violate a marketplace's messaging rules."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "What's different about responding to a customer through a marketplace's messaging system compared to a direct brand-store email?",
+        options: [
+          { text: "The response has to follow that marketplace's own rules and format, not just Everfield's own style.", correct: true },
+          { text: "Nothing -- all customer messages can be handled identically regardless of channel.", correct: false }
+        ],
+        correctFeedback: "Right -- the marketplace's own policies apply on top of Everfield's usual standards.",
+        incorrectFeedback: "Not quite -- a marketplace channel comes with its own rules that a brand-store email doesn't have."
+      }
+    ]
+  },
+  checkNote: "You can now recognize that marketplace messaging carries its own constraints, separate from brand-store email."
+},
+{
+  id: "m6-l9",
+  title: "Escalation",
+  objective: "Recognize when a case exceeds VA authority.",
+  learn: [
+    "The same principle from inventory escalation applies to support: cases with meaningful financial, customer, compliance, or operational impact should be escalated, rather than resolved independently."
+  ],
+  observe: [
+    "A single, routine, in-policy return doesn't need escalation. A customer threatening legal action, or a request involving an unusually large refund, clearly crosses into territory Sofia or Maya would need to be aware of."
+  ],
+  practiceKind: "quiz",
+  practiceData: {
+    questions: [
+      {
+        q: "A customer mentions they're consulting a lawyer about their order. Should this be escalated?",
+        options: [
+          { text: "Yes -- this has real compliance and reputational impact beyond a VA's authority.", correct: true },
+          { text: "No -- just respond like any other support message.", correct: false }
+        ],
+        correctFeedback: "Right -- a legal threat is exactly the kind of impact that requires escalation.",
+        incorrectFeedback: "Not quite -- this kind of case has real impact and needs to go beyond a VA's independent judgment."
+      }
+    ]
+  },
+  checkNote: "You can now judge which support cases cross the line into needing escalation."
+}
+];
+
+/* ================= APP STATE ================= */
+var currentLessonIndex = 0;
+var currentStep = 0;
+var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+
+var navEl = document.getElementById("lessonNav");
+var kickerEl = document.getElementById("lessonKicker");
+var titleEl = document.getElementById("lessonTitle");
+var objectiveEl = document.getElementById("lessonObjective");
+var stepBarEl = document.getElementById("stepBar");
+var stepLabelEl = document.getElementById("stepLabel");
+var panels = [
+  document.getElementById("panelLearn"),
+  document.getElementById("panelObserve"),
+  document.getElementById("panelPractice"),
+  document.getElementById("panelCheck")
+];
+var btnPrev = document.getElementById("btnPrev");
+var btnNext = document.getElementById("btnNext");
+var doneBanner = document.getElementById("doneBanner");
+
+var practiceComplete = false;
+
+function buildNav(){
+  navEl.innerHTML = "";
+  LESSONS.forEach(function(lesson, i){
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
+    pill.textContent = (i + 1) + ". " + lesson.title;
+    pill.addEventListener("click", function(){ loadLesson(i); });
+    navEl.appendChild(pill);
+  });
+  highlightNav();
+}
+
+function highlightNav(){
+  Array.prototype.forEach.call(navEl.children, function(pill, i){
+    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
+    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
+  });
+}
+
+function paragraphs(arr){
+  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
+}
+
+function loadLesson(i){
+  currentLessonIndex = i;
+  currentStep = 0;
+  practiceComplete = false;
+  var lesson = LESSONS[i];
+
+  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
+  titleEl.textContent = lesson.title;
+  objectiveEl.textContent = "Objective: " + lesson.objective;
+
+  panels[0].innerHTML = paragraphs(lesson.learn);
+  panels[1].innerHTML = paragraphs(lesson.observe);
+  panels[2].innerHTML = "";
+  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+
+  var practiceHost = document.createElement("div");
+  panels[2].appendChild(practiceHost);
+  var onDone = function(){
+    practiceComplete = true;
+    if (currentStep === 2) updateNextButton();
+  };
+  if(lesson.practiceKind === "quiz"){
+    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "sequence"){
+    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
+  } else if (lesson.practiceKind === "match"){
+    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
+  }
+
+  doneBanner.style.display = "none";
+  renderStep();
+  highlightNav();
+  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
+}
+
+function renderStep(){
+  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
+  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepBarEl.innerHTML = "";
+  STEP_LABELS.forEach(function(_, idx){
+    var seg = document.createElement("div");
+    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
+    stepBarEl.appendChild(seg);
+  });
+  btnPrev.disabled = false;
+  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
+  updateNextButton();
+}
+
+function updateNextButton(){
+  if(currentStep === 2 && !practiceComplete){
+    btnNext.textContent = "Complete the activity to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === 3){
+    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = "Continue";
+    btnNext.disabled = false;
+  }
+}
+
+btnPrev.addEventListener("click", function(){
+  if(currentStep > 0){ currentStep--; renderStep(); }
+});
+
+btnNext.addEventListener("click", function(){
+  if(currentStep < 3){
+    currentStep++;
+    renderStep();
+  } else {
+    var lesson = LESSONS[currentLessonIndex];
+    PVAEcom.markLessonDone(lesson.id);
+    highlightNav();
+    if(currentLessonIndex < LESSONS.length - 1){
+      loadLesson(currentLessonIndex + 1);
+    } else {
+      doneBanner.style.display = "block";
+      doneBanner.textContent = "Module 6 complete. You can now handle a full range of support questions -- Module 7 goes deeper into the exceptions: returns, refunds, and everything that goes wrong.";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }
+});
+
+buildNav();
+loadLesson(0);
+</script>
+</body>
+</html>
