@@ -65,6 +65,7 @@
     <div class="lesson-title-row">
       <span class="k" id="lessonKicker">Task 1 of 11</span>
     </div>
+    <div id="portfolioBadgeSlot"></div>
     <h2 id="lessonTitle">--</h2>
     <p class="lesson-objective" id="lessonObjective">--</p>
 
@@ -75,6 +76,7 @@
     <div class="step-panel" data-step="1" id="panelObserve"></div>
     <div class="step-panel" data-step="2" id="panelPractice"></div>
     <div class="step-panel" data-step="3" id="panelCheck"></div>
+    <div class="step-panel" data-step="4" id="panelApply"></div>
 
     <div class="step-actions">
       <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
@@ -376,14 +378,25 @@ var LESSONS = [
     correctFeedback: "That's a complete, well-ordered Weekly Operations Report -- the final piece of your Final Portfolio.",
     incorrectFeedback: "Not quite -- a report reads best starting from completed work and ending on next actions, with the specific concerns in between."
   },
-  checkNote: "Weekly Operations Report skill: confirmed -- and with it, the full Final Portfolio."
+  checkNote: "Weekly Operations Report skill: confirmed -- and with it, the full Final Portfolio.",
+  apply: {
+    portfolioLabel: "Portfolio piece: Final E-commerce VA Portfolio",
+    title: "Everfield Goods -- Final Portfolio Cover Note",
+    intro: "You've now built 12 individual work samples across this course. Write a short cover note packaging them together as your Final E-commerce VA Portfolio -- as if handing it to someone reviewing your beginner work.",
+    fields: [
+      { id: "overview", label: "One-paragraph overview of what this portfolio demonstrates", placeholder: "e.g. This portfolio demonstrates beginner e-commerce VA skills across product data, listings, orders, inventory, support, and reporting, built through a simulated company, Everfield Goods...", rows: 4 },
+      { id: "strongest", label: "Which piece are you proudest of, and why?", placeholder: "e.g. My Exception Resolution Log, because...", rows: 3 },
+      { id: "label", label: "Write the honest-labeling line you'd attach to this portfolio", placeholder: "e.g. These are training work samples completed through Probinsiyanong VA Free Training, using a simulated company. They are not paid client work.", rows: 2 }
+    ]
+  }
 }
 ];
 
 /* ================= APP STATE ================= */
 var currentLessonIndex = 0;
 var currentStep = 0;
-var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var BASE_STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var stepLabels = BASE_STEP_LABELS;
 
 var navEl = document.getElementById("lessonNav");
 var kickerEl = document.getElementById("lessonKicker");
@@ -391,11 +404,13 @@ var titleEl = document.getElementById("lessonTitle");
 var objectiveEl = document.getElementById("lessonObjective");
 var stepBarEl = document.getElementById("stepBar");
 var stepLabelEl = document.getElementById("stepLabel");
+var badgeSlot = document.getElementById("portfolioBadgeSlot");
 var panels = [
   document.getElementById("panelLearn"),
   document.getElementById("panelObserve"),
   document.getElementById("panelPractice"),
-  document.getElementById("panelCheck")
+  document.getElementById("panelCheck"),
+  document.getElementById("panelApply")
 ];
 var btnPrev = document.getElementById("btnPrev");
 var btnNext = document.getElementById("btnNext");
@@ -403,6 +418,7 @@ var doneBanner = document.getElementById("doneBanner");
 var doneBannerContent = document.getElementById("doneBannerContent");
 
 var practiceComplete = false;
+var applyComplete = false;
 
 var PORTFOLIO = [
   "Customer Journey Map", "Product Master Sheet", "Listing Pack", "Order Log",
@@ -434,20 +450,32 @@ function paragraphs(arr){
   return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
 }
 
+function el_p(text){
+  var p = document.createElement("p");
+  p.style.fontWeight = "600";
+  p.style.color = "var(--forest-dark)";
+  p.textContent = text;
+  return p;
+}
+
 function loadLesson(i){
   currentLessonIndex = i;
   currentStep = 0;
   practiceComplete = false;
+  applyComplete = false;
   var lesson = LESSONS[i];
+  stepLabels = lesson.apply ? ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK", "APPLY"] : BASE_STEP_LABELS;
 
   kickerEl.textContent = (i === 0 ? "Capstone Brief" : "Task " + i + " of 10");
   titleEl.textContent = lesson.title;
   objectiveEl.textContent = "Objective: " + lesson.objective;
+  badgeSlot.innerHTML = lesson.apply ? '<span class="portfolio-badge">Portfolio</span>' : "";
 
   panels[0].innerHTML = paragraphs(lesson.learn);
   panels[1].innerHTML = paragraphs(lesson.observe);
   panels[2].innerHTML = "";
   panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+  panels[4].innerHTML = "";
 
   var practiceHost = document.createElement("div");
   panels[2].appendChild(practiceHost);
@@ -463,6 +491,16 @@ function loadLesson(i){
     PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
   }
 
+  if(lesson.apply){
+    var applyHost = document.createElement("div");
+    panels[4].appendChild(el_p(lesson.apply.portfolioLabel));
+    panels[4].appendChild(applyHost);
+    PVAActivities.renderWorkSample(applyHost, lesson.apply, function(){
+      applyComplete = true;
+      if (currentStep === 4) updateNextButton();
+    });
+  }
+
   doneBanner.style.display = "none";
   renderStep();
   highlightNav();
@@ -471,9 +509,9 @@ function loadLesson(i){
 
 function renderStep(){
   panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
-  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepLabelEl.textContent = stepLabels[currentStep];
   stepBarEl.innerHTML = "";
-  STEP_LABELS.forEach(function(_, idx){
+  stepLabels.forEach(function(_, idx){
     var seg = document.createElement("div");
     seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
     stepBarEl.appendChild(seg);
@@ -484,10 +522,14 @@ function renderStep(){
 }
 
 function updateNextButton(){
+  var lastStep = stepLabels.length - 1;
   if(currentStep === 2 && !practiceComplete){
     btnNext.textContent = "Complete the activity to continue";
     btnNext.disabled = true;
-  } else if (currentStep === 3){
+  } else if(currentStep === 4 && !applyComplete){
+    btnNext.textContent = "Generate your work sample to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === lastStep){
     btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next task" : "Finish capstone";
     btnNext.disabled = false;
   } else {
@@ -501,7 +543,8 @@ btnPrev.addEventListener("click", function(){
 });
 
 btnNext.addEventListener("click", function(){
-  if(currentStep < 3){
+  var lastStep = stepLabels.length - 1;
+  if(currentStep < lastStep){
     currentStep++;
     renderStep();
   } else {
@@ -512,8 +555,8 @@ btnNext.addEventListener("click", function(){
       loadLesson(currentLessonIndex + 1);
     } else {
       doneBanner.style.display = "block";
-      var html = "<p><strong>Capstone complete.</strong> You've now practiced every skill in this course inside one simulated Everfield operating week. Here's the Final Portfolio you've built the skills for:</p>";
-      html += "<ul class=\"portfolio-list\">" + PORTFOLIO.map(function(p){ return "<li>" + p + "</li>"; }).join("") + "</ul>";
+      var html = "<p><strong>Capstone complete.</strong> You've now practiced every skill in this course inside one simulated Everfield operating week, and built a real cover note packaging your Final Portfolio together. Here's everything in it:</p>";
+      html += "<ul class=\"portfolio-list\">" + PORTFOLIO.map(function(p){ return "<li>" + p + "</li>"; }).join("") + "<li>Final E-commerce VA Portfolio (this task)</li></ul>";
       html += "<p style=\"margin-top:14px\">That's the full E-commerce VA -- Beginner Foundations course. From here, the path continues into platform specializations -- Shopify VA and Amazon VA -- and, for deeper operational work, the E-commerce Supply Chain & Logistics course.</p>";
       doneBannerContent.innerHTML = html;
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });

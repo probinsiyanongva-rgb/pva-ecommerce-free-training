@@ -218,9 +218,99 @@
     container.appendChild(wrap);
   }
 
+  /* ---------------- WORK SAMPLE (portfolio Apply step) ---------------- */
+  function renderWorkSample(container, data, onComplete){
+    container.innerHTML = "";
+    var wrap = el("div", "activity worksample");
+
+    if(data.intro){ wrap.appendChild(el("p", "q", data.intro)); }
+
+    var textareas = [];
+    data.fields.forEach(function(f){
+      var fieldWrap = el("div", "ws-field");
+      fieldWrap.appendChild(el("label", "ws-label", f.label));
+      var ta = document.createElement("textarea");
+      ta.className = "ws-textarea";
+      ta.placeholder = f.placeholder || "";
+      ta.rows = f.rows || 3;
+      fieldWrap.appendChild(ta);
+      textareas.push({ id: f.id, label: f.label, el: ta });
+      wrap.appendChild(fieldWrap);
+    });
+
+    var warning = el("div", "feedback incorrect", "Fill in every section before generating your work sample.");
+    warning.style.display = "none";
+
+    var genBtn = document.createElement("button");
+    genBtn.type = "button";
+    genBtn.className = "btn btn-primary btn-small";
+    genBtn.textContent = "Generate my work sample";
+    genBtn.style.marginTop = "6px";
+
+    var previewWrap = el("div", "ws-preview-wrap");
+    previewWrap.style.display = "none";
+    var previewLabel = el("div", "ws-preview-label", "Your work sample:");
+    var preview = document.createElement("pre");
+    preview.className = "ws-preview";
+    var copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "btn btn-ghost btn-small";
+    copyBtn.textContent = "Copy work sample";
+    copyBtn.style.marginTop = "8px";
+    var saveNote = el("div", "ws-save-note", "This site doesn't store what you write -- copy this into your own document or portfolio file to keep it.");
+    previewWrap.appendChild(previewLabel);
+    previewWrap.appendChild(preview);
+    previewWrap.appendChild(copyBtn);
+    previewWrap.appendChild(saveNote);
+
+    genBtn.addEventListener("click", function(){
+      var allFilled = textareas.every(function(t){ return t.el.value.trim().length > 0; });
+      if(!allFilled){
+        warning.style.display = "block";
+        return;
+      }
+      warning.style.display = "none";
+      var lines = [data.title || "Work Sample"];
+      lines.push("");
+      textareas.forEach(function(t){
+        lines.push(t.label + ":");
+        lines.push(t.el.value.trim());
+        lines.push("");
+      });
+      preview.textContent = lines.join("\n");
+      previewWrap.style.display = "block";
+      if(onComplete) onComplete();
+    });
+
+    copyBtn.addEventListener("click", function(){
+      var text = preview.textContent;
+      var done = function(){
+        copyBtn.textContent = "Copied";
+        setTimeout(function(){ copyBtn.textContent = "Copy work sample"; }, 1500);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){});
+      } else {
+        var ta2 = document.createElement("textarea");
+        ta2.value = text;
+        document.body.appendChild(ta2);
+        ta2.select();
+        try{ document.execCommand("copy"); }catch(e){}
+        document.body.removeChild(ta2);
+        done();
+      }
+    });
+
+    wrap.appendChild(genBtn);
+    wrap.appendChild(warning);
+    wrap.appendChild(previewWrap);
+    container.appendChild(wrap);
+  }
+
   window.PVAActivities = {
     renderQuiz: renderQuiz,
     renderSequence: renderSequence,
-    renderMatch: renderMatch
+    renderMatch: renderMatch,
+    renderWorkSample: renderWorkSample
   };
 })();

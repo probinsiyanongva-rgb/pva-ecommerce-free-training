@@ -55,6 +55,7 @@
     <div class="lesson-title-row">
       <span class="k" id="lessonKicker">Lesson 1 of 7</span>
     </div>
+    <div id="portfolioBadgeSlot"></div>
     <h2 id="lessonTitle">--</h2>
     <p class="lesson-objective" id="lessonObjective">--</p>
 
@@ -65,6 +66,7 @@
     <div class="step-panel" data-step="1" id="panelObserve"></div>
     <div class="step-panel" data-step="2" id="panelPractice"></div>
     <div class="step-panel" data-step="3" id="panelCheck"></div>
+    <div class="step-panel" data-step="4" id="panelApply"></div>
 
     <div class="step-actions">
       <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
@@ -151,7 +153,18 @@ var LESSONS = [
     pairs: { a: "supplier", b: "leadtime", c: "uom", d: "category" },
     completeFeedback: "Correct -- each piece of raw information has exactly one structured home."
   },
-  checkNote: "You can now sort raw product information into the structured fields a product record actually needs."
+  checkNote: "You can now sort raw product information into the structured fields a product record actually needs.",
+  apply: {
+    portfolioLabel: "Portfolio piece: Product Master Sheet",
+    title: "Everfield Goods -- Product Master Sheet Entry (EF-104)",
+    intro: "Build one complete, structured product record for EF-104 (Cable Management Set) using the fields this lesson covered. Write in your own words, as if you were filling in Everfield's real product master sheet.",
+    fields: [
+      { id: "basics", label: "SKU, product name, and category", placeholder: "e.g. EF-104, Cable Management Set, Home Organization...", rows: 2 },
+      { id: "supply", label: "Supplier, standard unit cost, and lead time", placeholder: "e.g. Supplier name, an estimated cost, a lead time in days...", rows: 2 },
+      { id: "ops", label: "Unit of measure, storage location, and status", placeholder: "e.g. Each, a shelf/bin reference, Active...", rows: 2 },
+      { id: "notes", label: "Notes -- anything else a teammate should know", placeholder: "e.g. what it's made of, what it's used for, kit/bundle indicator...", rows: 3 }
+    ]
+  }
 },
 {
   id: "m2-l3",
@@ -313,7 +326,8 @@ var LESSONS = [
 /* ================= APP STATE ================= */
 var currentLessonIndex = 0;
 var currentStep = 0;
-var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var BASE_STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var stepLabels = BASE_STEP_LABELS;
 
 var navEl = document.getElementById("lessonNav");
 var kickerEl = document.getElementById("lessonKicker");
@@ -321,17 +335,20 @@ var titleEl = document.getElementById("lessonTitle");
 var objectiveEl = document.getElementById("lessonObjective");
 var stepBarEl = document.getElementById("stepBar");
 var stepLabelEl = document.getElementById("stepLabel");
+var badgeSlot = document.getElementById("portfolioBadgeSlot");
 var panels = [
   document.getElementById("panelLearn"),
   document.getElementById("panelObserve"),
   document.getElementById("panelPractice"),
-  document.getElementById("panelCheck")
+  document.getElementById("panelCheck"),
+  document.getElementById("panelApply")
 ];
 var btnPrev = document.getElementById("btnPrev");
 var btnNext = document.getElementById("btnNext");
 var doneBanner = document.getElementById("doneBanner");
 
 var practiceComplete = false;
+var applyComplete = false;
 
 function buildNav(){
   navEl.innerHTML = "";
@@ -357,20 +374,32 @@ function paragraphs(arr){
   return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
 }
 
+function el_p(text){
+  var p = document.createElement("p");
+  p.style.fontWeight = "600";
+  p.style.color = "var(--forest-dark)";
+  p.textContent = text;
+  return p;
+}
+
 function loadLesson(i){
   currentLessonIndex = i;
   currentStep = 0;
   practiceComplete = false;
+  applyComplete = false;
   var lesson = LESSONS[i];
+  stepLabels = lesson.apply ? ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK", "APPLY"] : BASE_STEP_LABELS;
 
   kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
   titleEl.textContent = lesson.title;
   objectiveEl.textContent = "Objective: " + lesson.objective;
+  badgeSlot.innerHTML = lesson.apply ? '<span class="portfolio-badge">Portfolio</span>' : "";
 
   panels[0].innerHTML = paragraphs(lesson.learn);
   panels[1].innerHTML = paragraphs(lesson.observe);
   panels[2].innerHTML = "";
   panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+  panels[4].innerHTML = "";
 
   var practiceHost = document.createElement("div");
   panels[2].appendChild(practiceHost);
@@ -386,6 +415,16 @@ function loadLesson(i){
     PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
   }
 
+  if(lesson.apply){
+    var applyHost = document.createElement("div");
+    panels[4].appendChild(el_p(lesson.apply.portfolioLabel));
+    panels[4].appendChild(applyHost);
+    PVAActivities.renderWorkSample(applyHost, lesson.apply, function(){
+      applyComplete = true;
+      if (currentStep === 4) updateNextButton();
+    });
+  }
+
   doneBanner.style.display = "none";
   renderStep();
   highlightNav();
@@ -393,10 +432,11 @@ function loadLesson(i){
 }
 
 function renderStep(){
+  var totalSteps = stepLabels.length;
   panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
-  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepLabelEl.textContent = stepLabels[currentStep];
   stepBarEl.innerHTML = "";
-  STEP_LABELS.forEach(function(_, idx){
+  stepLabels.forEach(function(_, idx){
     var seg = document.createElement("div");
     seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
     stepBarEl.appendChild(seg);
@@ -407,10 +447,14 @@ function renderStep(){
 }
 
 function updateNextButton(){
+  var lastStep = stepLabels.length - 1;
   if(currentStep === 2 && !practiceComplete){
     btnNext.textContent = "Complete the activity to continue";
     btnNext.disabled = true;
-  } else if (currentStep === 3){
+  } else if(currentStep === 4 && !applyComplete){
+    btnNext.textContent = "Generate your work sample to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === lastStep){
     btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
     btnNext.disabled = false;
   } else {
@@ -424,7 +468,8 @@ btnPrev.addEventListener("click", function(){
 });
 
 btnNext.addEventListener("click", function(){
-  if(currentStep < 3){
+  var lastStep = stepLabels.length - 1;
+  if(currentStep < lastStep){
     currentStep++;
     renderStep();
   } else {

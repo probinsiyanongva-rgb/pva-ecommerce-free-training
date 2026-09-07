@@ -55,6 +55,7 @@
     <div class="lesson-title-row">
       <span class="k" id="lessonKicker">Lesson 1 of 7</span>
     </div>
+    <div id="portfolioBadgeSlot"></div>
     <h2 id="lessonTitle">--</h2>
     <p class="lesson-objective" id="lessonObjective">--</p>
 
@@ -65,6 +66,7 @@
     <div class="step-panel" data-step="1" id="panelObserve"></div>
     <div class="step-panel" data-step="2" id="panelPractice"></div>
     <div class="step-panel" data-step="3" id="panelCheck"></div>
+    <div class="step-panel" data-step="4" id="panelApply"></div>
 
     <div class="step-actions">
       <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
@@ -176,7 +178,19 @@ var LESSONS = [
     correctFeedback: "That's the journey end to end -- discovery all the way through to what happens after delivery.",
     incorrectFeedback: "Not quite yet -- remember research happens before checkout, and shipping updates come after the order is confirmed, not before."
   },
-  checkNote: "You've mapped a complete customer journey, not just the moment of purchase."
+  checkNote: "You've mapped a complete customer journey, not just the moment of purchase.",
+  apply: {
+    portfolioLabel: "Portfolio piece: Customer Journey Map",
+    title: "Everfield Goods -- Customer Journey Map",
+    intro: "In your own words, write out what happens at each stage of a real Everfield customer's journey. Use the stages you just learned, and be specific -- mention actual Everfield details (channels, products, ClearPath) where they fit naturally.",
+    fields: [
+      { id: "discover", label: "1. Discover -- how does a customer first find Everfield?", placeholder: "e.g. A shopper searches for storage solutions on a marketplace and sees an Everfield listing...", rows: 3 },
+      { id: "research", label: "2. Research -- what do they do before buying?", placeholder: "e.g. They compare the product page to a couple of similar listings...", rows: 3 },
+      { id: "purchase", label: "3. Purchase -- what happens at checkout?", placeholder: "e.g. They add it to their cart and check out through...", rows: 3 },
+      { id: "confirm", label: "4. Confirmation & Shipping -- what does the customer see next?", placeholder: "e.g. They get an order confirmation, then tracking updates from ClearPath...", rows: 3 },
+      { id: "after", label: "5. After Delivery -- what could happen once the package arrives?", placeholder: "e.g. They might reorder, leave a review, or occasionally start a return...", rows: 3 }
+    ]
+  }
 },
 {
   id: "m1-l4",
@@ -315,7 +329,8 @@ var LESSONS = [
 /* ================= APP STATE ================= */
 var currentLessonIndex = 0;
 var currentStep = 0;
-var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var BASE_STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var stepLabels = BASE_STEP_LABELS;
 
 var navEl = document.getElementById("lessonNav");
 var kickerEl = document.getElementById("lessonKicker");
@@ -323,17 +338,20 @@ var titleEl = document.getElementById("lessonTitle");
 var objectiveEl = document.getElementById("lessonObjective");
 var stepBarEl = document.getElementById("stepBar");
 var stepLabelEl = document.getElementById("stepLabel");
+var badgeSlot = document.getElementById("portfolioBadgeSlot");
 var panels = [
   document.getElementById("panelLearn"),
   document.getElementById("panelObserve"),
   document.getElementById("panelPractice"),
-  document.getElementById("panelCheck")
+  document.getElementById("panelCheck"),
+  document.getElementById("panelApply")
 ];
 var btnPrev = document.getElementById("btnPrev");
 var btnNext = document.getElementById("btnNext");
 var doneBanner = document.getElementById("doneBanner");
 
 var practiceComplete = false;
+var applyComplete = false;
 
 function buildNav(){
   navEl.innerHTML = "";
@@ -363,16 +381,20 @@ function loadLesson(i){
   currentLessonIndex = i;
   currentStep = 0;
   practiceComplete = false;
+  applyComplete = false;
   var lesson = LESSONS[i];
+  stepLabels = lesson.apply ? ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK", "APPLY"] : BASE_STEP_LABELS;
 
   kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
   titleEl.textContent = lesson.title;
   objectiveEl.textContent = "Objective: " + lesson.objective;
+  badgeSlot.innerHTML = lesson.apply ? '<span class="portfolio-badge">Portfolio</span>' : "";
 
   panels[0].innerHTML = paragraphs(lesson.learn);
   panels[1].innerHTML = paragraphs(lesson.observe);
   panels[2].innerHTML = "";
   panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+  panels[4].innerHTML = "";
 
   var practiceHost = document.createElement("div");
   panels[2].appendChild(practiceHost);
@@ -388,17 +410,36 @@ function loadLesson(i){
     PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
   }
 
+  if(lesson.apply){
+    var applyHost = document.createElement("div");
+    panels[4].appendChild(el_p(lesson.apply.portfolioLabel));
+    panels[4].appendChild(applyHost);
+    PVAActivities.renderWorkSample(applyHost, lesson.apply, function(){
+      applyComplete = true;
+      if (currentStep === 4) updateNextButton();
+    });
+  }
+
   doneBanner.style.display = "none";
   renderStep();
   highlightNav();
   window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
 }
 
+function el_p(text){
+  var p = document.createElement("p");
+  p.style.fontWeight = "600";
+  p.style.color = "var(--forest-dark)";
+  p.textContent = text;
+  return p;
+}
+
 function renderStep(){
+  var totalSteps = stepLabels.length;
   panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
-  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepLabelEl.textContent = stepLabels[currentStep];
   stepBarEl.innerHTML = "";
-  STEP_LABELS.forEach(function(_, idx){
+  stepLabels.forEach(function(_, idx){
     var seg = document.createElement("div");
     seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
     stepBarEl.appendChild(seg);
@@ -409,10 +450,15 @@ function renderStep(){
 }
 
 function updateNextButton(){
+  var totalSteps = stepLabels.length;
+  var lastStep = totalSteps - 1;
   if(currentStep === 2 && !practiceComplete){
     btnNext.textContent = "Complete the activity to continue";
     btnNext.disabled = true;
-  } else if (currentStep === 3){
+  } else if(currentStep === 4 && !applyComplete){
+    btnNext.textContent = "Generate your work sample to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === lastStep){
     btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
     btnNext.disabled = false;
   } else {
@@ -426,7 +472,8 @@ btnPrev.addEventListener("click", function(){
 });
 
 btnNext.addEventListener("click", function(){
-  if(currentStep < 3){
+  var lastStep = stepLabels.length - 1;
+  if(currentStep < lastStep){
     currentStep++;
     renderStep();
   } else {
