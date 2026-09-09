@@ -33,24 +33,23 @@
         b.className = "opt";
         b.textContent = opt.text;
         b.addEventListener("click", function(){
-          if(answered) return;
-          answered = true;
-          var buttons = list.querySelectorAll(".opt");
-          buttons.forEach(function(btn){ btn.disabled = true; });
+          if(answered || b.disabled) return;
           if(opt.correct){
+            answered = true;
+            var buttons = list.querySelectorAll(".opt");
+            buttons.forEach(function(btn){ btn.disabled = true; });
             b.classList.add("correct");
             feedback.className = "feedback correct";
             feedback.textContent = q.correctFeedback || ("Correct. " + (q.explain || ""));
             solvedCount++;
             if(solvedCount === data.questions.length && onComplete) onComplete();
           } else {
+            // Lock out only this wrong option -- leave the rest live so the
+            // learner can try again, instead of stranding the whole question.
+            b.disabled = true;
             b.classList.add("incorrect");
             feedback.className = "feedback incorrect";
             feedback.textContent = q.incorrectFeedback || ("Not quite. " + (q.explain || ""));
-            var correctBtn = Array.prototype.find.call(buttons, function(btn, i){
-              return q.options[i].correct;
-            });
-            if(correctBtn) correctBtn.classList.add("correct");
           }
           feedback.style.display = "block";
         });
@@ -165,6 +164,17 @@
     var pairedCount = 0;
     var rightItems = data.right.slice().sort(function(){ return Math.random() - 0.5; });
 
+    // A right-side item may be the correct answer for more than one left-side
+    // item (many-to-one matching). Track how many lefts still need to land on
+    // each right item, so we only lock a right item out once every left that
+    // maps to it has actually been matched.
+    var rightRemaining = {};
+    data.right.forEach(function(r){ rightRemaining[r.id] = 0; });
+    data.left.forEach(function(l){
+      var target = data.pairs[l.id];
+      rightRemaining[target] = (rightRemaining[target] || 0) + 1;
+    });
+
     var leftEls = {}, rightEls = {};
 
     data.left.forEach(function(l){
@@ -187,7 +197,10 @@
         if(d.classList.contains("paired") || !selectedLeft) return;
         var isMatch = data.pairs[selectedLeft] === r.id;
         if(isMatch){
-          d.classList.add("paired");
+          rightRemaining[r.id]--;
+          if(rightRemaining[r.id] <= 0){
+            d.classList.add("paired");
+          }
           leftEls[selectedLeft].classList.add("paired");
           leftEls[selectedLeft].classList.remove("selected");
           pairedCount++;

@@ -55,6 +55,7 @@
     <div class="lesson-title-row">
       <span class="k" id="lessonKicker">Lesson 1 of 10</span>
     </div>
+    <div id="portfolioBadgeSlot"></div>
     <h2 id="lessonTitle">--</h2>
     <p class="lesson-objective" id="lessonObjective">--</p>
 
@@ -65,6 +66,7 @@
     <div class="step-panel" data-step="1" id="panelObserve"></div>
     <div class="step-panel" data-step="2" id="panelPractice"></div>
     <div class="step-panel" data-step="3" id="panelCheck"></div>
+    <div class="step-panel" data-step="4" id="panelApply"></div>
 
     <div class="step-actions">
       <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
@@ -348,14 +350,30 @@ var LESSONS = [
       }
     ]
   },
-  checkNote: "You can now explain why concept-level understanding transfers across different store platforms."
+  checkNote: "You can now explain why concept-level understanding transfers across different store platforms.",
+  apply: {
+    portfolioLabel: "Portfolio piece: Everfield Goods E-commerce Store Operations Audit",
+    title: "Everfield Goods -- E-commerce Store Operations Audit",
+    intro: "Imagine you're a new E-commerce VA at Everfield Goods, reviewing the store's admin dashboard for the first time. For each area below, write what you'd check, what you might find, and what you'd do about it -- in your own words, based on what this module covered. Keep it platform-agnostic: describe the area's job, not one specific tool's exact menu.",
+    fields: [
+      { id: "products", label: "Products -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked a sample of listings for accurate titles, pricing, and published status; found one SKU still sitting as an unpublished draft; recommend publishing it once Sofia confirms the price.", rows: 3 },
+      { id: "orders", label: "Orders -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked recent orders for status accuracy; found a few still marked unshipped past their expected ship date; recommend flagging them to fulfillment today.", rows: 3 },
+      { id: "customers", label: "Customers -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked a customer record referenced in an open support question; found the order history matches what the customer described; recommend replying using the record, not memory.", rows: 3 },
+      { id: "inventory", label: "Inventory -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked stock counts against low-stock alert thresholds; found a SKU with no threshold set at all; recommend adding one so it doesn't sell out unnoticed.", rows: 3 },
+      { id: "discounts", label: "Discounts & Promotions -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked active discount codes for correct percentage and expiration date; found one code still live past its intended end date; recommend disabling it and confirming with Sofia.", rows: 3 },
+      { id: "content", label: "Store Content & Settings -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked the shipping policy page and homepage banner for outdated information; found the banner still promoting a promotion that already ended; recommend swapping it out.", rows: 3 },
+      { id: "appsUsers", label: "Apps, Integrations & User Permissions -- what you'd check, what you might find, and your recommendation", placeholder: "e.g. Checked that the 3PL integration is still connected and that dashboard accounts have the right access level; found a former team member's account still active; recommend flagging it for removal.", rows: 3 },
+      { id: "overall", label: "Overall summary -- the top 2-3 things you'd flag to Sofia first", placeholder: "e.g. Out of everything reviewed, the expired discount code and the unshipped orders are the most time-sensitive; the unpublished SKU and the old account can follow shortly after.", rows: 3 }
+    ]
+  }
 }
 ];
 
 /* ================= APP STATE ================= */
 var currentLessonIndex = 0;
 var currentStep = 0;
-var STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var BASE_STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
+var stepLabels = BASE_STEP_LABELS;
 
 var navEl = document.getElementById("lessonNav");
 var kickerEl = document.getElementById("lessonKicker");
@@ -363,17 +381,20 @@ var titleEl = document.getElementById("lessonTitle");
 var objectiveEl = document.getElementById("lessonObjective");
 var stepBarEl = document.getElementById("stepBar");
 var stepLabelEl = document.getElementById("stepLabel");
+var badgeSlot = document.getElementById("portfolioBadgeSlot");
 var panels = [
   document.getElementById("panelLearn"),
   document.getElementById("panelObserve"),
   document.getElementById("panelPractice"),
-  document.getElementById("panelCheck")
+  document.getElementById("panelCheck"),
+  document.getElementById("panelApply")
 ];
 var btnPrev = document.getElementById("btnPrev");
 var btnNext = document.getElementById("btnNext");
 var doneBanner = document.getElementById("doneBanner");
 
 var practiceComplete = false;
+var applyComplete = false;
 
 function buildNav(){
   navEl.innerHTML = "";
@@ -403,16 +424,21 @@ function loadLesson(i){
   currentLessonIndex = i;
   currentStep = 0;
   practiceComplete = false;
+  applyComplete = false;
   var lesson = LESSONS[i];
+
+  stepLabels = lesson.apply ? ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK", "APPLY"] : BASE_STEP_LABELS;
 
   kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
   titleEl.textContent = lesson.title;
   objectiveEl.textContent = "Objective: " + lesson.objective;
+  badgeSlot.innerHTML = lesson.apply ? '<span class="portfolio-badge">Portfolio</span>' : "";
 
   panels[0].innerHTML = paragraphs(lesson.learn);
   panels[1].innerHTML = paragraphs(lesson.observe);
   panels[2].innerHTML = "";
   panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
+  panels[4].innerHTML = "";
 
   var practiceHost = document.createElement("div");
   panels[2].appendChild(practiceHost);
@@ -428,17 +454,35 @@ function loadLesson(i){
     PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
   }
 
+  if(lesson.apply){
+    var applyHost = document.createElement("div");
+    panels[4].appendChild(el_p(lesson.apply.portfolioLabel));
+    panels[4].appendChild(applyHost);
+    PVAActivities.renderWorkSample(applyHost, lesson.apply, function(){
+      applyComplete = true;
+      if (currentStep === 4) updateNextButton();
+    });
+  }
+
   doneBanner.style.display = "none";
   renderStep();
   highlightNav();
   window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
 }
 
+function el_p(text){
+  var p = document.createElement("p");
+  p.style.fontWeight = "600";
+  p.style.color = "var(--forest-dark)";
+  p.textContent = text;
+  return p;
+}
+
 function renderStep(){
   panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
-  stepLabelEl.textContent = STEP_LABELS[currentStep];
+  stepLabelEl.textContent = stepLabels[currentStep];
   stepBarEl.innerHTML = "";
-  STEP_LABELS.forEach(function(_, idx){
+  stepLabels.forEach(function(_, idx){
     var seg = document.createElement("div");
     seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
     stepBarEl.appendChild(seg);
@@ -449,10 +493,14 @@ function renderStep(){
 }
 
 function updateNextButton(){
+  var lastStep = stepLabels.length - 1;
   if(currentStep === 2 && !practiceComplete){
     btnNext.textContent = "Complete the activity to continue";
     btnNext.disabled = true;
-  } else if (currentStep === 3){
+  } else if(currentStep === 4 && !applyComplete){
+    btnNext.textContent = "Generate your work sample to continue";
+    btnNext.disabled = true;
+  } else if (currentStep === lastStep){
     btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
     btnNext.disabled = false;
   } else {
@@ -466,7 +514,8 @@ btnPrev.addEventListener("click", function(){
 });
 
 btnNext.addEventListener("click", function(){
-  if(currentStep < 3){
+  var lastStep = stepLabels.length - 1;
+  if(currentStep < lastStep){
     currentStep++;
     renderStep();
   } else {
