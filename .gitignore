@@ -1,2 +1,5 @@
 # plaintext desk source contains answers -- never commit
 *.src.json
+# raw behavior snapshots contain answers -- never commit
+*.snapshots.json
+__pycache__/

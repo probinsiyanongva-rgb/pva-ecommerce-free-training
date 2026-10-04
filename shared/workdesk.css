@@ -192,3 +192,16 @@
   .desk-group{ padding: 12px 12px 4px; }
 }
 #stagePanel .btn-ghost:disabled{ opacity: .5; cursor: not-allowed; border-style: dashed; }
+
+/* ---------- v3 (engine refactor): extra evidence kinds + legacy pill option ----------
+   New classes only; nothing above changes. Not used by Module 4 today. */
+.desk-table-wrap{ overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-s); }
+.desk-table-wrap:focus-visible{ outline: 3px solid var(--gold); outline-offset: 2px; }
+.desk-table{ border-collapse: collapse; width: 100%; font-size: 0.86rem; min-width: 420px; }
+.desk-table caption{ text-align: left; font-size: 0.8rem; color: var(--ink-faint); padding: 6px 8px; }
+.desk-table th, .desk-table td{ border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; color: var(--ink); }
+.desk-table thead th{ font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); background: var(--surface-sunken); }
+.desk-table tbody tr:last-child td, .desk-table tbody tr:last-child th{ border-bottom: none; }
+.desk-ev-reference{ background: var(--surface-sunken); }
+.desk-ev-reference p{ font-size: 0.9rem; color: var(--ink); }
+.lesson-pill.legacy:not(.done)::after{ content: " \21BA"; color: var(--ink-faint); }
