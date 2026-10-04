@@ -162,3 +162,33 @@
 @media (prefers-reduced-motion: reduce){
   .step-panel.active{ animation: none; }
 }
+
+/* ---------- v2: evidence cards, pause-and-re-check, structured entries ---------- */
+.desk-ev-head{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+.desk-ev-titlewrap{ flex: 1; min-width: 0; display:flex; align-items:center; gap: 8px; flex-wrap: wrap; }
+.desk-ev-titlewrap .desk-record-title{ margin: 0; }
+.desk-ev-head .btn{ padding: 6px 12px; }
+.desk-ev-body{ margin-top: 10px; }
+.desk-ev-message{ background: var(--surface-sunken); }
+.desk-ev-chip{ font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.desk-ev-chip.is-done{ color: var(--success); }
+.desk-ev-chip.is-recheck{ color: var(--error); }
+.desk-evidence-card.is-recheck{ border-color: var(--error); border-style: dashed; }
+.desk-gate{ margin: 6px 0 0; font-style: italic; }
+.desk-pause{ border: 1px dashed var(--gold); background: var(--gold-soft); border-radius: var(--radius-s); padding: 10px 12px; margin: 10px 0; }
+.desk-pause p{ color: var(--forest-dark); margin: 0 0 6px; font-size: 0.9rem; }
+.desk-pause-title{ font-weight: 600; }
+.desk-pause-list, .desk-evlist{ margin: 0 0 6px; padding-left: 1.2em; font-size: 0.88rem; color: var(--ink); }
+.desk-pause-list li.is-done, .desk-evlist li.is-done{ color: var(--success); }
+.desk-evlist{ list-style: none; padding-left: 0; }
+.desk-fb-sub{ list-style: circle; margin-left: 1.1em; }
+.desk-group{ border: 1px solid var(--line); border-radius: var(--radius-m); padding: 14px 16px 6px; margin: 0 0 16px; background: var(--surface); }
+.desk-group.is-flag{ border-color: var(--error); }
+.desk-group-title{ font-family: var(--font-body); font-size: 1rem; font-weight: 600; margin: 0 0 8px; }
+.desk-group .desk-records{ margin-bottom: 10px; }
+.desk-multi{ padding-bottom: 6px; }
+.ws-textarea[aria-disabled="true"], .desk-select:disabled{ background: var(--surface-sunken); color: var(--ink-faint); }
+@media (max-width: 640px){
+  .desk-group{ padding: 12px 12px 4px; }
+}
+#stagePanel .btn-ghost:disabled{ opacity: .5; cursor: not-allowed; border-style: dashed; }

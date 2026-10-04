@@ -17,7 +17,8 @@
      findings[].correct: true          options[].correct: true
      triage rows[].answer: "<choiceId>"
      sequence correctOrder: ["id", ...]
-     compose fields[].select.accept: ["5416", ...]
+     compose select fields[].accept: ["value", ...]
+     compose multi  fields[].accept: [["a","b"], ["a"], ...]   (each an acceptable set)
 
    SALT / XOR_KEY / hash must match shared/workdesk.js. */
 
@@ -57,7 +58,8 @@ function lockStage(st){
   }
   if(st.type === "compose"){
     st.fields.forEach(function(f){
-      if(f.select){ f.select.acc = f.select.accept.map(function(v){ return h(st.id + "|acc|" + f.id + "|" + v); }); delete f.select.accept; }
+      if(f.type === "select"){ f.acc = f.accept.map(function(v){ return h(st.id + "|fld|" + f.id + "|" + v); }); delete f.accept; }
+      if(f.type === "multi"){ f.acc = f.accept.map(function(set){ return h(st.id + "|fld|" + f.id + "|" + set.slice().sort().join(",")); }); delete f.accept; }
     });
   }
 }
@@ -82,7 +84,15 @@ function unlockStage(st){
   }
   if(st.type === "compose"){
     st.fields.forEach(function(f){
-      if(f.select){ f.select.accept = f.select.options.filter(function(v){ return f.select.acc.indexOf(h(st.id + "|acc|" + f.id + "|" + v)) !== -1; }); delete f.select.acc; }
+      if(f.type === "select"){ f.accept = f.options.map(function(o){ return o.value; }).filter(function(v){ return f.acc.indexOf(h(st.id + "|fld|" + f.id + "|" + v)) !== -1; }); delete f.acc; }
+      if(f.type === "multi"){
+        var vals = f.options.map(function(o){ return o.value; }), sets = [];
+        for(var m = 0; m < (1 << vals.length); m++){
+          var set = vals.filter(function(_, i){ return m & (1 << i); });
+          if(f.acc.indexOf(h(st.id + "|fld|" + f.id + "|" + set.slice().sort().join(","))) !== -1) sets.push(set);
+        }
+        f.accept = sets; delete f.acc;
+      }
     });
   }
 }
