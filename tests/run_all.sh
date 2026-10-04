@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs every Work Desk check: content lint, core unit tests, Module 4 browser
+# Runs every check: Everfield continuity, content lint, core unit tests, Module 4 browser
 # suite, and the Module 4 behavioral snapshot. Needs node, python3, playwright.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -9,6 +9,7 @@ if ! curl -s -o /dev/null "http://localhost:$PORT/index.html"; then
   trap 'kill $SERVER' EXIT; sleep 1
 fi
 export DESK_TEST_BASE="http://localhost:$PORT"
+echo "== everfield continuity"; node tools/everfield-check.js | tail -1
 echo "== content lint";        node tools/desk-codec.js check module-4/desk-data.js
 echo "== core unit tests";     node tests/unit/core.test.js
 echo "== module 4 browser";    python3 tests/e2e/test_module4.py | tail -1

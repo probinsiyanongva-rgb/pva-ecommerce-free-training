@@ -10,7 +10,8 @@ The Work Desk is the learning engine behind Module 4 (Orders & Fulfillment), ref
 | `shared/workdesk-ui.js` | **UI.** Evidence kinds (record, message, table, reference), evidence gate tracker, stage renderers (decision, triage, sequence, compose), feedback blocks, pause and re-check, earned work samples. | No |
 | `shared/workdesk-page.js` | **Page controller.** Brief → stages → next task, contextual buttons, status line, task pills, `#task-N` links, legacy progress integration. | No |
 | `shared/workdesk.css` | Desk styles, all under `desk-` classes on the existing tokens. | No |
-| `shared/everfield-data.js` | **Shared authored state.** Company, team, partners, channels, products, calendar. Deep-frozen. | No (module dates only) |
+| `shared/everfield-data.js` | **Shared authored state.** Company, team, partners, channels, products and product facts, calendar and timeline. Deep-frozen. | No (module dates only) |
+| `shared/everfield-records.js` | **Shared authored records.** Orders and stock rows that two or more modules show. Deep-frozen, answer-free; not loaded by any page yet. See `docs/everfield-continuity.md`. | No |
 | `<module>/desk-data.js` | **Module content.** Plain `config` + encoded `payload` (tasks, records, prompts, feedback, hashed answer keys). Generated, never hand-edited. | Yes |
 | `tools/desk-codec.js` | Encode, decode, and lint module content. Uses the core's hashing. | No |
 
@@ -79,7 +80,7 @@ Unlimited attempts. Previous selections stay. From the `pauseAfterFails`-th fail
 
 1. Author `<module>.src.json` with `config` (new `moduleId`, new salt) and tasks; reuse existing stage types and evidence kinds.
 2. `node tools/desk-codec.js check <module>.src.json`, then `encode` into `<module>/desk-data.js`. Never commit the source.
-3. Add the module's date to `everfield-data.js` → `calendar`.
+3. Add the module's date to `everfield-data.js` → `calendar` (it must fit the timeline in `docs/everfield-continuity.md`), and take any record another module already shows from `everfield-records.js`. Run `node tools/everfield-check.js`.
 4. In the module page, load the six scripts and call `PVADeskPage.mount({ module: "<id>" })`.
 5. Add a browser suite modelled on `tests/e2e/test_module4.py`.
 

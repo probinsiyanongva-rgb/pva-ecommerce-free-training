@@ -1,30 +1,39 @@
 /* PVA Free Training -- E-commerce VA Foundations
    Everfield Goods reference data (fictional company, training use only).
 
-   SHARED AUTHORED STATE. Plain, answer-free facts about the simulated company
-   that any module may read: team, partners, channels, products, and the
-   Everfield calendar (which simulated working day each converted module uses).
+   SHARED AUTHORED STATE -- the static "Company Bible" facts any module may
+   read: company, team, partners, channels, product master facts, and the
+   Everfield calendar. Recurring operational records (orders, stock rows) live
+   in the sibling file shared/everfield-records.js.
+
+   Every fact here was first authored in the course itself; `src` says where
+   (hub = the course home page's "Meet Everfield Goods" panel). tools/
+   everfield-check.js fails if a module and this file drift apart.
 
    Learner state never lives here. The object is deep-frozen, so nothing a
    learner does in one module can change what another module sees; per-learner
    work lives only in each module's own desk storage key.
 
-   Add shared records (orders, customers, stock rows that recur across modules)
-   here or in a sibling file only when a second module actually needs them. */
+   Authority limits and policies are deliberately NOT here: this file is loaded
+   on desk pages, and the authority canon would hint at desk answers. They are
+   kept for authors in docs/everfield-continuity.md. */
 
-(function(){
+(function(root){
   var EVERFIELD = {
     company: "Everfield Goods LLC",
+    /* Keys are used by desk briefs (`from`). marcus works for the 3PL, not
+       Everfield; org says so. src: hub "Who you'll hear from"; module-1 m1-l6. */
     team: {
-      sofia:  { name: "Sofia Ramirez", role: "E-commerce Manager" },
-      maya:   { name: "Maya Collins",  role: "Operations Manager" },
-      daniel: { name: "Daniel Brooks", role: "Everfield team" },
-      marcus: { name: "Marcus Lee",    role: "Everfield team" }
+      sofia:  { name: "Sofia Ramirez", role: "E-commerce Manager", org: "Everfield Goods" },
+      maya:   { name: "Maya Collins",  role: "Operations Manager", org: "Everfield Goods" },
+      daniel: { name: "Daniel Brooks", role: "Procurement & Supply Manager", org: "Everfield Goods" },
+      marcus: { name: "Marcus Lee",    role: "3PL Account Manager", org: "ClearPath Fulfillment" }
     },
     partners: {
       clearpath: { name: "ClearPath Fulfillment", role: "3PL (warehouse, pick, pack, ship)" }
     },
-    channels: ["Brand store", "Online marketplace"],
+    /* src: hub "How Everfield sells". */
+    channels: ["Brand store", "Online marketplace", "B2B / bulk"],
     products: {
       "EF-101": "Stackable Storage Bin",
       "EF-102": "Drawer Label Set",
@@ -35,14 +44,51 @@
       "EF-107": "Reusable Storage Bag Set",
       "EF-200": "Home Organization Starter Kit"
     },
-    /* Simulated working day per converted module. Keeps dates consistent
-       across modules; extend as modules are converted. */
+    /* Product master facts that the course states as Everfield's own. Only
+       facts some module already asserts; anything absent is undefined -- add
+       it here before a module relies on it. */
+    productFacts: {
+      catalog:  { variants: "none -- no size/color variants on any SKU", src: ["module-2 m2-l1"] },
+      "EF-101": { category: "Home Organization", unitCost: "$4.20", dimensions: "16in x 11in x 9in", weight: "2.2 lb",
+                  src: ["module-9 m9-l2", "module-3 m3-l4", "module-6 m6-l4"] },
+      "EF-102": { pack: "40 Pieces", src: ["module-3 m3-l2"] },
+      "EF-103": { category: "Home Organization", supplier: "Pinecrest Manufacturing", leadTime: "14 days", unit: "Each",
+                  src: ["module-2 m2-l2"] },
+      "EF-104": { pack: "12-Piece", src: ["module-2 m2-l4", "module-11 m11-l7"] },
+      "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["module-9 m9-l2"] },
+      "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
+      "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
+                  src: ["module-5 m5-l4", "module-3 m3-l6"] }
+    },
+    /* Simulated working day per converted module. The desk engine reads
+       calendar[moduleId].date; keep this a plain module -> date map. */
     calendar: {
       m4: { date: "Tue, Sep 15" }
+    },
+    /* The canonical operating timeline (docs/everfield-continuity.md has the
+       reasoning). One September operating period; the year is never shown to
+       learners -- weekdays follow a calendar in which Sep 15 is a Tuesday. */
+    timeline: {
+      period: "September",
+      weekdayAnchor: "Tue, Sep 15",
+      entries: [
+        { date: "on or before Wed, Sep 2", what: "Early-September stock snapshot", ref: "stock-early-sep", src: ["module-5 m5-l2"] },
+        { date: "Wed, Sep 2", what: "Order #4021 ships; EF-101 balance 34 -> 32", ref: "#4021", src: ["module-5 m5-l7", "module-9 m9-l3"] },
+        { date: "before Sun, Sep 6", what: "Weekly report notes EF-103 inbound", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
+        { date: "Sun, Sep 6", what: "EF-103 inbound (25 units) expected", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
+        { date: "Sat, Sep 5 - Tue, Sep 15", what: "Module 4 order records", src: ["module-4 desk-data"] },
+        { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
+        { date: "after the EF-103 inbound sells through", what: "Capstone week (EF-103 at 0 available, 0 inbound); exact week not yet fixed", src: ["module-14 m14-t4"] }
+      ]
+    },
+    /* Operating rhythm stated in the course. */
+    operating: {
+      weeklyReport: { day: "Friday", src: ["module-13 m13-l2"] }
     }
   };
   (function freeze(o){
     if(o && typeof o === "object" && !Object.isFrozen(o)){ Object.freeze(o); Object.keys(o).forEach(function(k){ freeze(o[k]); }); }
   })(EVERFIELD);
-  window.EVERFIELD = EVERFIELD;
-})();
+  root.EVERFIELD = EVERFIELD;
+  if(typeof module !== "undefined" && module.exports) module.exports = EVERFIELD;
+})(typeof window !== "undefined" ? window : globalThis);
