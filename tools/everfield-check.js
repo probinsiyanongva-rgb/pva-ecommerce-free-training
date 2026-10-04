@@ -10,7 +10,8 @@
    Checks: shared data is frozen and answer/learner-state free; record IDs are
    unique and every record used by two modules is a shared record with complete
    `src`; shared record facts match the module text; product IDs and names;
-   product facts; people and roles; dates (weekday/date agreement, numeric dates
+   product facts; people and roles; policy cards vs the
+   approved canon; dates (weekday/date agreement, numeric dates
    on the timeline, the desk date matches the calendar); no reference to a
    missing record or lesson. Known, deliberately deferred conflicts are listed
    in DEFERRED and reported as warnings. */
@@ -22,9 +23,7 @@ var RECORDS = require(path.join(ROOT, "shared/everfield-records.js"));
 
 /* Conflicts the audit found but that sit in a module this pass may not edit.
    Each entry is matched by check name + location; remove it when fixed. */
-var DEFERRED = [
-  { check: "variants", loc: "M7 m7-l4", why: "EF-105 colour exchange contradicts 'no size/color variants' (module-2 m2-l1). Module 7 is frozen until its conversion; fix there." }
-];
+var DEFERRED = [];
 
 // ---------- corpus ----------
 var rows = [];
@@ -263,7 +262,23 @@ rows.forEach(function(r){
   check("people and roles agree with the team", probs);
 })();
 
-// 6. dates
+// 6. policy clauses quoted on desk policy cards match the approved canon word for word
+(function(){
+  var probs = [], canon = {};
+  fs.readFileSync("docs/everfield-continuity.md", "utf8").split("\n").forEach(function(line){
+    var m = /^\| (P\d+) \| (.+?) \| [^|]*\|\s*$/.exec(line); if(m) canon[m[1]] = m[2];
+  });
+  if(!Object.keys(canon).length) probs.push({ msg: "no policy canon found in docs/everfield-continuity.md" });
+  rows.forEach(function(r){
+    var m = /^(P\d+) · (.+)$/.exec(r.text.trim());
+    if(!m) return;
+    if(!canon[m[1]]) probs.push({ loc: r.loc, msg: m[1] + " quoted in " + r.loc.split(".")[0] + " is not an approved clause" });
+    else if(canon[m[1]] !== m[2]) probs.push({ loc: r.loc, msg: m[1] + " in " + r.loc.split(".")[0] + " differs from the approved wording" });
+  });
+  check("policy cards match the approved canon", probs);
+})();
+
+// 7. dates
 (function(){
   var probs = [];
   var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

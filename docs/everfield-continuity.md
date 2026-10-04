@@ -100,6 +100,8 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday. The year is never shown
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
+| Thu, Sep 3 – Wed, Sep 16 | Module 7 order, return and carrier records (orders #5420–#5444, returns #230–#240, tracking CP-7731-05xx; all Module 7-local) | M7 desk |
+| Thu, Sep 17, 10:15 AM | **Module 7 desk day** | M7 desk; `calendar.m7` |
 | After EF-103's Sep 6 stock sells through | **Capstone week**: EF-103 at 0 available, 0 inbound. Exact week not fixed | M14 m14-t4 |
 | Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0, M9 EF-102/EF-106 snapshot, M12 "42 orders", M13 "3 stockouts" | — |
 
@@ -153,6 +155,26 @@ As stated in the course. Not in `everfield-data.js`, which desk pages load, beca
 - **Out of scope for this Foundation**: supplier negotiation, purchase orders, warehouse logistics (m1-l6, M5 page note).
 - **Cadence**: daily, order and inventory monitoring and urgent follow-ups; weekly (report on Friday), inventory, replenishment, open POs, shipments, 3PL performance, KPIs (m13-l2, m13-l8).
 - **Undefined (add here before any module uses it)**: return window, refund amount thresholds, shipping service levels, carrier names, EF-103's own dimensions (it must fit a 12×9×3 in carton), EF-106 piece count.
+
+### Returns and exceptions policy (approved 2026-10-04)
+
+Approved with the Module 7 conversion map (decisions D1 and D3). Each clause is the exact wording a desk may quote on its policy card; `tools/everfield-check.js` fails if a module's card differs from this text. The return window is deliberately unspecified: every case a module shows must be a recent delivery, plainly inside any reasonable window.
+
+| Id | Clause | Basis |
+| --- | --- | --- |
+| P1 | An order that has not been released to ClearPath can be cancelled by the VA. | m4-l2 order note |
+| P2 | An order already at ClearPath but not yet shipped can only be stopped by ClearPath. Ask Maya to request an intercept, and promise the customer nothing until she confirms. | m4-l2, m4-l3; Maya owns ClearPath |
+| P3 | Once the carrier has the package, a cancellation request becomes a return. | m7-l2 |
+| P5 | A returned item that is unopened and marked Restock: the VA finalizes the standard refund. | m6-l6, m7-l5 |
+| P6 | A return marked Inspection Required: the refund waits until the inspection is complete. | m7-l5 |
+| P7 | Damaged on arrival, with photos: the VA documents the case and Sofia decides between a refund and a replacement. Damage that repeats across orders goes to Maya as a possible pattern. | m7-l5, m7-l6 |
+| P8 | A refund without the item coming back is Sofia's decision. | m6-l6 |
+| P9 | Exchanges: the returned item is processed like any return. If the replacement is not available to ship, offer to wait for restock (no date promised) or to return for a refund, and let the customer choose. | m6-l5, m7-l4 |
+| P10 | A confirmed mis-ship: the correct item goes out at no cost and the wrong item comes back. The VA requests the replacement through Maya. | m6-l7, m7-l7 |
+| P11 | Delivered but not received: share the carrier's delivery details with the customer and ask them to check. If it still has not turned up, Maya decides on a carrier claim or a reship. | m4-l7, m7-l8 |
+| P12 | Returned to sender: confirm the full address with the customer, then request the reship through Maya. | m7-l9 |
+
+(P4, the return window, is intentionally left out.)
 
 ## 7. Shared records — boundary and proposal
 

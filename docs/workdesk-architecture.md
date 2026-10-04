@@ -1,6 +1,6 @@
 # Work Desk engine — architecture notes
 
-The Work Desk is the learning engine behind Module 4 (Orders & Fulfillment), refactored so other modules can reuse its mechanics without copying Module 4. It is client-side only: no backend, accounts, scoring, timers or tracking. The design source of truth is the *Learning Experience Reference Architecture & Propagation Specification*.
+The Work Desk is the learning engine behind Module 4 (Orders & Fulfillment) and Module 7 (Returns, Refunds & Exceptions), refactored so other modules can reuse its mechanics without copying Module 4. It is client-side only: no backend, accounts, scoring, timers or tracking. The design source of truth is the *Learning Experience Reference Architecture & Propagation Specification*.
 
 ## Files
 
@@ -22,6 +22,10 @@ A module page loads, in order: `progress.js`, `everfield-data.js`, `workdesk.js`
 **Reusable (engine):** evidence cards and the gate; the four stage types; tier 1–5 validation; free-text junk filter; consistency rules; feedback composition and the answer-safety filter; pause and re-check; self-check with stale-confirmation clearing; draft persistence; earned work-sample generation; derived completion; per-module storage; per-module answer protection; legacy-progress integration.
 
 **Module 4 only (content, in `module-4/desk-data.js`):** the eight tasks and their records (#5401–#5419), every prompt, finding, option and feedback line, the Order Log and update structures, button labels (`stage.cta`), the sequence gate wording, two fallback feedback lines, the completion banner, the work-sample company line, and the salt and key. Module 4's simulated date is in `everfield-data.js` → `calendar.m4`.
+
+**Module 7 (content, in `module-7/desk-data.js`):** ten tasks over orders #5420–#5444 and returns #230–#240 (all Module 7-local), policy cards quoting the approved clauses in `docs/everfield-continuity.md` §6 word for word (the checker enforces it), the Exception Resolution Log compose stage, salt `everfield-desk-m7-v1`, `legacyPill: "check"`. Simulated date: `calendar.m7` (Thu, Sep 17).
+
+Known limitation: a `triage` stage renders only its rows, so it has no open side card. Module 7's triage tasks that need policy (l5) carry the clauses in the task reference shown with the brief, and the stage intro points back to it.
 
 ## Configuration boundary (`config` in a module's source)
 

@@ -63,7 +63,8 @@
     /* Simulated working day per converted module. The desk engine reads
        calendar[moduleId].date; keep this a plain module -> date map. */
     calendar: {
-      m4: { date: "Tue, Sep 15" }
+      m4: { date: "Tue, Sep 15" },
+      m7: { date: "Thu, Sep 17" }
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
        reasoning). One September operating period; the year is never shown to
@@ -78,6 +79,8 @@
         { date: "Sun, Sep 6", what: "EF-103 inbound (25 units) expected", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
         { date: "Sat, Sep 5 - Tue, Sep 15", what: "Module 4 order records", src: ["module-4 desk-data"] },
         { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
+        { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
+        { date: "Thu, Sep 17", what: "Module 7 desk day", src: ["module-7 desk-data"] },
         { date: "after the EF-103 inbound sells through", what: "Capstone week (EF-103 at 0 available, 0 inbound); exact week not yet fixed", src: ["module-14 m14-t4"] }
       ]
     },
