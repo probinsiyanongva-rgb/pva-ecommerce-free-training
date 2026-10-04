@@ -28,6 +28,12 @@
   #lessonTitle:focus{ outline: none; }
   #lessonTitle:focus-visible{ outline: 3px solid var(--gold); outline-offset: 2px; }
   .noscript{ padding: 16px; border:1px solid var(--line-strong); border-radius: var(--radius-m); background: var(--surface); }
+  /* Break-test repairs, Module 7 only (M7-05, M7-03). The shared tokens measure
+     3.3-3.8:1 for small text; these keep the same hues at >= 4.7:1 on every
+     page background. Keyboard focus never lands under the sticky top bar. */
+  :root{ --ink-faint: #5A6657; --gold: #7E5A1C; }
+  .portfolio-badge{ background: #5A6833; }
+  html{ scroll-padding-top: 72px; }
 </style>
 </head>
 <body>

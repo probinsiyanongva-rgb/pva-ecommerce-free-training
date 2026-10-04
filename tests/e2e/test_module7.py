@@ -164,7 +164,25 @@ with sync_playwright() as p:
         to_stage(pg, ti, st["id"]); open_all(pg)
         answer_decision(pg, st, option="copy")
         fb = panel(pg).locator(".desk-fb").last.inner_text()
-        check("transfer", "%s: reusing the first case's answer fails and says so" % st["id"], not pg.is_enabled("#btnNext") and "different" in fb, fb[:120])
+        check("transfer", "%s: reusing the first case's answer fails and points back to the comparison" % st["id"], not pg.is_enabled("#btnNext") and "reusing" in fb.lower(), fb[:120])
+    ctx.close()
+
+    # ---------- M7-02: a miss never says which choice was invalid ----------
+    ctx, pg, _ = fresh(br)
+    VERDICT = re.compile(r"(invalid|(action|choice|decision|answer|option) (is|was) (wrong|incorrect)|not the right|isn't the right|good answer|may be reasonable|correct option|wrong option|you selected)", re.I)
+    for ti, st in ALL:
+        if st["type"] != "decision": continue
+        to_stage(pg, ti, st["id"]); open_all(pg)
+        texts = []
+        for oid in wrong_options(st):                       # wrong action, right findings
+            answer_decision(pg, st, option=oid)
+            texts.append(panel(pg).locator(".desk-fb").last.inner_text())
+            open_all(pg); panel(pg).get_by_role("button", name="Reconsider and try again").click(); pg.wait_for_timeout(20)
+        answer_decision(pg, st, findings=correct_findings(st)[:-1] + distractors(st)[:1])   # right action, flawed read
+        texts.append(panel(pg).locator(".desk-fb").last.inner_text())
+        bad = [VERDICT.search(t).group(0) for t in texts if VERDICT.search(t)]
+        named = [finding_text(st, f) for f in distractors(st) if any(finding_text(st, f).rstrip(".") in t.split("What you missed", 1)[-1] for t in texts)]
+        check("feedback-principle", "%s: miss feedback states principles only; no choice is declared invalid or named" % st["id"], not bad and not named, (bad, named))
     ctx.close()
 
     # ---------- shortcut attempts, derived completion, work samples ----------
@@ -188,6 +206,28 @@ with sync_playwright() as p:
     vals = compose_values(st, m7_text); vals["c2.note"] = "Order #5440 probably got stolen from the side door, so Maya should decide on a claim today."
     fill_compose(pg, st, vals); confirm_all(pg); submit(pg)
     check("consistency", "a note that guesses a cause is rejected", not pg.is_enabled("#btnNext"))
+    # M7-01: notes are checked against the structured fields and the records, not for prose style
+    def note_attempt(c1, c2):
+        v = compose_values(st, m7_text); v["c1.deadline"] = "friday"; v["c2.deadline"] = "today"; v["c1.note"] = c1; v["c2.note"] = c2
+        fill_compose(pg, st, v); confirm_all(pg); submit(pg)
+        ok = pg.is_enabled("#btnNext")
+        if ok:
+            panel(pg).get_by_role("button", name="Revise your work").click(); pg.wait_for_timeout(40)
+        return ok
+    T1 = "Order 5437: EF-106 panels snapped, third report this week, same mailer. Maya to review packing by Friday."
+    T2 = "Order 5440 delivered Monday at the side door; customer checked everywhere. Maya to decide claim or reship today."
+    check("l10-notes", "terse but accurate notes pass (documentation, not a writing test)", note_attempt(T1, T2))
+    check("l10-notes", "the audit's keyword string is rejected", not note_attempt("batch photo replacement carrier 48 hours order resolved customer informed", T2))
+    check("l10-notes", "a keyword salad padded with filler words is rejected",
+          not note_attempt("5437 the ef-106 and the pack and the mailer to maya by friday. the photos of the panels in the report.", T2))
+    check("l10-notes", "a note that contradicts the records is rejected",
+          not note_attempt(T1, "Order #5440 was delivered to the wrong address according to the label. Maya should decide on a carrier claim or a reship today."))
+    check("l10-notes", "a note that states an unproven cause is rejected",
+          not note_attempt("Order #5437: the customer mishandled the dividers and snapped two panels, photos attached. Maya should review the packing by Friday.", T2))
+    check("l10-notes", "a note that mixes in the other case is rejected", not note_attempt(T1 + " Same as #5440.", T2))
+    check("l10-notes", "a note that disagrees with its own Deadline is rejected", not note_attempt(T1.replace("by Friday", "next month"), T2))
+    msgs = panel(pg).locator(".desk-fb").last.inner_text()
+    check("l10-notes", "note feedback names the principle, never the words to type", "5437" not in msgs and "snapped" not in msgs.lower(), msgs[:200])
     ctx.close()
 
     # ---------- answer encoding / leakage ----------
@@ -298,6 +338,39 @@ with sync_playwright() as p:
     for n in (1, 5, 10):
         goto(pg, M7 + "#task-%d" % n); check("deep-link", "#task-%d opens task %d" % (n, n), pg.inner_text("#lessonKicker") == "Task %d of 10" % n)
     ctx.close()
+
+    # ---------- M7-05 contrast, M7-03 sticky top bar ----------
+    CONTRAST = r"""() => {
+     function rgb(s){var m=s.match(/[\d.]+/g);return m?m.map(Number):[0,0,0,0];}
+     function lum(c){var a=c.slice(0,3).map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*a[0]+0.7152*a[1]+0.0722*a[2];}
+     function bg(e){while(e){var c=rgb(getComputedStyle(e).backgroundColor);if(c.length<4||c[3]>0.5)return c;e=e.parentElement;}return [255,255,255,1];}
+     var out=[];
+     document.querySelectorAll('body *').forEach(e=>{
+      if(!e.offsetParent || e.disabled || e.closest('button:disabled')) return;
+      if(![].some.call(e.childNodes,n=>n.nodeType===3&&n.textContent.trim())) return;
+      var cs=getComputedStyle(e), L1=lum(rgb(cs.color)), L2=lum(bg(e)), r=(Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05);
+      var size=parseFloat(cs.fontSize), large=size>=24||(parseInt(cs.fontWeight)>=700&&size>=18.66);
+      if(r<(large?3:4.5)) out.push((e.className||e.tagName)+' '+r.toFixed(2));
+     }); return out; }"""
+    ctx, pg, _ = fresh(br); low = []
+    goto(pg, M7 + "#task-2"); low += pg.evaluate(CONTRAST)
+    pg.click("#btnNext"); pg.wait_for_timeout(60); low += pg.evaluate(CONTRAST); open_all(pg); low += pg.evaluate(CONTRAST)
+    st = stage_by_id(SRC, "l2-a"); fail_once(pg, st); low += pg.evaluate(CONTRAST)
+    panel(pg).get_by_role("button", name="Reconsider and try again").click(); fail_once(pg, st); low += pg.evaluate(CONTRAST)
+    to_stage(pg, 4, "l5-a"); open_all(pg); answer_triage(pg, stage_by_id(SRC, "l5-a"), wrong=True); low += pg.evaluate(CONTRAST)
+    to_stage(pg, 9, "l10-log"); low += pg.evaluate(CONTRAST)
+    check("contrast", "all enabled text meets WCAG AA (4.5:1, 3:1 large) in brief, evidence, feedback, pause, triage and compose states", not low, sorted(set(low))[:8])
+    ctx.close()
+    STICKY = """() => { var top=document.querySelector('.topbar').getBoundingClientRect().bottom;
+     var els=Array.from(document.querySelectorAll('#stagePanel select,#stagePanel input,#stagePanel textarea,#stagePanel button,#btnNext,#btnPrev')).filter(e=>e.offsetParent);
+     return els.filter(e=>{ e.scrollIntoView({block:'start', behavior:'instant'}); return e.getBoundingClientRect().top < top-1; }).length; }"""
+    for w in (320, 375):
+        ctx, pg, _ = fresh(br, viewport={"width": w, "height": 700}, is_mobile=True, has_touch=True)
+        hidden = 0
+        for ti, sid in [(1, "l2-a"), (4, "l5-a"), (9, "l10-log")]:
+            to_stage(pg, ti, sid); open_all(pg); hidden += pg.evaluate(STICKY)
+        check("sticky", "%dpx: no control is left under the sticky top bar when navigated to (scroll-padding)" % w, hidden == 0, hidden)
+        ctx.close()
 
     # ---------- mobile ----------
     ctx, pg, _ = fresh(br, viewport={"width": 375, "height": 812}, device_scale_factor=2, is_mobile=True, has_touch=True)
