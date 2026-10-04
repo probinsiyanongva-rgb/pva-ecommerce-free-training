@@ -253,5 +253,74 @@ test("lint catches answer-pattern and feedback problems", function(){
   assert.ok(Codec.lint(src).errors.some(function(e){ return /quotes a correct finding/.test(e); }));
 });
 
+/* ---------- typed numbers (compose field type "number", engine 2.1) ---------- */
+function numberStage(d, extra){
+  return lock({ id: "q1", type: "compose", groups: [{ id: "g", title: "G", hint: "look again", records: [] }],
+    fields: [ Core.assign({ id: "units", group: "g", type: "number", label: "Units shipped", unit: "units", max: 500, accept: ["58"], msg: "count only the rows the question asks for." }, extra || {}),
+              { id: "cost", group: "g", type: "number", label: "Cost", unit: "$", decimals: 2, max: 5000, accept: ["243.60"] } ] }, d);
+}
+test("number: normalisation is shared by lock and check (currency, commas, spaces, trailing zeros)", function(){
+  var N = Core.normalizeNumber;
+  assert.strictEqual(N("58", {}).value, "58"); assert.strictEqual(N(" 58.0 ", {}).value, "58");
+  assert.strictEqual(N("$1,234.5", { decimals: 2 }).value, "1234.50"); assert.strictEqual(N("1 234", {}).value, "1234");
+  ["5 units", "abc", "12,34", "58.5", ""].forEach(function(v){ assert.ok(!N(v, {}).ok, v); });
+  assert.ok(!N("12.345", { decimals: 2 }).ok, "more decimals than declared is refused, never rounded into a pass");
+});
+test("number: exact match against a hashed value; formats that mean the same number all pass", function(){
+  var d = deskFor("m90"), st = numberStage(d);
+  assert.ok(!JSON.stringify(st).includes("243.60") && !JSON.stringify(st).includes('"58"'), "no plaintext answer after locking");
+  ["58", " 58 ", "58.0"].forEach(function(u){ ["243.60", "$243.6", "243.6"].forEach(function(c){ assert.ok(d.evaluate(st, { values: { units: u, cost: c } }).pass, u + " / " + c); }); });
+  var r = d.evaluate(st, { values: { units: "57", cost: "243.60" } });
+  assert.ok(!r.pass); assert.deepStrictEqual(r.badGroups, ["g"]);
+  assert.ok(r.problems.some(function(p){ return /count only the rows/.test(p.msg); }));
+});
+test("number: feedback never states the value or which way the miss lies", function(){
+  var d = deskFor("m91"), st = numberStage(d);
+  [["57", "243.60"], ["59", "243.60"], ["58", "243.59"]].forEach(function(v){
+    var msgs = d.evaluate(st, { values: { units: v[0], cost: v[1] } }).problems.map(function(p){ return p.msg; }).join(" ");
+    assert.ok(!/58|243\.6|higher|lower|too (high|low|many|few)|more|less/i.test(msgs), msgs);
+  });
+});
+test("number: blank or non-numeric entries get a format message, not a correctness verdict", function(){
+  var d = deskFor("m92"), st = numberStage(d);
+  var r = d.evaluate(st, { values: { units: "58 units", cost: "" } });
+  assert.ok(!r.pass); assert.deepStrictEqual(r.badGroups, []);
+  assert.strictEqual(r.problems.filter(function(p){ return /enter a number/.test(p.msg); }).length, 2);
+  assert.ok(r.problems.some(function(p){ return /up to 2 decimal places/.test(p.msg); }));
+});
+test("number: several accepted values and tier 3 criteria work like other fields", function(){
+  var d = deskFor("m93"), st = numberStage(d, { accept: ["58", "61"] });
+  assert.ok(d.evaluate(st, { values: { units: "61", cost: "243.60" } }).pass);
+  var d2 = deskFor("m94"), st2 = lock({ id: "q2", type: "compose", groups: [{ id: "g", title: "G", hint: "h", records: [] }],
+    fields: [{ id: "n", group: "g", type: "number", label: "N", criteria: [{ kind: "oneOf", values: ["3", "4"], msg: "pick a count the evidence supports." }] }] }, d2);
+  assert.ok(d2.evaluate(st2, { values: { n: "4" } }).pass);
+  assert.ok(!d2.evaluate(st2, { values: { n: "5" } }).pass);
+});
+test("number: codec round-trips the answer by searching the declared range", function(){
+  var d = deskFor("m95"), src = { id: "q3", type: "compose", groups: [], fields: [
+    { id: "a", group: "g", type: "number", label: "A", max: 500, accept: ["58"] },
+    { id: "b", group: "g", type: "number", label: "B", decimals: 2, min: 100, max: 1000, accept: ["243.6"] } ] };
+  var st = JSON.parse(JSON.stringify(src)); Codec.lockStage(st, d.codec.keys); Codec.unlockStage(st, d.codec.keys);
+  assert.deepStrictEqual(st.fields[0].accept, ["58"]); assert.deepStrictEqual(st.fields[1].accept, ["243.60"]);
+});
+test("number: lint requires a max, a valid in-range answer and a bounded search", function(){
+  function src(f){ return { tasks: [{ id: "t", title: "T", objective: "O", brief: { from: "x", subject: "y" }, stages: [{ id: "s", type: "compose", label: "L", cta: "c", groups: [], fields: [f] }] }] }; }
+  function errs(f){ return Codec.lint(src(f)).errors.join("; "); }
+  assert.ok(/needs a numeric max/.test(errs({ id: "n", group: "g", type: "number", label: "N", accept: ["5"] })));
+  assert.ok(/not a valid number/.test(errs({ id: "n", group: "g", type: "number", label: "N", max: 9, accept: ["5.5"] })));
+  assert.ok(/outside min..max/.test(errs({ id: "n", group: "g", type: "number", label: "N", max: 9, accept: ["12"] })));
+  assert.ok(/range too large/.test(errs({ id: "n", group: "g", type: "number", label: "N", decimals: 2, max: 1e6, accept: ["5"] })));
+  assert.strictEqual(errs({ id: "n", group: "g", type: "number", label: "N", max: 9, accept: ["5"] }), "");
+  assert.ok(Codec.lint(src({ id: "n", group: "g", type: "number", label: "N" })).warnings.some(function(w){ return /any number passes/.test(w); }));
+});
+test("number: adding the field type leaves existing field types unchanged", function(){
+  var d = deskFor("m96");
+  var st = lock({ id: "c9", type: "compose", groups: [{ id: "g", title: "G", hint: "h", records: [] }],
+    fields: [ { id: "s", group: "g", type: "select", label: "S", options: [{ value: "a" }, { value: "b" }], accept: ["b"] },
+              { id: "t", group: "g", type: "text", label: "T", minWords: 2 } ] }, d);
+  assert.ok(d.evaluate(st, { values: { s: "b", t: "two words" } }).pass);
+  assert.ok(/choose an option/.test(d.evaluate(st, { values: { s: "", t: "two words" } }).problems[0].msg));
+});
+
 console.log("\n" + (passed + failed) + " unit tests, " + failed + " failed");
 process.exit(failed ? 1 : 0);

@@ -20,6 +20,8 @@
      sequence correctOrder: ["id", ...]
      compose select fields[].accept: ["value", ...]
      compose multi  fields[].accept: [["a","b"], ["a"], ...]   (each an acceptable set)
+     compose number fields[].accept: ["58"] (or "1234.50" with decimals: 2); needs max
+       (and min, default 0) so the source can be recovered by searching that range
 
    Hashing and encoding come from shared/workdesk.js, so the codec and the
    engine cannot drift apart. */
@@ -52,8 +54,21 @@ function lockStage(st, K){
     st.fields.forEach(function(f){
       if(f.type === "select" && f.accept){ f.acc = f.accept.map(function(v){ return K.field(st.id, f.id, v); }); delete f.accept; }
       if(f.type === "multi" && f.accept){ f.acc = f.accept.map(function(set){ return K.field(st.id, f.id, set.slice().sort().join(",")); }); delete f.accept; }
+      if(f.type === "number" && f.accept){
+        f.acc = f.accept.map(function(v){ var n = Core.normalizeNumber(v, f); if(!n.ok) throw new Error("number field " + st.id + "/" + f.id + ": accepted value '" + v + "' is not a valid number for its decimals"); return K.field(st.id, f.id, n.value); });
+        delete f.accept;
+      }
     });
   }
+}
+/* Number answers are recovered by searching the field's declared range. */
+var NUMBER_SEARCH_LIMIT = 2000000;
+function numberSearchSize(f){ var d = f.decimals || 0, lo = f.min || 0; return Math.round((f.max - lo) * Math.pow(10, d)) + 1; }
+function unlockNumber(st, f, K){
+  var d = f.decimals || 0, step = Math.pow(10, d), lo = Math.round((f.min || 0) * step), hi = Math.round(f.max * step), found = [];
+  if(hi - lo + 1 > NUMBER_SEARCH_LIMIT) throw new Error("number field " + st.id + "/" + f.id + ": range too large to recover");
+  for(var i = lo; i <= hi; i++){ var v = (i / step).toFixed(d); if(f.acc.indexOf(K.field(st.id, f.id, v)) !== -1) found.push(v); }
+  return found;
 }
 function unlockStage(st, K){
   if(st.type === "decision"){
@@ -85,6 +100,7 @@ function unlockStage(st, K){
         }
         f.accept = sets; delete f.acc;
       }
+      if(f.type === "number" && f.acc){ f.accept = unlockNumber(st, f, K); delete f.acc; }
     });
   }
 }
@@ -131,6 +147,18 @@ function lint(src){
       if(st.type === "compose"){
         st.fields.forEach(function(f){
           if((f.type === "select" || f.type === "multi") && !f.accept && !(f.criteria && f.criteria.length)) warn(st.id + "/" + f.id + ": no accept and no criteria -- any choice passes");
+          if(f.type === "number"){
+            if(!f.accept && !(f.criteria && f.criteria.length)) warn(st.id + "/" + f.id + ": number field with no accept and no criteria -- any number passes");
+            if(f.accept){
+              if(typeof f.max !== "number") err(st.id + "/" + f.id + ": number field needs a numeric max so its answer can be recovered from the shipped file");
+              else if(numberSearchSize(f) > NUMBER_SEARCH_LIMIT) err(st.id + "/" + f.id + ": number range too large (max - min at its decimals must cover at most " + NUMBER_SEARCH_LIMIT + " values)");
+              f.accept.forEach(function(v){
+                var n = Core.normalizeNumber(v, f);
+                if(!n.ok) err(st.id + "/" + f.id + ": accepted value '" + v + "' is not a valid number for decimals " + (f.decimals || 0));
+                else if(typeof f.max === "number" && (Number(n.value) < (f.min || 0) || Number(n.value) > f.max)) err(st.id + "/" + f.id + ": accepted value '" + v + "' is outside min..max");
+              });
+            }
+          }
         });
         if(st.evidence && !(st.confirm && st.confirm.length)) warn(st.id + ": produces a work sample without a self-check");
       }

@@ -694,6 +694,18 @@
           ctrl.value = vals[f.id] || "";
           ctrl.setAttribute("aria-describedby", err.id);
           wrap.appendChild(ctrl);
+        } else if(f.type === "number"){
+          /* Typed number: a plain text input (no spinner, no locale surprises);
+             the unit is part of the visible label. */
+          var nid2 = nid("num");
+          var nl = el("label", "ws-label", f.label + (f.unit ? " (" + f.unit + ")" : "")); nl.htmlFor = nid2; wrap.appendChild(nl);
+          if(f.help) wrap.appendChild(el("p", "desk-hint", f.help));
+          ctrl = document.createElement("input"); ctrl.type = "text"; ctrl.id = nid2; ctrl.className = "desk-input desk-number";
+          ctrl.setAttribute("inputmode", f.decimals ? "decimal" : "numeric"); ctrl.setAttribute("autocomplete", "off"); ctrl.setAttribute("spellcheck", "false");
+          if(f.placeholder) ctrl.placeholder = f.placeholder;
+          ctrl.value = vals[f.id] || "";
+          ctrl.setAttribute("aria-describedby", err.id);
+          wrap.appendChild(ctrl);
         } else if(f.type === "multi"){
           var fs = el("fieldset", "desk-fieldset desk-multi");
           fs.appendChild(el("legend", null, f.label));
@@ -895,7 +907,8 @@
       lines.push(g.sampleHead || g.title);
       stage.fields.filter(function(f){ return f.group === g.id; }).forEach(function(f){
         var v = ans.values[f.id], out;
-        if(f.type === "select") out = (f.options.filter(function(o){ return o.value === v; })[0] || {}).label || "";
+        if(f.type === "number"){ var nv = Core.normalizeNumber(v, f); out = nv.ok ? (f.unit === "$" ? "$" + nv.value : nv.value + (f.unit ? " " + f.unit : "")) : String(v || "").trim(); }
+        else if(f.type === "select") out = (f.options.filter(function(o){ return o.value === v; })[0] || {}).label || "";
         else if(f.type === "multi") out = (v || []).map(function(x){ return (f.options.filter(function(o){ return o.value === x; })[0] || {}).label; }).join("; ") || "None";
         else out = String(v || "").trim();
         lines.push("  " + (f.sampleLabel || f.label) + ": " + out);

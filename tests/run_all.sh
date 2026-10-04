@@ -13,6 +13,7 @@ echo "== everfield continuity"; node tools/everfield-check.js | tail -1
 echo "== content lint m4";     node tools/desk-codec.js check module-4/desk-data.js
 echo "== content lint m7";     node tools/desk-codec.js check module-7/desk-data.js
 echo "== core unit tests";     node tests/unit/core.test.js
+echo "== engine number field"; python3 tests/e2e/test_engine_number.py | tail -1
 echo "== module 4 browser";    python3 tests/e2e/test_module4.py | tail -1
 echo "== module 4 behavior";   python3 tests/e2e/snapshot_module4.py
 echo "== module 7 browser";    python3 tests/e2e/test_module7.py | tail -1

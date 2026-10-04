@@ -65,6 +65,7 @@
     pauseBody: function(attempts){ return "You've tried this " + attempts + " times. Before trying again, re-open the evidence below and look at it with the feedback in mind:"; },
     retryLabel: "Reconsider and try again",
     msgChoose: "choose an option.",
+    msgNumber: function(d){ return "enter a number using digits only" + (d ? " (up to " + d + " decimal place" + (d > 1 ? "s" : "") + ")" : " (a whole number)") + "."; },
     msgMinWords: function(n){ return "write at least " + n + " real words, in sentences, that a teammate could act on."; },
     msgNotBlank: "this can't be blank.",
     msgKeywordList: "this reads like a list of keywords. Write it as plain sentences a teammate could read aloud.",
@@ -90,6 +91,20 @@
     return o;
   }
   function call(v){ var args = Array.prototype.slice.call(arguments, 1); return typeof v === "function" ? v.apply(null, args) : v; }
+
+  /* Typed numbers (compose field type "number"). One canonical form is used to
+     lock (codec) and to check (engine): optional leading "$", thousands commas
+     and spaces removed, then fixed to the field's declared decimals. Entries with
+     more decimal places than declared are refused, never rounded into a pass. */
+  function normalizeNumber(raw, field){
+    var d = (field && field.decimals) || 0;
+    var s = String(raw === undefined || raw === null ? "" : raw).trim().replace(/^\$\s*/, "").replace(/(\d)[,\s](?=\d{3}(\D|$))/g, "$1");
+    if(!s) return { ok: false, blank: true };
+    if(!/^-?\d+(\.\d+)?$/.test(s)) return { ok: false };
+    var frac = (s.split(".")[1] || "").replace(/0+$/, "");
+    if(frac.length > d) return { ok: false };
+    return { ok: true, value: Number(s).toFixed(d) };
+  }
 
   /* ---------------- answer protection ---------------- */
   function fnv(str){
@@ -345,6 +360,17 @@
     var vals = answer.values || {}, problems = [], badGroups = {}, fieldMsgGroups = {};
     stage.fields.forEach(function(f){
       var v = vals[f.id];
+      if(f.type === "number"){
+        var n = normalizeNumber(v, f);
+        if(!n.ok){ problems.push({ group: f.group, field: f.id, msg: f.label + ": " + call(copy.msgNumber, f.decimals || 0) }); return; }
+        if(f.acc && !V.exact.field(stage.id, f, n.value)){
+          badGroups[f.group] = true;
+          if(f.msg){ problems.push({ group: f.group, field: f.id, msg: f.label + ": " + f.msg }); fieldMsgGroups[f.group] = true; }
+          return;
+        }
+        problems.push.apply(problems, V.criteria(stage, f, n.value, vals));
+        return;
+      }
       if(f.type === "select" || f.type === "multi"){
         if(f.type === "select" && !v){ problems.push({ group: f.group, field: f.id, msg: f.label + ": " + copy.msgChoose }); return; }
         if(f.acc && !V.exact.field(stage.id, f, v)){
@@ -476,11 +502,11 @@
   }
 
   return {
-    VERSION: "2.0.0",
+    VERSION: "2.1.0",
     DEFAULTS: DEFAULTS, DEFAULT_COPY: DEFAULT_COPY,
     createCodec: createCodec, createStore: createStore, createDesk: createDesk, storageKeyFor: storageKeyFor,
     registerStageType: registerStageType, stageTypes: stageTypes,
-    Text: Text, memoryStorage: memoryStorage, deepFreeze: deepFreeze, safetyFilter: safetyFilter, call: call, assign: assign,
+    Text: Text, normalizeNumber: normalizeNumber, memoryStorage: memoryStorage, deepFreeze: deepFreeze, safetyFilter: safetyFilter, call: call, assign: assign,
     _resetStoreRegistry: function(){ openStores = {}; }
   };
 });

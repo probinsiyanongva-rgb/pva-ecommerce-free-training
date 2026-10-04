@@ -43,6 +43,8 @@ Known limitation: a `triage` stage renders only its rows, so it has no open side
 }
 ```
 
+**Typed numbers (engine 2.1).** A `compose` field `{ type: "number", unit?, decimals? (default 0), min? (default 0), max, accept: ["58"] }`. Entries are normalised the same way when locked and when checked: an optional leading "$", thousands commas and spaces are removed, and the value is fixed to `decimals`. An entry with more decimal places than declared is refused, never rounded into a pass. A non-number gets a format message; a wrong number gets only the field's `msg` (a principle, never the value or a direction). `max` is required with `accept` because the codec recovers the answer by searching `min..max` (at most 2,000,000 values). The work sample prints the canonical value with its unit ("$243.60", "58 units"). The input is a plain text field with `inputmode`, so no spinner or locale formatting.
+
 Stage data can add `cta` (button into the stage), `gateText` and `recheckText` (sequence), `humanReview` (tier 5 note), per-field `criteria` (tier 3), and per-finding `principle` + `look` as an alternative to `miss`.
 
 ## Storage namespace
@@ -55,7 +57,7 @@ Stage data can add `cta` (button into the stage), `gateText` and `recheckText` (
 
 | Tier | Mechanism | Defined by |
 | --- | --- | --- |
-| 1 Exact | Salted hashes per finding, option, row, sequence position, field value or set | Codec, from `correct` / `answer` / `correctOrder` / `accept` markers in the plaintext source |
+| 1 Exact | Salted hashes per finding, option, row, sequence position, field value, set or typed number | Codec, from `correct` / `answer` / `correctOrder` / `accept` markers in the plaintext source |
 | 2 Consistency | `rules` (must mention) and `when` (if field X is Y, must or must not mention) between the learner's own answers; `banned` guesses; example-copy check | Module data |
 | 3 Criteria | `required`, `oneOf`, `minItems`, `matchesSource`, `distinctFrom`. Several right answers; rules are visible, not secret | Module data |
 | 4 Self-review | Every judgement confirmation ticked; confirmations unlock after evidence is open and clear on edit | Module data (`confirm`) |

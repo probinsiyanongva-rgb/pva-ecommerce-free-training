@@ -187,7 +187,7 @@
 .desk-group-title{ font-family: var(--font-body); font-size: 1rem; font-weight: 600; margin: 0 0 8px; }
 .desk-group .desk-records{ margin-bottom: 10px; }
 .desk-multi{ padding-bottom: 6px; }
-.ws-textarea[aria-disabled="true"], .desk-select:disabled{ background: var(--surface-sunken); color: var(--ink-faint); }
+.ws-textarea[aria-disabled="true"], .desk-select:disabled, .desk-input:disabled{ background: var(--surface-sunken); color: var(--ink-faint); }
 @media (max-width: 640px){
   .desk-group{ padding: 12px 12px 4px; }
 }
