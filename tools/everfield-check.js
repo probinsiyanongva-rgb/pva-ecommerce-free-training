@@ -12,13 +12,14 @@
    `src`; shared record facts match the module text; product IDs and names;
    product facts; people and roles; policy cards vs the
    approved canon; dates (weekday/date agreement, numeric dates
-   on the timeline, the desk date matches the calendar); Module 9's week stays
+   on the timeline, the desk date matches the calendar; month-aware across
+   September and October); Module 9's week stays
    in its own order, tracking and SKU ranges; no reference to a missing record
    or lesson. A productFacts source may be an approved canon document
    ("docs everfield-continuity.md"). Known, deliberately deferred conflicts are listed
    in DEFERRED and reported as warnings. */
 var fs = require("fs"), path = require("path"), vm = require("vm");
-var ROOT = path.resolve(__dirname, "..");
+var ROOT = process.env.EVERFIELD_ROOT || path.resolve(__dirname, "..");
 process.chdir(ROOT);
 var EVERFIELD = require(path.join(ROOT, "shared/everfield-data.js"));
 var RECORDS = require(path.join(ROOT, "shared/everfield-records.js"));
@@ -319,41 +320,95 @@ rows.forEach(function(r){
   check("Module 5 day stays in its ranges", probs);
 })();
 
-// 7. dates
+// 6d. Module 13's week stays inside its own ranges (design map W1-a): orders #5465-#5482,
+// returns #241 onward, tracking CP-7731-07xx, and no EF-103 on any line, so nothing can
+// contradict the capstone's later EF-103. The one exception is Lesson 2's reference
+// card, which keeps the legacy EF-103 "expected 9/6" line as a worked example from an
+// earlier week (decision C2): it is the shared inbound record's only dated source.
 (function(){
   var probs = [];
+  if(!fs.existsSync("module-13/desk-data.js")){ check("Module 13 week stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 13; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5465 && n <= 5482)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 13's #5465-#5482" }); }
+    rx = /Return #(\d+)|#(\d{3})\b/g;
+    while((mm = rx.exec(r.text))){ var x = +(mm[1] || mm[2]); if(x < 241) probs.push({ loc: r.loc, msg: "Return #" + x + " in " + where + " is outside Module 13's #241 onward" }); }
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^07\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 13's CP-7731-07xx" }); }
+    if(/EF-103\b/.test(r.text) && !/^M13 m13-l5\.reference\[/.test(r.loc)) probs.push({ loc: r.loc, msg: "EF-103 in " + where + " (the Module 13 week keeps EF-103 off every line; only Lesson 2's earlier-week reference example may name it)" });
+  });
+  check("Module 13 week stays in its ranges", probs);
+})();
+
+// 7. dates. Month-aware (decision C1): the operating period runs from September
+// into October (Module 13's week ends Fri, Oct 2). A date is turned into a day
+// number counted from Sep 1 (Sep d -> d, Oct d -> 30 + d), so weekday, numeric
+// and "after the desk day" checks work across the month boundary. September
+// results are exactly what the September-only version produced; run with
+// EVERFIELD_TRACE=1 to print every date judgement (used to prove that).
+(function(){
+  var probs = [];
+  var TR = process.env.EVERFIELD_TRACE ? function(){ console.log("TRACE " + [].slice.call(arguments).join(" | ")); } : function(){};
   var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  var anchor = /(\w{3}), Sep (\d+)/.exec(EVERFIELD.timeline.weekdayAnchor);
-  function weekday(d){ return DAYS[(DAYS.indexOf(anchor[1]) + (d - +anchor[2]) % 7 + 7 * 10) % 7]; }
+  var MONTH = { Sep: { n: 9, offset: 0 }, Oct: { n: 10, offset: 30 } };
+  var MONTH_RX = "(Sep(?:t|tember)?|Oct(?:ober)?)";
+  function mon(word){ return word.slice(0, 3); }                  // "September" -> "Sep"
+  function ord(word, d){ return MONTH[mon(word)].offset + d; }     // day number from Sep 1
+  var anchor = new RegExp("(\\w{3}), " + MONTH_RX + " (\\d+)").exec(EVERFIELD.timeline.weekdayAnchor);
+  var anchorOrd = ord(anchor[2], +anchor[3]);
+  function weekday(o){ return DAYS[(DAYS.indexOf(anchor[1]) + (o - anchorOrd) % 7 + 7 * 10) % 7]; }
   function checkStr(s, where, loc){
-    var rx = /\b(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*,? Sep(?:t|tember)? (\d{1,2})\b/g, mm;
-    while((mm = rx.exec(s))){ if(weekday(+mm[2]) !== mm[1]) probs.push({ loc: loc, msg: mm[0] + " in " + where + " -- Sep " + mm[2] + " is a " + weekday(+mm[2]) }); }
+    var rx = new RegExp("\\b(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*,? " + MONTH_RX + " (\\d{1,2})\\b", "g"), mm;
+    while((mm = rx.exec(s))){
+      var w = weekday(ord(mm[2], +mm[3]));
+      TR("wd", loc || where, mm[0], w === mm[1] ? "ok" : "bad");
+      if(w !== mm[1]) probs.push({ loc: loc, msg: mm[0] + " in " + where + " -- " + mon(mm[2]) + " " + mm[3] + " is a " + w });
+    }
   }
   rows.forEach(function(r){ checkStr(r.text, r.loc.split(".")[0], r.loc); });
   each(EVERFIELD, function(k, v, p){ if(typeof v === "string") checkStr(v, "EVERFIELD." + p); });
   each(RECORDS, function(k, v, p){ if(typeof v === "string") checkStr(v, "RECORDS." + p); });
   // numeric m/d dates are only allowed when the timeline or a shared record accounts for them
   var known = {};
-  JSON.stringify([EVERFIELD.timeline, RECORDS]).replace(/Sep (\d+)/g, function(_, d){ known["9/" + d] = 1; });
+  JSON.stringify([EVERFIELD.timeline, RECORDS]).replace(/(Sep|Oct) (\d+)/g, function(_, m, d){ known[MONTH[m].n + "/" + d] = 1; });
+  TR("known", Object.keys(known).sort().join(","));
   var LOCAL_NUMERIC = { "M11 m11-l4": "9/2" }; // Return #229: illustrative, same day as #4021 (not its return)
   rows.forEach(function(r){
     if(/\.(rules|when)\[/.test(r.loc)) return; // desk validation keywords (accepted spellings), not statements
     var rx = /(?:^|[^\d/])(\d{1,2}\/\d{1,2})(?![\d/])/g, mm;
     while((mm = rx.exec(r.text))){
       var d = mm[1]; if(!/^(9|10|11|12|[1-8])\/\d+$/.test(d)) continue;
+      TR("num", r.loc, d, known[d] ? "known" : LOCAL_NUMERIC[r.loc.split(".")[0]] === d ? "local" : "unknown");
       if(!known[d] && LOCAL_NUMERIC[r.loc.split(".")[0]] !== d) probs.push({ loc: r.loc, msg: "date " + d + " in " + r.loc.split(".")[0] + " is not on the Everfield timeline" });
     }
   });
-  // every converted module's desk clock matches its calendar date
+  // every converted module's desk clock matches its calendar date -- or, for a
+  // lesson that declares its own work date (task.workDate; Module 13 Lesson 1 runs
+  // midweek), that date. A lesson's work date must be on the timeline and no later
+  // than the module's calendar day. Nothing in a lesson is dated after its day.
+  var workDate = {};
+  rows.forEach(function(r){ var x = /^M(\d+) ([\w-]+)\.workDate$/.exec(r.loc); if(x) workDate[x[2]] = r.text; });
+  var tlDates = EVERFIELD.timeline.entries.map(function(e){ return e.date; }).join(" ‖ ");
+  function dayOf(s){ var dm = new RegExp(MONTH_RX + " (\\d+)").exec(s); return dm ? ord(dm[1], +dm[2]) : NaN; }
   Object.keys(EVERFIELD.calendar).forEach(function(mid){
     var n = +mid.slice(1), date = EVERFIELD.calendar[mid].date.replace(",", "");
+    function dayFor(loc){ var w = workDate[lessonOf(loc)]; return w ? w.replace(",", "") : date; }
+    Object.keys(workDate).forEach(function(lid){
+      if(lid.split("-")[0] !== mid) return;
+      if(tlDates.indexOf(workDate[lid]) === -1) probs.push({ msg: lid + " work date '" + workDate[lid] + "' is not on the Everfield timeline" });
+      if(!(dayOf(workDate[lid]) <= dayOf(date))) probs.push({ msg: lid + " work date '" + workDate[lid] + "' is after calendar " + mid });
+    });
     var nows = rows.filter(function(r){ return modOf(r.loc) === n && /\.now$/.test(r.loc); });
-    nows.forEach(function(r){ if(r.text.replace(",", "").indexOf(date) !== 0) probs.push({ msg: r.loc.split(".")[0] + " desk clock '" + r.text.split(" ·")[0] + "' differs from calendar " + mid }); });
+    nows.forEach(function(r){ var d = dayFor(r.loc); TR("clock", mid, r.loc, r.text.replace(",", "").indexOf(d) === 0 ? "ok" : "bad"); if(r.text.replace(",", "").indexOf(d) !== 0) probs.push({ msg: r.loc.split(".")[0] + " desk clock '" + r.text.split(" ·")[0] + "' differs from " + (d === date ? "calendar " + mid : "its work date") }); });
     if(!nows.length) probs.push({ msg: "calendar has " + mid + " but the module has no desk clock" });
-    // nothing in that module is dated after its desk day
-    rows.filter(function(r){ return modOf(r.loc) === n; }).forEach(function(r){
-      var rx = /Sep(?:t|tember)? (\d{1,2})\b/g, mm, day = +/Sep (\d+)/.exec(date)[1];
-      while((mm = rx.exec(r.text))){ if(+mm[1] > day && !/\.reference\[/.test(r.loc)) probs.push({ msg: "Sep " + mm[1] + " in " + r.loc.split(".")[0] + " is after " + mid + "'s desk day" }); }
+    // nothing in that module is dated after its desk day (its lesson's work date, if declared)
+    rows.filter(function(r){ return modOf(r.loc) === n && !/\.workDate$/.test(r.loc); }).forEach(function(r){
+      var rx = new RegExp(MONTH_RX + " (\\d{1,2})\\b", "g"), mm, day = dayOf(dayFor(r.loc));
+      while((mm = rx.exec(r.text))){
+        var o = ord(mm[1], +mm[2]);
+        TR("after", mid, r.loc, mm[0], o > day ? (/\.reference\[/.test(r.loc) ? "ref" : "after") : "ok");
+        if(o > day && !/\.reference\[/.test(r.loc)) probs.push({ msg: mon(mm[1]) + " " + mm[2] + " in " + r.loc.split(".")[0] + " is after " + (workDate[lessonOf(r.loc)] ? "its work date" : mid + "'s desk day") });
+      }
     });
   });
   check("dates agree with the Everfield calendar", probs);

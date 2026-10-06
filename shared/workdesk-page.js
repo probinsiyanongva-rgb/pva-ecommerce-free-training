@@ -123,6 +123,10 @@
       titleEl.textContent = t.title;
       objectiveEl.textContent = call(P.objective, t.objective);
       badgeSlot.innerHTML = t.portfolio ? '<span class="portfolio-badge">Portfolio</span>' : "";
+      /* Optional per-lesson work date (Module 13: Lesson 1 runs midweek, the report
+         lessons on the module's calendar day). Lessons without one show the
+         module's calendar date, as before. */
+      if($("deskDate") && (t.workDate || config.simDate)) $("deskDate").textContent = t.workDate || config.simDate;
       doneBanner.style.display = "none";
       try{ history.replaceState(null, "", "#task-" + (i + 1)); }catch(e){}
       renderStage(); highlightNav();

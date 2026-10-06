@@ -88,9 +88,9 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 
 ## 3. Everfield calendar
 
-**Finding:** Module 4's Tue Sep 15 and the 9/2 and 9/6 dates do not conflict. They are different points in one September operating period, and they agree with each other where they touch: the 25 EF-103 units due 9/6 are what let Module 4 ship EF-103 orders placed Sep 9 and Sep 11. No date needs to change. (The spec placed "inbound 9/6" in Module 5. It is in Module 13; Module 5 has the stock figures it refers to.)
+**Finding:** Module 4's Tue Sep 15 and the 9/2 and 9/6 dates do not conflict. They are different points in one operating period (September, running into early October since Module 13's week), and they agree with each other where they touch: the 25 EF-103 units due 9/6 are what let Module 4 ship EF-103 orders placed Sep 9 and Sep 11. No date needs to change. (The spec placed "inbound 9/6" in Module 5. It is in Module 13; Module 5 has the stock figures it refers to.)
 
-Weekdays follow a calendar in which Sep 15 is a Tuesday. The year is never shown to learners.
+Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). The year is never shown to learners.
 
 | When | What | Sources |
 | --- | --- | --- |
@@ -98,7 +98,7 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday. The year is never shown
 | Tue, Sep 1 – Wed, Sep 2 | Module 5 records (all Module 5-local except the shared rows): orders #4023–#4027, EF-101's movements (#4021 −2, Return #229 +2, #4024 shipped from reserved stock, one approved write-off), ClearPath's 7:00 AM cycle count. The 8:00 AM stock sheet keeps the snapshot's EF-101 and EF-103 rows and adds Module 5-local rows and alert levels | M5 desk |
 | Wed, Sep 2, 9:15 AM – 4:30 PM | **Module 5 desk day** (EF-103's inbound shown as "due Sun", never as a later date) | M5 desk; `calendar.m5` |
 | Wed, Sep 2 | Order #4021 (EF-101 x2) ships, EF-101 balance 34 → 32. Same day: #4022 (EF-200 x1) is Processing; Return #229 (EF-101 x2) is restocked | M5 m5-l7; M9 m9-l3 (desk reference); M11 m11-l4 |
-| Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 |
+| Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 (kept in Lesson 2's reference as a worked example from an earlier week, decision C2) |
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
@@ -106,12 +106,15 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday. The year is never shown
 | Thu, Sep 17, 10:15 AM | **Module 7 desk day** | M7 desk; `calendar.m7` |
 | Mon, Sep 21 – Fri, Sep 25 | Module 9 week (all Module 9-local): order export (orders #5450–#5462, tracking CP-7731-06xx), ClearPath's weekly shipped report, Friday stock sheet (EF-101, EF-104, EF-105, EF-107, EF-200 only; never EF-102, EF-103 or EF-106), open-items log | M9 desk |
 | Fri, Sep 25, 3:40 PM | **Module 9 desk day** (Everfield's weekly report day) | M9 desk; `calendar.m9` |
+| Mon, Sep 28 – Fri, Oct 2 | Module 13 week (all Module 13-local, decision W1-a): customer contacts log, returns log (#241 onward), exceptions log, the VA's work log, week-on-week figures and the verified Operations Tracker; orders #5465–#5482, tracking CP-7731-07xx; no EF-103 on any line | M13 desk |
+| Wed, Sep 30, 4:30 PM | **Module 13 Lesson 1 work date** (midweek items; ClearPath's missed carrier pickup). Declared on the lesson as `workDate` | M13 m13-l2 |
+| Fri, Oct 2, 11:20 AM – 2:30 PM | **Module 13 report day** (Lessons 2 and 3; the weekly report for Sofia) | M13 desk; `calendar.m13` |
 | After EF-103's Sep 6 stock sells through | **Capstone week**: EF-103 at 0 available, 0 inbound. Exact week not fixed | M14 m14-t4 |
-| Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0, M12 "42 orders", M13 "3 stockouts". (The old M9 EF-102/EF-106 snapshot was retired with the Module 9 conversion.) | — |
+| Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0, M12 "42 orders". (The old M9 EF-102/EF-106 snapshot was retired with the Module 9 conversion, and M13's "3 stockouts" example with the Module 13 conversion.) | — |
 
 Rules for authors:
 
-1. A converted module gets one desk day in `calendar`; nothing in its records is dated later than that day.
+1. A converted module gets one desk day in `calendar`; nothing in its records is dated later than that day. A lesson may declare an earlier work date of its own (`workDate` on the task: on this timeline, no later than the module's day); the desk bar shows it while that lesson is open, and nothing in that lesson is dated after it. Module 13 Lesson 1 is the only one so far.
 2. A numeric or weekday date in any lesson must be on this timeline or in a shared record. The checker enforces this.
 3. Undated illustrations stay undated and are not canon. Do not quote their figures as Everfield's stock.
 4. Order numbers are identifiers, not a sequence: Module 4's own numbers are not in date order (#5410 placed Sep 5, #5401 placed Sep 15). Do not work out dates from them.
@@ -234,8 +237,9 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Product facts | A `productFacts` value not stated in its source (a lesson, or the approved product canon in §6); dimensions that differ from the SKU's record; a kit recipe that differs |
 | Variants | Any colour or size variant implied for a SKU |
 | People and roles | Data file vs hub; a lesson giving someone another role; briefs from unknown people; new named managers not on the team |
-| Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar`; desk records dated after the desk day |
+| Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar` (or the lesson's own `workDate`); desk records dated after the desk day (or the lesson's work date); a work date not on the timeline or after the module's day. Month-aware across September and October (decision C1) |
 | Module 5 day stays in its ranges | A Module 5 order outside #4023–#4027 (except the shared #4021), or any return other than the shared Return #229 |
 | Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
+| Module 13 week stays in its ranges | A Module 13 order outside #5465–#5482, a return below #241, tracking outside CP-7731-07xx, or EF-103 anywhere except Lesson 2's earlier-week reference example (C2) |
 
-Each check was confirmed to fail on an injected defect (17 mutations, all caught). Current result: all checks pass, plus one deferred warning (correction #4, Module 7).
+Each check was confirmed to fail on an injected defect (17 mutations, all caught). The month-aware date check (C1) was proven not to change any earlier result: with `EVERFIELD_TRACE=1` the checker prints every date judgement, and the September-only and month-aware versions produced identical traces for Modules 4, 5, 7 and 9 (802 judgements), identical verdicts on every other check, and identical failures on a set of planted bad dates; only the month-aware version catches a wrong October weekday. Current result: all checks pass, plus one deferred warning (correction #4, Module 7).
