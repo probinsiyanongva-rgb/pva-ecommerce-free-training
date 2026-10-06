@@ -33,7 +33,7 @@ def label_of(f, v): return next(o["label"] for o in f["options"] if o["value"] =
 def m9_text(st, g, f, labels):
     """A terse, accurate note built from the accepted structured values only."""
     out = [label_of(field(st, "stock.out"), v).split(" ")[0] for v in field(st, "stock.out")["accept"][0]]
-    disc = [label_of(field(st, "open.disc"), v).split(":")[0] for v in field(st, "open.disc")["accept"][0]]
+    disc = [label_of(field(st, "open.disc"), v).split(" ")[0] for v in field(st, "open.disc")["accept"][0]]
     return "Out of stock today: " + " and ".join(out) + ". Still open: the " + " and ".join(disc) + " gap, waiting on ClearPath."
 
 
@@ -171,7 +171,7 @@ with sync_playwright() as p:
         if (ours == cp) != (acc == "same") or (acc == "cutoff") != (late and ours != cp): calls_ok = False
     check("arithmetic", "Lesson 3: 'they match' exactly where the figures agree, and the cutoff call exactly where a shipment falls after noon", calls_ok)
     e = stage_by_id(SRC, "l4-a"); log = table(e, "Open-items")["rows"]
-    gone = {m.group(0) for r in log if "cancelled before pick" in r[1] for m in [re.search(r"#\d{4}", r[1])]}
+    gone = {m.group(0) for r in log if "corrected to Cancelled" in r[1] for m in [re.search(r"#\d{4}", r[1])]}
     live = [r for r in ex if r[5] == "Shipped" and r[0] not in gone]
     check("arithmetic", "Lesson 4: the week's totals carry the log's correction forward",
           field(e, "vol.orders")["accept"] == [str(len({r[0] for r in live}))] and field(e, "vol.units")["accept"] == [str(sum(int(r[4]) for r in live))])
@@ -335,10 +335,10 @@ with sync_playwright() as p:
     so, dsc, flg = field(st, "stock.out"), field(st, "open.disc"), field(st, "open.flags")
     check("numbers", "l4-a: a SKU at zero available with stock inbound is still a stockout", not try_e(**{"stock.out": [v for v in so["accept"][0] if v != inbound_out]}))
     check("numbers", "l4-a: a SKU with a few units left is not a stockout", not try_e(**{"stock.out": so["accept"][0] + [few_left]}))
-    closed = next(o["value"] for o in dsc["options"] if o["value"] not in dsc["accept"][0] and "cancelled" in o["label"])
-    check("numbers", "l4-a: calling a closed item an open discrepancy fails", not try_e(**{"open.disc": dsc["accept"][0] + [closed]}))
-    timing = next(o["value"] for o in flg["options"] if "timing" in o["label"])
-    check("numbers", "l4-a: flagging the timing difference for ClearPath fails", not try_e(**{"open.flags": flg["accept"][0] + [timing]}))
+    closed = [o["value"] for o in dsc["options"] if o["value"] not in dsc["accept"][0]]
+    check("numbers", "l4-a: calling any item open that the log doesn't show as open fails", all(not try_e(**{"open.disc": dsc["accept"][0] + [c]}) for c in closed))
+    raise_cp = next(o["value"] for o in flg["options"] if "ClearPath" in o["label"] and not any(o["value"] in x for x in flg["accept"]))
+    check("numbers", "l4-a: flagging a figure for ClearPath that the log doesn't show as open fails", not try_e(**{"open.flags": flg["accept"][0] + [raise_cp]}))
     check("numbers", "l4-a: every accepted set of flags passes", len(flg["accept"]) > 1 and all(try_e(**{"open.flags": list(x)}) for x in flg["accept"]))
     ctx.close()
 
@@ -393,39 +393,92 @@ with sync_playwright() as p:
         if okk: revise(pg)
         else: open_all(pg)
         return okk, fbx
+    # Repair 2 (break test M9-F03): the note is checked for meaningful consistency with the
+    # evidence -- two observations in any wording, no contradictions -- never for set words.
     out_skus = [label_of(field(st, "stock.out"), x).split(" ")[0] for x in field(st, "stock.out")["accept"][0]]
-    disc_sku = label_of(field(st, "open.disc"), field(st, "open.disc")["accept"][0][0]).split(":")[0]
-    disc_order = re.search(r"#\d{4}", label_of(field(st, "open.disc"), field(st, "open.disc")["accept"][0][0])).group(0)
-    closed_order = re.search(r"#\d{4}", next(o["label"] for o in field(st, "open.disc")["options"] if "cancelled" in o["label"])).group(0)
-    late_sku = next(o["label"] for o in field(st, "open.disc")["options"] if "cutoff" in o["label"]).split(":")[0]
+    disc_sku = label_of(field(st, "open.disc"), field(st, "open.disc")["accept"][0][0]).split(" ")[0]
+    not_open = [label_of(field(st, "open.disc"), o["value"]).split(" ")[0] for o in field(st, "open.disc")["options"] if o["value"] not in field(st, "open.disc")["accept"][0]]
+    stocked = [r[0].split()[0] for r in stock if r[1] != "0"]
+    other_closed = next(x for x in not_open if x not in out_skus)
+    log4 = table(e, "Open-items")["rows"]
+    closed_order = next(re.search(r"#\d{4}", r[1]).group(0) for r in log4 if r[3] == "Closed" and "corrected" in r[1])
     S = " and ".join(out_skus)
-    TERSE = [
-        "%s out of stock. %s gap still with ClearPath." % (S, disc_sku),
-        "Stockouts: %s. Open: %s on %s, waiting on Marcus." % (S, disc_sku, disc_order),
-        "%s are at zero available; one has stock inbound. The only open item is the %s gap, which Maya raised with ClearPath." % (S, disc_sku),
-        "%s isn't resolved yet and is with ClearPath. %s sold out this week." % (disc_sku, S),
-        "%s at zero. %s timing difference needs no action; %s is still open with ClearPath." % (S, late_sku, disc_sku),
+    GOOD = [
+        ("concise, grounded", "%s are out of stock. The %s gap is still with ClearPath." % (S, disc_sku)),
+        ("different wording", "Two products can't be sold today: %s. We're still waiting on an answer about %s." % (S, disc_sku)),
+        ("different wording, product names", "Nothing left of %s, and none available for %s until the inbound delivery lands. Still unresolved: %s." % (out_skus[-1], out_skus[0], disc_sku)),
+        ("real observation, no numbers, no ClearPath", "%s ran out and %s is empty for now. %s isn't resolved yet and Maya is following it up." % (out_skus[-1], out_skus[0], disc_sku)),
+        ("negations are not contradictions", "%s has units inbound but is out of stock today, as is %s. %s is no longer open. %s is pending." % (out_skus[0], out_skus[-1], closed_order, disc_sku)),
     ]
-    for t in TERSE:
-        check("l4-note", "terse but accurate note passes: %r" % t[:60], note(t)[0])
+    for why, t in GOOD:
+        check("l4-note", "passes -- %s: %r" % (why, t[:60]), note(t)[0], t)
     BAD = [
-        ("guesses a cause", "%s out of stock. ClearPath probably lost the %s units." % (S, disc_sku)),
-        ("blames without evidence", "%s out of stock. The %s gap is ClearPath's mistake." % (S, disc_sku)),
-        ("calls a closed item open", "%s out of stock. %s is open with ClearPath and %s is still open too." % (S, disc_sku, closed_order)),
-        ("wants the timing raised", "%s out of stock. %s is open. Please raise the %s timing difference with Marcus as well." % (S, disc_sku, late_sku)),
-        ("calls the open item settled", "%s out of stock. The %s gap is resolved now." % (S, disc_sku)),
-        ("says ClearPath confirmed", "%s out of stock. ClearPath confirmed the %s units shipped." % (S, disc_sku)),
-        ("adds a stockout the list doesn't have", "%s out of stock, and EF-107 is out of stock too. %s is open." % (S, disc_sku)),
-        ("denies any stockout", "No stockouts this week. %s gap is open with ClearPath for now." % disc_sku),
-        ("leaves out the open item", "Shipped well this week overall. %s are out of stock and need a restock." % S),
-        ("leaves out the stockouts", "A good week for orders overall. The %s gap is still open with ClearPath." % disc_sku),
-        ("keyword salad", "%s %s %s clearpath open gap stockout" % (out_skus[0], out_skus[-1], disc_sku)),
+        ("vague filler", "Everything went fine this week and the team did a good job overall."),
+        ("filler with an all-clear", "All good this week, nothing to report. %s are out of stock and %s is open." % (S, disc_sku)),
+        ("names products but says nothing (reproduced)", "%s is listed in the tracker. %s is also listed in the tracker this week." % (out_skus[-1], disc_sku)),
+        ("repeats tracker labels only", "%s. %s. %s." % (label_of(field(st, "open.disc"), field(st, "open.disc")["accept"][0][0]), label_of(field(st, "open.flags"), field(st, "open.flags")["accept"][0][0]), label_of(field(st, "stock.out"), field(st, "stock.out")["accept"][0][0]))),
+        ("is a token list", "%s %s stockout %s open ClearPath gap tracker week." % (out_skus[0], out_skus[-1], disc_sku)),
+        ("names SKUs without any state", "This week covered %s, %s and %s. Those are the main items for the tracker report." % (out_skus[0], out_skus[-1], disc_sku)),
+        ("claims stock that the sheet shows at zero (reproduced)", "%s needs attention this week. %s has some items left to check soon." % (disc_sku, out_skus[0])),
+        ("claims stock that the sheet shows at zero", "%s is out of stock. %s is still in stock for now. %s is open with ClearPath." % (out_skus[-1], out_skus[0], disc_sku)),
+        ("claims zero where the sheet shows stock", "%s are out of stock, and %s is out of stock as well. %s is with ClearPath." % (S, stocked[-1], disc_sku)),
+        ("denies the stockouts", "No stockouts this week. The %s gap is open with ClearPath for now." % disc_sku),
+        ("calls the open item settled", "%s are out of stock. The %s gap is resolved now." % (S, disc_sku)),
+        ("says ClearPath confirmed", "%s are out of stock. ClearPath confirmed the %s units, so it is closed." % (S, disc_sku)),
+        ("calls a closed item open", "%s are out of stock. %s is open with ClearPath and %s is still open too." % (S, disc_sku, closed_order)),
+        ("asks to raise an item that isn't open", "%s are out of stock. %s is open. Please raise %s with Marcus as well." % (S, disc_sku, other_closed)),
+        ("says everything is reconciled", "%s are out of stock. Everything has been reconciled with ClearPath." % S),
+        ("says the corrected order shipped", "%s are out of stock. %s shipped on Thursday. %s is waiting on ClearPath." % (S, closed_order, disc_sku)),
+        ("guesses a cause", "%s are out of stock. ClearPath probably lost the %s units." % (S, disc_sku)),
+        ("leaves out the stock observation", "Shipped well this week overall, with many orders. The %s gap is still waiting on ClearPath." % disc_sku),
+        ("leaves out the open item", "Shipped well this week overall. %s are out of stock and need restocking soon." % S),
     ]
+    REASON = {"repeats tracker labels only": ("repeats tracker labels", "keywords"), "names products but says nothing (reproduced)": ("out of stock",),
+              "claims stock that the sheet shows at zero (reproduced)": ("don't agree",), "filler with an all-clear": ("nothing is wrong",)}
     for why, t in BAD:
         okk, fbx = note(t)
-        check("l4-note", "a note that %s is rejected" % why, not okk, t)
+        check("l4-note", "rejected -- a note that %s" % why, not okk and (why not in REASON or any(x in fbx for x in REASON[why])), (t, fbx[:200]))
     okk, fbx = note("A good week for orders overall. The " + disc_sku + " gap is still open with ClearPath.")
     check("l4-note", "note feedback names the principle, never the words to type", not okk and not any(sk.lower() in fbx.lower() for sk in out_skus), fbx[:200])
+    ctx.close()
+
+    # ---------- Repair 1 (break test M9-F01): Lesson 4 gives no shortcut to Lesson 3 ----------
+    l3a, l3b = d, stage_by_id(SRC, "l3-b")
+    call_labels = [o["label"] for o in l3a["fields"][0]["options"] if o["value"] != "same"]
+    l3_orders = {m for f in correct_findings(l3b) for m in re.findall(r"#\d{4}", finding_text(l3b, f))}
+    l4_text = " ".join(" ".join(row) for r in records_of(e) if r.get("kind") == "table" and "Open-items" in r["title"] for row in r["rows"])
+    l4_labels = " ".join(o["label"] for f in e["fields"] if f.get("options") for o in f["options"])
+    needed = {m for row in table(e, "Open-items")["rows"] if "corrected" in row[1] for m in re.findall(r"#\d{4}", row[1])}
+    VERDICT_WORDS = re.compile(r"cutoff|noon|timing|carrier scan|tracking|before pick|on our side|our error|missing from|after the report", re.I)
+    check("repair-1", "Lesson 4's log and options carry no Lesson 3 cause or reasoning", not VERDICT_WORDS.search(l4_text + " " + l4_labels), VERDICT_WORDS.findall(l4_text + " " + l4_labels))
+    check("repair-1", "Lesson 4 names no Lesson 3 order except the status correction it needs for its counts", not ((l3_orders - needed) & set(re.findall(r"#\d{4}", l4_text + " " + l4_labels))), (l3_orders - needed))
+    check("repair-1", "Lesson 4 shows no Lesson 3 call category", not [c for c in call_labels if c.lower() in (l4_text + " " + l4_labels).lower()])
+    check("repair-1", "the log still gives what reporting needs: one open item with its owner, and the status correction",
+          len([r for r in table(e, "Open-items")["rows"] if r[3].startswith("Open") and "ClearPath" in r[2]]) == 1 and len(needed) == 1)
+    ctx, pg, errs = fresh(br)
+    goto(pg, M9); pg.locator(".lesson-pill").nth(3).click(); pg.wait_for_timeout(100)
+    check("repair-1", "a fresh learner can open Lesson 4 directly", pg.inner_text("#lessonKicker") == "Task 4 of 4")
+    pg.click("#btnNext"); pg.wait_for_timeout(60); open_all(pg)
+    dom = pg.inner_text("#stagePanel")
+    check("repair-1", "the rendered Lesson 4 page shows none of Lesson 3's conclusions",
+          not VERDICT_WORDS.search(dom) and not [c for c in call_labels if c in dom], VERDICT_WORDS.findall(dom)[:5])
+    check("repair-1", "no work sample before Lesson 4 is passed", panel(pg).locator(".ws-preview").count() == 0)
+    solve(pg, e)
+    check("repair-1", "Lesson 4 stays usable on its own evidence", pg.is_enabled("#btnNext"))
+    ws = panel(pg).locator(".ws-preview").inner_text() if panel(pg).locator(".ws-preview").count() else ""
+    check("repair-1", "the Operations Tracker is generated from the validated work",
+          ws.startswith("TRAINING WORK SAMPLE") and ("Units shipped: " + field(e, "vol.units")["accept"][0] + " units") in ws and "Note for Maya" in ws, ws[:200])
+    ctx.close()
+    ctx, pg, errs = fresh(br)
+    for sid in ("l3-a", "l3-b"): to_stage(pg, 2, sid); solve(pg, stage_by_id(SRC, sid))
+    check("repair-1", "Lesson 3 passes and still teaches its conclusions in its own feedback", pg.is_enabled("#btnNext"))
+    goto(pg, M9 + "#task-4", 1); open_all(pg)
+    dom2 = pg.inner_text("#stagePanel")
+    check("repair-1", "after Lesson 3, Lesson 4 shows the downstream facts: the open item and the corrected status",
+          disc_sku in dom2 and "Open" in dom2 and list(needed)[0] in dom2 and "Cancelled" in dom2)
+    solve(pg, e)
+    check("repair-1", "after Lesson 3, Lesson 4 passes and earns the tracker", pg.is_enabled("#btnNext") and panel(pg).locator(".ws-preview").count() == 1)
+    check("repair-1", "no JS errors", not errs, errs)
     ctx.close()
 
     # ---------- answer encoding / leakage ----------
