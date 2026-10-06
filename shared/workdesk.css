@@ -52,6 +52,10 @@
 .desk-clock{ font-size: 0.86rem; color: var(--ink-soft); margin: 4px 0 12px; }
 .desk-intro{ color: var(--ink); }
 .desk-records{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 18px; }
+/* A grid cell defaults to min-width:auto, so a wide table inside an evidence card
+   would push a phone page sideways. Letting cells shrink keeps the table scrolling
+   inside its own region (.desk-table-wrap). Promoted from Module 9's page (decision E3). */
+.desk-records > *{ min-width: 0; }
 .desk-record{
   border: 1px solid var(--line-strong); border-radius: var(--radius-m);
   background: var(--surface); padding: 14px 16px;

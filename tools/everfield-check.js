@@ -134,7 +134,7 @@ rows.forEach(function(r){
 (function(){
   var probs = [], sharedIds = {};
   [["orders", RECORDS.orders], ["stock.snapshots", RECORDS.stock.snapshots], ["stock.movements", RECORDS.stock.movements],
-   ["stock.inbound", RECORDS.stock.inbound], ["customers", RECORDS.customers], ["cases", RECORDS.cases]].forEach(function(pair){
+   ["stock.inbound", RECORDS.stock.inbound], ["returns", RECORDS.returns], ["customers", RECORDS.customers], ["cases", RECORDS.cases]].forEach(function(pair){
     Object.keys(pair[1]).forEach(function(id){ if(sharedIds[id]) probs.push({ msg: id + " defined in " + sharedIds[id] + " and " + pair[0] }); sharedIds[id] = pair[0]; });
   });
   check("shared record IDs are unique", probs);
@@ -142,7 +142,7 @@ rows.forEach(function(r){
   probs = [];
   Object.keys(seen).forEach(function(id){
     var mods = {}; Object.keys(seen[id].locs).forEach(function(l){ mods[modOf(l)] = 1; });
-    var n = Object.keys(mods).length, rec = RECORDS.orders[id];
+    var n = Object.keys(mods).length, rec = RECORDS.orders[id] || RECORDS.returns[id];
     if(n > 1 && !rec) probs.push({ msg: id + " appears in modules " + Object.keys(mods).join(", ") + " but is not a shared record" });
     if(rec){
       var listed = rec.src.map(function(s){ return s.split(" ")[1]; });
@@ -161,6 +161,10 @@ rows.forEach(function(r){
     var o = RECORDS.orders[id], n = id.slice(1);
     o.src.forEach(function(s){ need(s, new RegExp("#?" + n + "\\b"), id); });
     need("module-9 m9-l3", new RegExp(n + "\\s*\\u2016?\\s*" + md(o.date) + "\\s*\\u2016?\\s*" + o.sku + "\\s*\\u2016?\\s*" + o.qty + "\\s*\\u2016?\\s*" + o.status), id + " row (" + o.date + ", " + o.sku + " x" + o.qty + ", " + o.status + ")");
+  });
+  Object.keys(RECORDS.returns).forEach(function(id){
+    var r = RECORDS.returns[id];
+    r.src.forEach(function(s){ need(s, new RegExp(id.replace("#", "#?").replace(/^Return /, "(Return )?")), id); need(s, new RegExp(r.sku), id + " SKU"); need(s, new RegExp(r.disposition, "i"), id + " disposition"); });
   });
   Object.keys(RECORDS.stock.movements).forEach(function(id){
     var v = RECORDS.stock.movements[id];
@@ -183,7 +187,7 @@ rows.forEach(function(r){
   each(RECORDS, function(k, v, p){ if(k === "src") v.forEach(function(s){ if(!refExists(s)) probs.push({ msg: "RECORDS." + p + " cites missing lesson " + s }); }); });
   each(EVERFIELD, function(k, v, p){ if(k === "src") v.forEach(function(s){ if(!refExists(s)) probs.push({ msg: "EVERFIELD." + p + " cites missing lesson " + s }); }); });
   EVERFIELD.timeline.entries.forEach(function(e){
-    if(e.ref && !(RECORDS.orders[e.ref] || RECORDS.stock.snapshots[e.ref] || RECORDS.stock.movements[e.ref] || RECORDS.stock.inbound[e.ref]))
+    if(e.ref && !(RECORDS.orders[e.ref] || RECORDS.returns[e.ref] || RECORDS.stock.snapshots[e.ref] || RECORDS.stock.movements[e.ref] || RECORDS.stock.inbound[e.ref]))
       probs.push({ msg: "timeline entry '" + e.what + "' references missing record " + e.ref });
   });
   check("shared records match module text; no missing references", probs);
@@ -299,6 +303,20 @@ rows.forEach(function(r){
     while((mm = rx.exec(r.text))){ probs.push({ loc: r.loc, msg: mm[0] + " in " + r.loc.split(".")[0] + " (the Module 9 week excludes EF-102, EF-103 and EF-106)" }); }
   });
   check("Module 9 week stays in its ranges", probs);
+})();
+
+// 6c. Module 5's day stays inside its own ranges (design map W1): orders #4023-#4027
+// plus the shared #4021, Return #229 only, and no tracking or later order numbers.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-5/desk-data.js")){ check("Module 5 day stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 5; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 4023 && n <= 4027) && n !== 4021) probs.push({ loc: r.loc, msg: "order #" + n + " in " + r.loc.split(".")[0] + " is outside Module 5's #4023-#4027" }); }
+    rx = /Return #(\d+)/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "229") probs.push({ loc: r.loc, msg: "Return #" + mm[1] + " in " + r.loc.split(".")[0] + " (Module 5 uses only the shared Return #229)" }); }
+  });
+  check("Module 5 day stays in its ranges", probs);
 })();
 
 // 7. dates

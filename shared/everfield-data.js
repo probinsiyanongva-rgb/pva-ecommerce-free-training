@@ -60,13 +60,14 @@
       "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["docs everfield-continuity.md", "module-2 m2-l3"] },
       "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
       "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
-                  src: ["module-5 m5-l4", "module-3 m3-l6"] }
+                  src: ["module-5 m5-l8", "module-3 m3-l6"] }
     },
     /* Simulated working day per converted module. The desk engine reads
        calendar[moduleId].date; keep this a plain module -> date map. */
     calendar: {
       m4: { date: "Tue, Sep 15" },
       m7: { date: "Thu, Sep 17" },
+      m5: { date: "Wed, Sep 2" },
       m9: { date: "Fri, Sep 25" }
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
@@ -76,8 +77,11 @@
       period: "September",
       weekdayAnchor: "Tue, Sep 15",
       entries: [
-        { date: "on or before Wed, Sep 2", what: "Early-September stock snapshot", ref: "stock-early-sep", src: ["module-5 m5-l2"] },
+        { date: "on or before Wed, Sep 2", what: "Early-September stock snapshot (Module 5's 8:00 AM stock sheet)", ref: "stock-early-sep", src: ["module-5 m5-l7"] },
+        { date: "Tue, Sep 1 - Wed, Sep 2", what: "Module 5 records: orders #4023-#4027, EF-101 movements, ClearPath's 7:00 AM cycle count", src: ["module-5 desk-data"] },
+        { date: "Wed, Sep 2", what: "Module 5 desk day (inventory check, 9:15 AM - 4:30 PM)", src: ["module-5 desk-data"] },
         { date: "Wed, Sep 2", what: "Order #4021 ships; EF-101 balance 34 -> 32", ref: "#4021", src: ["module-5 m5-l7", "module-9 m9-l3"] },
+        { date: "Wed, Sep 2", what: "Return #229 (EF-101 x2, unopened) restocked", ref: "Return #229", src: ["module-11 m11-l4", "module-5 m5-l7"] },
         { date: "before Sun, Sep 6", what: "Weekly report notes EF-103 inbound", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
         { date: "Sun, Sep 6", what: "EF-103 inbound (25 units) expected", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
         { date: "Sat, Sep 5 - Tue, Sep 15", what: "Module 4 order records", src: ["module-4 desk-data"] },

@@ -35,11 +35,8 @@
   :root{ --ink-faint: #5A6657; --gold: #7E5A1C; }
   .portfolio-badge{ background: #5A6833; }
   html{ scroll-padding-top: 72px; }
-  /* Module 9 only: its six-column tables sit inside grid cells, whose default
-     min-width:auto lets a wide table push the page sideways on a phone. Letting
-     the cell shrink keeps the table scrolling inside its own region. (Engine-level
-     follow-up reported; shared CSS deliberately untouched.) */
-  .desk-records > *{ min-width: 0; }
+  /* The phone-width fix for wide tables in grid cells (first written here) now
+     lives in the shared engine CSS (decision E3). */
   /* Module 9's evidence is mostly tables: give each card room for its columns
      (two cards side by side only when both fit; one per row otherwise). */
   .desk-records{ grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); }

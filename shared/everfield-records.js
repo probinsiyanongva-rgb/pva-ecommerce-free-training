@@ -31,7 +31,7 @@
             "EF-101": { available: 34, reserved: 6, inbound: 50 },
             "EF-103": { available: 0, reserved: 2, inbound: 25 }
           },
-          src: ["module-5 m5-l2", "module-5 m5-l3", "module-5 m5-l5", "module-13 m13-l5", "module-14 m14-t4"]
+          src: ["module-5 m5-l7", "module-5 m5-l2", "module-5 m5-l8", "module-13 m13-l5", "module-14 m14-t4"]
         }
       },
       movements: {
@@ -39,8 +39,14 @@
                           src: ["module-5 m5-l7"] }
       },
       inbound: {
-        "inbound-ef103-sep6": { sku: "EF-103", qty: 25, expected: "Sun, Sep 6", src: ["module-13 m13-l5", "module-5 m5-l2"] }
+        "inbound-ef103-sep6": { sku: "EF-103", qty: 25, expected: "Sun, Sep 6", src: ["module-13 m13-l5", "module-5 m5-l2", "module-5 m5-l8"] }
       }
+    },
+    /* Return #229: first stated by Module 11 (m11-l4); Module 5's EF-101 tracker for
+       the same day records its restock (decision R1). Facts unchanged. */
+    returns: {
+      "Return #229": { date: "Wed, Sep 2", sku: "EF-101", qty: 2, condition: "Unopened", disposition: "Restock", refund: "Issued",
+                       src: ["module-11 m11-l4", "module-5 m5-l7"] }
     },
     customers: {},
     cases: {}
