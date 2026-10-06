@@ -169,7 +169,7 @@
 
 /* ---------- v2: evidence cards, pause-and-re-check, structured entries ---------- */
 .desk-ev-head{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
-.desk-ev-titlewrap{ flex: 1; min-width: 0; display:flex; align-items:center; gap: 8px; flex-wrap: wrap; }
+.desk-ev-titlewrap{ flex: 1 1 10em; min-width: 0; display:flex; align-items:center; gap: 8px; flex-wrap: wrap; } /* 10em basis: on a narrow card the chip and button wrap below the title instead of overlapping it */
 .desk-ev-titlewrap .desk-record-title{ margin: 0; }
 .desk-ev-head .btn{ padding: 6px 12px; }
 .desk-ev-body{ margin-top: 10px; }
@@ -206,6 +206,20 @@
 .desk-table th, .desk-table td{ border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; color: var(--ink); }
 .desk-table thead th{ font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); background: var(--surface-sunken); }
 .desk-table tbody tr:last-child td, .desk-table tbody tr:last-child th{ border-bottom: none; }
+/* Phones: stack each row into a block with every value labelled by its column, so
+   no column of evidence is hidden off to the side (break test M5-RESP-01/02). */
+@media (max-width: 640px){
+  .desk-table{ min-width: 0; }
+  .desk-table, .desk-table tbody, .desk-table tr, .desk-table th, .desk-table td{ display: block; }
+  .desk-table caption{ display: block; }
+  .desk-table thead{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .desk-table tbody tr{ border-bottom: 1px solid var(--line); padding: 6px 0; }
+  .desk-table tbody tr:last-child{ border-bottom: none; }
+  .desk-table th, .desk-table td{ border-bottom: none; padding: 2px 10px; }
+  .desk-table tbody th[scope="row"]{ font-weight: 600; padding-top: 4px; }
+  .desk-table td[data-label]{ overflow-wrap: anywhere; padding-top: 3px; padding-bottom: 3px; }
+  .desk-table td[data-label]::before{ content: attr(data-label); display: block; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); }
+}
 .desk-ev-reference{ background: var(--surface-sunken); }
 .desk-ev-reference p{ font-size: 0.9rem; color: var(--ink); }
 .lesson-pill.legacy:not(.done)::after{ content: " \21BA"; color: var(--ink-faint); }

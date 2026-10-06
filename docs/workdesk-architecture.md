@@ -31,6 +31,8 @@ A module page loads, in order: `progress.js`, `everfield-data.js`, `workdesk.js`
 
 **Engine CSS (decision E3):** `.desk-records > *{ min-width: 0; }` lives in `shared/workdesk.css`, so a wide table inside an evidence card scrolls in its own region instead of pushing a phone page sideways. It was first written as a Module 9 page rule and promoted once the full regression showed parity.
 
+**Phone tables (Module 5 break test M5-RESP-01/02):** below 640 px each table row stacks into a block, and every value shows its column name above it (`data-label`, drawn by CSS). No column is left behind sideways scrolling. Desktop keeps the normal column-header table. The renderer adds explicit ARIA table roles so the stacked layout keeps its table semantics. Evidence-card titles get a 10em flex basis so the Reviewed chip and Hide button wrap below a long title instead of overlapping it. Known, left as is: on desktop, a few Module 7 and Module 9 tables in two-column card layouts still scroll inside their card, which the repair brief asked to preserve.
+
 Known limitation: a `triage` stage renders only its rows, so it has no open side card. Module 7's triage tasks that need policy (l5) carry the clauses in the task reference shown with the brief, and the stage intro points back to it.
 
 ## Configuration boundary (`config` in a module's source)

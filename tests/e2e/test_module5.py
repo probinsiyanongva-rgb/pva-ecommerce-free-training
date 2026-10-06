@@ -108,7 +108,12 @@ with sync_playwright() as p:
     check("numbers", "no number passes alone: every stage with a number also asks for a choice",
           all(any(f["type"] in ("select", "multi") for f in stage_by_id(SRC, sid)["fields"]) for sid, _ in nums))
     every = " ".join(str(v) for v in [SRC])
-    check("canon", "the kit recipe stays stated (K1)", "2 x EF-101, 1 x EF-102, and 1 x EF-103" in " ".join(TASKS[1]["reference"]))
+    check("repair", "M5-DATA-04: the unused kit recipe is gone from Module 5", not re.search(r"kit recipe|\d x EF-\d{3}", every, re.I))
+    check("repair", "M5-DATA-04: the recipe survives as product canon in the continuity doc",
+          "2 x EF-101, 1 x EF-102, 1 x EF-103" in open(os.path.join(ROOT, "docs", "everfield-continuity.md"), encoding="utf-8").read())
+    rule = [re.sub(r"<[^>]+>", "", r) for r in TASKS[1]["reference"] if "Tell Maya now" in r or "inventory note" in r or "reconciliation" in r.lower() and "Log it" in r]
+    check("repair", "M5-INST-03: Task 2's reference states the decision rule for every call", len(rule) >= 3 and all(c["label"].split(" ")[0] in " ".join(rule) for c in A2["choices"]), rule)
+    check("repair", "M5-INST-03: the rule names no SKU and no figure, so it gives no card's answer", not re.search(r"EF-\d{3}|\d", " ".join(rule)), " ".join(rule)[:200])
     check("canon", "the legacy #4021 tracking row survives word for word", "date 9/2, SKU EF-101, quantity -2, event 'customer shipment', reference 'Order #4021', resulting balance 32" in " ".join(TASKS[3]["reference"]))
     check("canon", "EF-103's arrival is shown as a weekday, not a date after the desk day (C2)", "due Sun" in every and not re.search(r"Sep (?:[3-9]|[1-3]\d)\b", every))
     check("canon", "no supplier contact, purchase order or Daniel Brooks as a requester", all(t["brief"]["from"] != "daniel" for t in TASKS))
@@ -363,6 +368,28 @@ with sync_playwright() as p:
     ]
     for why, t in BAD:
         check("l4-note", "rejected -- a note that %s" % why, not note(t)[0], t)
+    # M5-UX-05: reporting the source faithfully passes; inventing who caused the damage fails
+    src_line = " ".join(next(r for g in T4["groups"] for r in g["records"] if r.get("kind") == "message")["body"]).split(". Approved")[0]
+    END = " EF-101 ended the day at %s available." % b3
+    ATTRIB_OK = [
+        ("the source's exact wording", src_line + ", and Maya approved the write-off." + END),
+        ("\"ClearPath damaged report\" as a noun phrase", "ClearPath damaged report: one bin written off with Maya's approval." + END),
+        ("\"reported damaged by ClearPath\"", "One bin was reported damaged by ClearPath; Maya approved the write-off." + END),
+        ("\"Available dropped\"", "Available dropped after Maya approved writing off the damaged bin ClearPath reported. That closes the day at %s." % b3),
+    ]
+    for why, t in ATTRIB_OK:
+        okk, fbx = note(t)
+        check("l4-attribution", "passes -- %s" % why, okk, (t, fbx[:160]))
+    ATTRIB_BAD = [
+        ("ClearPath damaged the bin", "ClearPath damaged the bin in storage, so Maya approved a write-off." + END),
+        ("damaged by ClearPath", "The bin was damaged by ClearPath, so Maya approved writing it off." + END),
+        ("a picker dropped it", "A picker dropped one bin during picking and Maya approved the write-off." + END),
+        ("the carrier crushed it", "The carrier crushed a bin, so Maya approved the write-off." + END),
+        ("ClearPath's fault", "The damage is ClearPath's fault; Maya approved the write-off." + END),
+    ]
+    for why, t in ATTRIB_BAD:
+        okk, fbx = note(t)
+        check("l4-attribution", "rejected -- invents a cause: %s" % why, not okk and "how the unit was damaged" in fbx, (t, fbx[:160]))
     okk, fbx = note("Everything went fine today and the tracker is all up to date now.")
     check("l4-note", "note feedback names the principle, never the figure to type", not okk and b3 not in re.sub(r"Attempt \d+", "", fbx), fbx[:200])
     ctx.close()
@@ -472,15 +499,27 @@ with sync_playwright() as p:
             to_stage(pg, ti, sid); open_all(pg); hidden += pg.evaluate(STICKY)
         check("sticky", "%dpx: no control is left under the sticky top bar when navigated to" % w, hidden == 0, hidden)
         ctx.close()
-    for w in (320, 375):
-        ctx, pg, _ = fresh(br, viewport={"width": w, "height": 812}, device_scale_factor=2, is_mobile=True, has_touch=True)
+    # M5-RESP-01/02: every table's information stays readable at every width
+    RESP = """(()=>{
+     var ov=document.documentElement.scrollWidth-innerWidth;
+     var wraps=Array.from(document.querySelectorAll('#stagePanel .desk-table-wrap')).filter(w=>w.scrollWidth>w.clientWidth+1).length;
+     var cells=Array.from(document.querySelectorAll('#stagePanel .desk-table tbody td, #stagePanel .desk-table tbody th')).filter(c=>c.scrollWidth>c.clientWidth+1).length;
+     function hit(a,b){var x=a.getBoundingClientRect(),y=b.getBoundingClientRect();return x.width&&y.width&&x.left<y.right-1&&y.left<x.right-1&&x.top<y.bottom-1&&y.top<x.bottom-1;}
+     var heads=Array.from(document.querySelectorAll('#stagePanel .desk-ev-head')).filter(h=>{var t=h.querySelector('.desk-record-title');return t&&Array.from(h.children).filter(c=>!c.contains(t)).some(c=>hit(t,c));}).length;
+     var unlabelled=innerWidth<=640?Array.from(document.querySelectorAll('#stagePanel .desk-table tbody td')).filter(c=>getComputedStyle(c,'::before').content.replace(/"/g,'')!==c.getAttribute('data-label')).length:0;
+     return [ov,wraps,cells,heads,unlabelled];})()"""
+    for w in (320, 375, 390, 768, 1100):
+        ctx, pg, _ = fresh(br, viewport={"width": w, "height": 812}, device_scale_factor=2 if w < 700 else 1, is_mobile=w < 700, has_touch=w < 700)
         for ti, st in ALL:
             to_stage(pg, ti, st["id"]); open_all(pg); pg.wait_for_timeout(60)
-            ov = pg.evaluate("document.documentElement.scrollWidth - window.innerWidth")
-            check("mobile", "%s: no horizontal overflow at %dpx" % (st["id"], w), ov <= 0, ov)
-        if w == 375:
-            check("mobile", "wide tables scroll inside their own region", pg.evaluate("Array.from(document.querySelectorAll('.desk-table-wrap')).every(w=>getComputedStyle(w).overflowX!=='visible')"))
+            r = pg.evaluate(RESP)
+            check("responsive", "%s at %dpx: no sideways scroll, no hidden column, no clipped cell, no overlapping card header%s" % (st["id"], w, ", every value labelled" if w <= 640 else ""), not any(r), r)
         ctx.close()
+    ctx, pg, _ = fresh(br, viewport={"width": 1100, "height": 900})
+    to_stage(pg, 3, "l4-a"); open_all(pg)
+    check("responsive", "desktop keeps the column-header table layout", pg.evaluate("getComputedStyle(document.querySelector('#stagePanel .desk-table thead')).position") != "absolute" and
+          pg.evaluate("getComputedStyle(document.querySelector('#stagePanel .desk-table tbody tr')).display") == "table-row")
+    ctx.close()
     br.close()
 
 fails = [r for r in results if not r[2]]

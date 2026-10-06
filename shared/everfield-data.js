@@ -60,7 +60,7 @@
       "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["docs everfield-continuity.md", "module-2 m2-l3"] },
       "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
       "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
-                  src: ["module-5 m5-l8", "module-3 m3-l6"] }
+                  src: ["docs everfield-continuity.md", "module-3 m3-l6"] }
     },
     /* Simulated working day per converted module. The desk engine reads
        calendar[moduleId].date; keep this a plain module -> date map. */

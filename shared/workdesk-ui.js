@@ -166,16 +166,26 @@
     body: function(rec){
       var wrap = el("div", "desk-table-wrap");
       wrap.setAttribute("role", "region"); wrap.tabIndex = 0;
-      wrap.setAttribute("aria-label", (rec.title || "Table") + " (scrolls sideways on small screens)");
-      var table = el("table", "desk-table");
+      wrap.setAttribute("aria-label", rec.title || "Table");
+      /* On phones (workdesk.css, max-width 640px) each row stacks into a block and
+         every value shows its column name from data-label, so no column is hidden
+         behind sideways scrolling. Explicit roles keep the table semantics when the
+         stacked layout changes the elements' display. */
+      var table = el("table", "desk-table"); table.setAttribute("role", "table");
       if(rec.caption) table.appendChild(el("caption", null, rec.caption));
       var thead = el("thead"), tr = el("tr");
-      (rec.columns || []).forEach(function(c){ var th = el("th", null, c); th.scope = "col"; tr.appendChild(th); });
+      thead.setAttribute("role", "rowgroup"); tr.setAttribute("role", "row");
+      (rec.columns || []).forEach(function(c){ var th = el("th", null, c); th.scope = "col"; th.setAttribute("role", "columnheader"); tr.appendChild(th); });
       thead.appendChild(tr); table.appendChild(thead);
-      var tbody = el("tbody");
+      var tbody = el("tbody"); tbody.setAttribute("role", "rowgroup");
       (rec.rows || []).forEach(function(r){
-        var row = el("tr");
-        r.forEach(function(cell, i){ var td = el(i === 0 && rec.rowHeaders ? "th" : "td", null, cell); if(i === 0 && rec.rowHeaders) td.scope = "row"; row.appendChild(td); });
+        var row = el("tr"); row.setAttribute("role", "row");
+        r.forEach(function(cell, i){
+          var head = i === 0 && rec.rowHeaders, td = el(head ? "th" : "td", null, cell);
+          if(head){ td.scope = "row"; td.setAttribute("role", "rowheader"); } else td.setAttribute("role", "cell");
+          if(rec.columns && rec.columns[i] !== undefined) td.setAttribute("data-label", rec.columns[i]);
+          row.appendChild(td);
+        });
         tbody.appendChild(row);
       });
       table.appendChild(tbody); wrap.appendChild(table);

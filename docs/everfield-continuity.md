@@ -24,7 +24,7 @@ Sources of truth, one per kind of fact:
 
 **Partners and channels.** ClearPath Fulfillment is the only partner named (3PL: receive, store, pick, pack, ship). Pinecrest Manufacturing is named once as EF-103's supplier (m2-l2). Channels on the hub: Brand store, Online marketplace, B2B / bulk. Module 4 uses the first two.
 
-**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization (m2-l3), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m2-l4, m11-l7); EF-105 Travel Organization (m2-l3), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (Module 5 desk, m5-l8 reference; decision K1), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
+**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization (m2-l3), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m2-l4, m11-l7); EF-105 Travel Organization (m2-l3), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
 
 **Policies and authority.** Consistent across modules (§6). No module defines a return window, a refund threshold, shipping times or carriers.
 
@@ -79,7 +79,7 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | EF-101 dimensions | M3 m3-l4 | 16in x 11in x 9in, 2.2 lb | Spec example | Yes, after the fix (M6) | No | `productFacts["EF-101"]` |
 | EF-103 dimensions | M6 m6-l4, m6-l9 apply | 16in x 11in x 9in | Customer answer | M4 desk ships EF-103 in a 12×9×3 in carton | **GC** — the record could not fit its carton; values copied from EF-101 | **Fixed**: M6 now asks about EF-101 (§5) |
 | Variants | M2 m2-l1 vs M7 m7-l4 | "no size/color variants" vs "exchange EF-105 for a different color" | Catalog fact | Yes | **GC** | Fix when Module 7 is converted (§5) |
-| Kit recipe | M5 m5-l8 reference (was m5-l4 "Recall…") | 2/1/1 | Company fact | M3 (category), M4 (EF-200 order) | No; "Recall" points at nothing earlier | `productFacts["EF-200"]`; note §7 |
+| Kit recipe | Product canon §6 (was M5 m5-l4 "Recall…"; removed from Module 5 after break test M5-DATA-04) | 2/1/1 | Company fact | M3 (category), M4 (EF-200 order) | No; "Recall" points at nothing earlier | `productFacts["EF-200"]`; note §7 |
 | EF-104 pack | M2 m2-l4, M11 m11-l7 | 12-Piece | Product fact | Yes | No | IC; `productFacts` |
 | EF-106 piece count | M12 m12-l9 placeholder | "corrected it from 8 to 6" | Placeholder sample | M14 t9 (no number) | No | LO; not canon (placeholder) |
 | Refund / exception authority | M4, M6, M7, M10, M11, M12, M14 | §6 | Policy | Yes | No | Canon in §6 |
@@ -188,6 +188,8 @@ Approved with the Module 9 curriculum audit (decision D5, adjusted; design map d
 | --- | --- | --- |
 | EF-101 | $4.20 | First stated in the original Module 9 (m9-l2); moved here by D5 |
 | EF-105 | $3.85 | First stated in the original Module 9 (m9-l2); moved here by D5 |
+
+**Kit recipe.** One EF-200 Home Organization Starter Kit = 2 x EF-101, 1 x EF-102, 1 x EF-103. First stated in the original Module 5 (m5-l4). The Module 5 conversion dropped it from its lessons, where it served no task (break test M5-DATA-04), so it is recorded here as product canon and `productFacts["EF-200"]` cites this document.
 
 ## 7. Shared records — boundary and proposal
 

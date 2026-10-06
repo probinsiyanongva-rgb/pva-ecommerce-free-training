@@ -39,6 +39,10 @@
      (two cards side by side only when both fit; one per row otherwise). The
      phone-width fix for tables in grid cells lives in the shared engine (E3). */
   .desk-records{ grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); }
+  /* Module 5's tables are short (3-6 columns of small numbers): let them fit their
+     card instead of keeping the engine's 420px minimum, so a two-column desktop
+     layout never hides a column behind sideways scrolling. */
+  .desk-table{ min-width: 0; }
 </style>
 </head>
 <body>
