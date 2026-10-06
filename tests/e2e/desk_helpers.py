@@ -45,6 +45,8 @@ def compose_values(st, text_for):
             vals[f["id"]] = f["accept"][0]
         elif f["type"] == "multi":
             vals[f["id"]] = list(f["accept"][0])
+        elif f["type"] == "number":
+            vals[f["id"]] = f["accept"][0]
     for g in st["groups"]:
         labels = []
         for f in st["fields"]:
@@ -135,8 +137,15 @@ def fill_compose(pg, st, vals):
             for cb in fs.locator("input").all():
                 if (cb.evaluate("e => e.value") in vals[f["id"]]) != cb.is_checked():
                     cb.click()
+        elif f["type"] == "number":
+            g.get_by_label(number_label(f), exact=True).fill(vals[f["id"]])
         else:
             g.get_by_label(f["label"], exact=True).fill(vals[f["id"]])
+
+
+def number_label(f):
+    """A number field's accessible name: its label plus the unit, as rendered."""
+    return f["label"] + (" (" + f["unit"] + ")" if f.get("unit") else "")
 
 
 def confirm_all(pg):

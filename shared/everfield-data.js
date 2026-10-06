@@ -45,17 +45,19 @@
       "EF-200": "Home Organization Starter Kit"
     },
     /* Product master facts that the course states as Everfield's own. Only
-       facts some module already asserts; anything absent is undefined -- add
-       it here before a module relies on it. */
+       facts some module already asserts, or approved product canon recorded in
+       docs/everfield-continuity.md (src "docs everfield-continuity.md"; the
+       unit costs, decision D5); anything absent is undefined -- add it here
+       before a module relies on it. */
     productFacts: {
       catalog:  { variants: "none -- no size/color variants on any SKU", src: ["module-2 m2-l1"] },
       "EF-101": { category: "Home Organization", unitCost: "$4.20", dimensions: "16in x 11in x 9in", weight: "2.2 lb",
-                  src: ["module-9 m9-l2", "module-3 m3-l4", "module-6 m6-l4"] },
+                  src: ["docs everfield-continuity.md", "module-2 m2-l3", "module-3 m3-l4", "module-6 m6-l4"] },
       "EF-102": { pack: "40 Pieces", src: ["module-3 m3-l2"] },
       "EF-103": { category: "Home Organization", supplier: "Pinecrest Manufacturing", leadTime: "14 days", unit: "Each",
                   src: ["module-2 m2-l2"] },
       "EF-104": { pack: "12-Piece", src: ["module-2 m2-l4", "module-11 m11-l7"] },
-      "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["module-9 m9-l2"] },
+      "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["docs everfield-continuity.md", "module-2 m2-l3"] },
       "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
       "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
                   src: ["module-5 m5-l4", "module-3 m3-l6"] }
@@ -64,7 +66,8 @@
        calendar[moduleId].date; keep this a plain module -> date map. */
     calendar: {
       m4: { date: "Tue, Sep 15" },
-      m7: { date: "Thu, Sep 17" }
+      m7: { date: "Thu, Sep 17" },
+      m9: { date: "Fri, Sep 25" }
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
        reasoning). One September operating period; the year is never shown to
@@ -81,6 +84,8 @@
         { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
         { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
         { date: "Thu, Sep 17", what: "Module 7 desk day", src: ["module-7 desk-data"] },
+        { date: "Mon, Sep 21 - Fri, Sep 25", what: "Module 9 week: order export, ClearPath weekly report, stock sheet, open-items log", src: ["module-9 desk-data"] },
+        { date: "Fri, Sep 25", what: "Module 9 desk day (Everfield's weekly report day)", src: ["module-9 desk-data"] },
         { date: "after the EF-103 inbound sells through", what: "Capstone week (EF-103 at 0 available, 0 inbound); exact week not yet fixed", src: ["module-14 m14-t4"] }
       ]
     },

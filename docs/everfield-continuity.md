@@ -7,7 +7,7 @@ Sources of truth, one per kind of fact:
 | Kind of fact | Source of truth | Notes |
 | --- | --- | --- |
 | Company, people, roles, channels | Hub "Meet Everfield Goods" panel (`index.html`), mirrored in `shared/everfield-data.js` | The checker fails if the two disagree |
-| Product names and product master facts | `shared/everfield-data.js` → `products`, `productFacts` (each fact cites the lesson that first states it) | Anything not listed is undefined |
+| Product names and product master facts | `shared/everfield-data.js` → `products`, `productFacts` (each fact cites the lesson that first states it, or the approved product canon in §6) | Anything not listed is undefined |
 | Calendar and timeline | `shared/everfield-data.js` → `calendar` (desk day per converted module), `timeline` | |
 | Authority limits and policies | This document, §6 | Kept out of the runtime files that desk pages load, because they would hint at desk answers |
 | Recurring operational records | `shared/everfield-records.js` | Only records two or more modules already share |
@@ -24,7 +24,7 @@ Sources of truth, one per kind of fact:
 
 **Partners and channels.** ClearPath Fulfillment is the only partner named (3PL: receive, store, pick, pack, ship). Pinecrest Manufacturing is named once as EF-103's supplier (m2-l2). Channels on the hub: Brand store, Online marketplace, B2B / bulk. Module 4 uses the first two.
 
-**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization, $4.20 (m9-l2); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m2-l4, m11-l7); EF-105 Travel Organization, $3.85 (m9-l2); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (m5-l4), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
+**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization (m2-l3), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m2-l4, m11-l7); EF-105 Travel Organization (m2-l3), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (m5-l4), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
 
 **Policies and authority.** Consistent across modules (§6). No module defines a return window, a refund threshold, shipping times or carriers.
 
@@ -59,7 +59,7 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | M5 stock snapshot | M5 m5-l2/l3/l5 | EF-101 34/6/50; EF-103 0/2/25 | Inventory snapshot | Yes (M13, M14 "earlier example") | No | Shared record (IC) |
 | M5 kit example | M5 m5-l4 | EF-101 100, EF-102 80, EF-103 25 | Hypothetical ("if…") | No | Differs from the snapshot | LO; illustrative, not canon |
 | EF-104 reconciliation | M5 m5-l6 | 40 vs ClearPath 36 | Illustration | No | No | LO, undated |
-| M9 stock snapshot | M9 m9-l4 | EF-102 60/5/0; EF-106 8/2/40 | Illustration | No | No | LO, undated |
+| M9 stock snapshot | M9 m9-l4 (retired) | EF-102 60/5/0; EF-106 8/2/40 | Illustration | No | No | **Retired** with the Module 9 conversion (m9-l4 removed) |
 | EF-103 in capstone | M14 m14-t4 | 0 available, 0 inbound | Contrast with M5/M13 | Yes (explicit) | No — after the 9/6 stock sold through | IC; timeline entry |
 | PO EG-1047 | M4 m4-l8 reference | Arrival Sep 12, 80 more 5 days later | Style example (original M4 text) | No | No | LO |
 | Orders #5401–#5419 | M4 desk | Sep 5–15 | Desk cases | No | No | LO (in desk data) |
@@ -95,15 +95,17 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday. The year is never shown
 | When | What | Sources |
 | --- | --- | --- |
 | On or before Wed, Sep 2 | Early-September stock snapshot: EF-101 34 available / 6 reserved / 50 inbound; EF-103 0 / 2 / 25. Before #4021 ships, because the 9/2 row starts from EF-101's 34 | M5 m5-l2, l3, l5 |
-| Wed, Sep 2 | Order #4021 (EF-101 x2) ships, EF-101 balance 34 → 32. Same day: #4022 (EF-200 x1) is Processing; Return #229 (EF-101 x2) is restocked | M5 m5-l7; M9 m9-l1, l3; M11 m11-l4 |
+| Wed, Sep 2 | Order #4021 (EF-101 x2) ships, EF-101 balance 34 → 32. Same day: #4022 (EF-200 x1) is Processing; Return #229 (EF-101 x2) is restocked | M5 m5-l7; M9 m9-l3 (desk reference); M11 m11-l4 |
 | Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 |
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
 | Thu, Sep 3 – Wed, Sep 16 | Module 7 order, return and carrier records (orders #5420–#5444, returns #230–#240, tracking CP-7731-05xx; all Module 7-local) | M7 desk |
 | Thu, Sep 17, 10:15 AM | **Module 7 desk day** | M7 desk; `calendar.m7` |
+| Mon, Sep 21 – Fri, Sep 25 | Module 9 week (all Module 9-local): order export (orders #5450–#5462, tracking CP-7731-06xx), ClearPath's weekly shipped report, Friday stock sheet (EF-101, EF-104, EF-105, EF-107, EF-200 only; never EF-102, EF-103 or EF-106), open-items log | M9 desk |
+| Fri, Sep 25, 3:40 PM | **Module 9 desk day** (Everfield's weekly report day) | M9 desk; `calendar.m9` |
 | After EF-103's Sep 6 stock sells through | **Capstone week**: EF-103 at 0 available, 0 inbound. Exact week not fixed | M14 m14-t4 |
-| Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0, M9 EF-102/EF-106 snapshot, M12 "42 orders", M13 "3 stockouts" | — |
+| Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0, M12 "42 orders", M13 "3 stockouts". (The old M9 EF-102/EF-106 snapshot was retired with the Module 9 conversion.) | — |
 
 Rules for authors:
 
@@ -176,16 +178,25 @@ Approved with the Module 7 conversion map (decisions D1 and D3). Each clause is 
 
 (P4, the return window, is intentionally left out.)
 
+### Product cost canon (approved 2026-10-05)
+
+Approved with the Module 9 curriculum audit (decision D5, adjusted; design map decision C1-a). These unit costs are Everfield product canon, not Module 9 content: `productFacts` cites this table, and the continuity checker reads it. No other SKU has a stated cost; add one here before any module uses it.
+
+| SKU | Unit cost | Basis |
+| --- | --- | --- |
+| EF-101 | $4.20 | First stated in the original Module 9 (m9-l2); moved here by D5 |
+| EF-105 | $3.85 | First stated in the original Module 9 (m9-l2); moved here by D5 |
+
 ## 7. Shared records — boundary and proposal
 
 **Shared now** (`shared/everfield-records.js`). Each record was already shown by two or more modules with identical facts:
 
-- `orders["#4021"]`: Wed Sep 2, EF-101 x2, Shipped (M5 m5-l7; M9 m9-l1, l3)
+- `orders["#4021"]`: Wed Sep 2, EF-101 x2, Shipped (M5 m5-l7; M9 m9-l3, desk reference)
 - `stock.snapshots["stock-early-sep"]`: EF-101 34/6/50, EF-103 0/2/25 (M5; referred to by M13 and M14)
 - `stock.movements["mv-sep2-4021"]`: EF-101 −2, balance 32 (M5 m5-l7; derived from #4021)
 - `stock.inbound["inbound-ef103-sep6"]`: EF-103 25, expected Sun Sep 6 (M13 m13-l5; M5 inbound column)
 
-**Module-local** (stay in their modules): Module 4's orders, tracking, customers and PO example; #4022; Return #229; #5192; #5310; the M5 kit example; the M5 EF-104 reconciliation; the M9 EF-102/EF-106 snapshot; M12 and M13 report figures.
+**Module-local** (stay in their modules): Module 4's orders, tracking, customers and PO example; #4022; Return #229; #5192; #5310; the M5 kit example; the M5 EF-104 reconciliation; the Module 9 week; M12 and M13 report figures.
 
 **Candidates, not migrated** (needs your call when the owning modules convert):
 
@@ -215,9 +226,10 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Records used by two modules are shared | An order/return/PO/tracking ID in two modules that isn't a shared record; a shared record used somewhere its `src` doesn't list |
 | Shared records match module text | The module text no longer states the record's date, SKU, quantity, status, balance or stock figures; references to missing records or lessons |
 | Product IDs and names | Unknown SKUs; a SKU given another product's name |
-| Product facts | A `productFacts` value not stated in its source; dimensions that differ from the SKU's record; a kit recipe that differs |
+| Product facts | A `productFacts` value not stated in its source (a lesson, or the approved product canon in §6); dimensions that differ from the SKU's record; a kit recipe that differs |
 | Variants | Any colour or size variant implied for a SKU |
 | People and roles | Data file vs hub; a lesson giving someone another role; briefs from unknown people; new named managers not on the team |
 | Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar`; desk records dated after the desk day |
+| Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
 
 Each check was confirmed to fail on an injected defect (17 mutations, all caught). Current result: all checks pass, plus one deferred warning (correction #4, Module 7).

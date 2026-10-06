@@ -12,8 +12,10 @@
    `src`; shared record facts match the module text; product IDs and names;
    product facts; people and roles; policy cards vs the
    approved canon; dates (weekday/date agreement, numeric dates
-   on the timeline, the desk date matches the calendar); no reference to a
-   missing record or lesson. Known, deliberately deferred conflicts are listed
+   on the timeline, the desk date matches the calendar); Module 9's week stays
+   in its own order, tracking and SKU ranges; no reference to a missing record
+   or lesson. A productFacts source may be an approved canon document
+   ("docs everfield-continuity.md"). Known, deliberately deferred conflicts are listed
    in DEFERRED and reported as warnings. */
 var fs = require("fs"), path = require("path"), vm = require("vm");
 var ROOT = path.resolve(__dirname, "..");
@@ -56,13 +58,16 @@ rows.push({ loc: "hub", text: hub });
 
 function modOf(loc){ var x = /^M(\d+) /.exec(loc); return x ? +x[1] : null; }
 function lessonOf(loc){ var x = /^M\d+ ([\w-]+)/.exec(loc); return x ? x[1] : loc; }
-function textAt(ref){ // "module-5 m5-l7" -> concatenated text of that lesson
-  var p = ref.split(" "), m = +p[0].replace("module-", "");
+function textAt(ref){ // "module-5 m5-l7" -> concatenated text of that lesson; "docs <file>" -> approved canon document
+  var p = ref.split(" ");
+  if(p[0] === "docs") return fs.readFileSync(path.join("docs", p[1]), "utf8");
+  var m = +p[0].replace("module-", "");
   return rows.filter(function(r){ return modOf(r.loc) === m && (p[1] === "desk-data" || lessonOf(r.loc) === p[1]); })
              .map(function(r){ return r.text; }).join(" ‖ ");
 }
 function refExists(ref){
   var p = ref.split(" ");
+  if(p[0] === "docs") return /^[\w-]+\.md$/.test(p[1] || "") && fs.existsSync(path.join("docs", p[1]));
   if(!/^module-\d+$/.test(p[0])) return false;
   return p[1] === "desk-data" ? !!lessonIds["desk-data@" + p[0].slice(7)] : !!lessonIds[p[1]];
 }
@@ -276,6 +281,24 @@ rows.forEach(function(r){
     else if(canon[m[1]] !== m[2]) probs.push({ loc: r.loc, msg: m[1] + " in " + r.loc.split(".")[0] + " differs from the approved wording" });
   });
   check("policy cards match the approved canon", probs);
+})();
+
+// 6b. Module 9's authored week stays inside its own ranges (design map W1): orders
+// #5450-#5462 (plus the shared #4021 and its reference neighbour #4022), tracking
+// CP-7731-06xx, and no EF-102, EF-103 or EF-106, so its stock sheet can't
+// contradict Module 7's Sep 17 rows or the capstone's EF-103.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-9/desk-data.js")){ check("Module 9 week stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 9; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5450 && n <= 5462) && n !== 4021 && n !== 4022) probs.push({ loc: r.loc, msg: "order #" + n + " in " + r.loc.split(".")[0] + " is outside Module 9's #5450-#5462" }); }
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^06\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + r.loc.split(".")[0] + " is outside Module 9's CP-7731-06xx" }); }
+    rx = /EF-10[236]\b/g;
+    while((mm = rx.exec(r.text))){ probs.push({ loc: r.loc, msg: mm[0] + " in " + r.loc.split(".")[0] + " (the Module 9 week excludes EF-102, EF-103 and EF-106)" }); }
+  });
+  check("Module 9 week stays in its ranges", probs);
 })();
 
 // 7. dates

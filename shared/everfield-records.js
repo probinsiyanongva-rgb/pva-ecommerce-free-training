@@ -20,7 +20,7 @@
   var EVERFIELD_RECORDS = {
     orders: {
       "#4021": { date: "Wed, Sep 2", sku: "EF-101", qty: 2, status: "Shipped",
-                 src: ["module-5 m5-l7", "module-9 m9-l1", "module-9 m9-l3"] }
+                 src: ["module-5 m5-l7", "module-9 m9-l3"] }
     },
     stock: {
       snapshots: {
