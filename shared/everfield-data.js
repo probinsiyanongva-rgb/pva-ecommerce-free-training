@@ -68,13 +68,15 @@
       m4: { date: "Tue, Sep 15" },
       m7: { date: "Thu, Sep 17" },
       m5: { date: "Wed, Sep 2" },
-      m9: { date: "Fri, Sep 25" }
+      m9: { date: "Fri, Sep 25" },
+      m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
-       reasoning). One September operating period; the year is never shown to
-       learners -- weekdays follow a calendar in which Sep 15 is a Tuesday. */
+       reasoning). One operating period from September into early October; the
+       year is never shown to learners -- weekdays follow a calendar in which
+       Sep 15 is a Tuesday (so Oct 2 is a Friday). */
     timeline: {
-      period: "September",
+      period: "September – October",
       weekdayAnchor: "Tue, Sep 15",
       entries: [
         { date: "on or before Wed, Sep 2", what: "Early-September stock snapshot (Module 5's 8:00 AM stock sheet)", ref: "stock-early-sep", src: ["module-5 m5-l7"] },
@@ -90,6 +92,9 @@
         { date: "Thu, Sep 17", what: "Module 7 desk day", src: ["module-7 desk-data"] },
         { date: "Mon, Sep 21 - Fri, Sep 25", what: "Module 9 week: order export, ClearPath weekly report, stock sheet, open-items log", src: ["module-9 desk-data"] },
         { date: "Fri, Sep 25", what: "Module 9 desk day (Everfield's weekly report day)", src: ["module-9 desk-data"] },
+        { date: "Mon, Sep 28 - Fri, Oct 2", what: "Module 13 week: customer contacts, returns, exceptions, the VA work log and the verified Operations Tracker (Module 13-local records)", src: ["module-13 desk-data"] },
+        { date: "Wed, Sep 30", what: "Module 13 Lesson 1 work date (midweek items; ClearPath's missed carrier pickup)", src: ["module-13 m13-l2"] },
+        { date: "Fri, Oct 2", what: "Module 13 report day (Lessons 2 and 3; the weekly report for Sofia)", src: ["module-13 desk-data"] },
         { date: "after the EF-103 inbound sells through", what: "Capstone week (EF-103 at 0 available, 0 inbound); exact week not yet fixed", src: ["module-14 m14-t4"] }
       ]
     },
