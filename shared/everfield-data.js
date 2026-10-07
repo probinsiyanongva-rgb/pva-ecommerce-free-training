@@ -69,6 +69,7 @@
       m7: { date: "Thu, Sep 17" },
       m5: { date: "Wed, Sep 2" },
       m9: { date: "Fri, Sep 25" },
+      m6: { date: "Thu, Sep 10" },
       m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
@@ -83,11 +84,13 @@
         { date: "Tue, Sep 1 - Wed, Sep 2", what: "Module 5 records: orders #4023-#4027, EF-101 movements, ClearPath's 7:00 AM cycle count", src: ["module-5 desk-data"] },
         { date: "Wed, Sep 2", what: "Module 5 desk day (inventory check, 9:15 AM - 4:30 PM)", src: ["module-5 desk-data"] },
         { date: "Wed, Sep 2", what: "Order #4021 ships; EF-101 balance 34 -> 32", ref: "#4021", src: ["module-5 m5-l7", "module-9 m9-l3"] },
-        { date: "Wed, Sep 2", what: "Return #229 (EF-101 x2, unopened) restocked", ref: "Return #229", src: ["module-11 m11-l4", "module-5 m5-l7"] },
+        { date: "Wed, Sep 2", what: "Return #229 (EF-101 x2, unopened) restocked", ref: "Return #229", src: ["module-11 m11-l4", "module-5 m5-l7", "module-6 m6-l2"] },
         { date: "before Sun, Sep 6", what: "Weekly report notes EF-103 inbound", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
         { date: "Sun, Sep 6", what: "EF-103 inbound (25 units) expected", ref: "inbound-ef103-sep6", src: ["module-13 m13-l5"] },
         { date: "Sat, Sep 5 - Tue, Sep 15", what: "Module 4 order records", src: ["module-4 desk-data"] },
         { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
+        { date: "Mon, Sep 7 - Thu, Sep 10", what: "Module 6 records: customer messages, orders #5483-#5495, an EF-105 stock card (Module 6-local)", src: ["module-6 desk-data"] },
+        { date: "Thu, Sep 10", what: "Module 6 desk day (the support inbox, 9:30 AM - 3:15 PM)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
         { date: "Thu, Sep 17", what: "Module 7 desk day", src: ["module-7 desk-data"] },
         { date: "Mon, Sep 21 - Fri, Sep 25", what: "Module 9 week: order export, ClearPath weekly report, stock sheet, open-items log", src: ["module-9 desk-data"] },

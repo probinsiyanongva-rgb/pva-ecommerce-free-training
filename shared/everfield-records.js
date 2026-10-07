@@ -43,10 +43,11 @@
       }
     },
     /* Return #229: first stated by Module 11 (m11-l4); Module 5's EF-101 tracker for
-       the same day records its restock (decision R1). Facts unchanged. */
+       the same day records its restock (decision R1); Module 6's support inbox answers
+       the customer's "has my refund gone through?" from it (decision D4). Facts unchanged. */
     returns: {
       "Return #229": { date: "Wed, Sep 2", sku: "EF-101", qty: 2, condition: "Unopened", disposition: "Restock", refund: "Issued",
-                       src: ["module-11 m11-l4", "module-5 m5-l7"] }
+                       src: ["module-11 m11-l4", "module-5 m5-l7", "module-6 m6-l2"] }
     },
     customers: {},
     cases: {}
