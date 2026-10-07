@@ -101,6 +101,8 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 (kept in Lesson 2's reference as a worked example from an earlier week, decision C2) |
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
+| Thu, Sep 3 – Thu, Sep 10 | Module 6 records (all Module 6-local except the shared Return #229): customer messages, orders #5483–#5495, tracking CP-7731-08xx, an EF-105 stock card (0 available, more on order, no date). No returns created | M6 desk |
+| Thu, Sep 10, 9:30 AM – 3:15 PM | **Module 6 desk day** (the support inbox) | M6 desk; `calendar.m6` |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
 | Thu, Sep 3 – Wed, Sep 16 | Module 7 order, return and carrier records (orders #5420–#5444, returns #230–#240, tracking CP-7731-05xx; all Module 7-local) | M7 desk |
 | Thu, Sep 17, 10:15 AM | **Module 7 desk day** | M7 desk; `calendar.m7` |
@@ -154,10 +156,10 @@ Nothing else met the bar for change (contradiction, impossible timeline, duplica
 
 As stated in the course. Not in `everfield-data.js`, which desk pages load, because several lines bear on Module 4 desk questions. Note that `docs/` is served with the site (unlinked), as the architecture notes already are; keep answer specifics out of this file.
 
-- **Sofia Ramirez**: closest contact. Customer-facing work, online sales, listings, promotions; support issues beyond a VA's documented authority (m1-l6, m6-l1, m14 brief).
+- **Sofia Ramirez**: closest contact. Customer-facing work, online sales, listings, promotions; support issues beyond a VA's documented authority (m1-l6, m6-l9, m14 brief).
 - **Maya Collins**: Operations. Escalations; owns the ClearPath relationship; packaging and 3PL patterns (m4-l3, m4-l7, m7-l6, m14 brief).
-- **The VA may**: process a standard, in-policy refund for a returned unopened item (m6-l6); set up a promotion Sofia has already decided on (m10-l6); carry out a specific, unambiguous listing edit (m11-l7, m11-l8); report and document facts.
-- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l6, m11-l8, m12-l1, m14 brief); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
+- **The VA may**: process a standard, in-policy refund for a returned unopened item (m6-l2 policy card, m7-l5); set up a promotion Sofia has already decided on (m10-l6); carry out a specific, unambiguous listing edit (m11-l7, m11-l8); report and document facts.
+- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l2, m6-l9, m11-l8, m12-l1, m14 brief); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
 - **Order of steps**: a refund is finalized only after disposition. "Inspection Required" waits (m7-l5). Return flow: log → reason → inspect → disposition → inventory action → refund status (m7-l3, m11-l1, m14-t8).
 - **Out of scope for this Foundation**: supplier negotiation, purchase orders, warehouse logistics (m1-l6, M5 page note).
 - **Cadence**: daily, order and inventory monitoring and urgent follow-ups; weekly (report on Friday), inventory, replenishment, open POs, shipments, 3PL performance, KPIs (m13-l2, m13-l8).
@@ -172,12 +174,12 @@ Approved with the Module 7 conversion map (decisions D1 and D3). Each clause is 
 | P1 | An order that has not been released to ClearPath can be cancelled by the VA. | m4-l2 order note |
 | P2 | An order already at ClearPath but not yet shipped can only be stopped by ClearPath. Ask Maya to request an intercept, and promise the customer nothing until she confirms. | m4-l2, m4-l3; Maya owns ClearPath |
 | P3 | Once the carrier has the package, a cancellation request becomes a return. | m7-l2 |
-| P5 | A returned item that is unopened and marked Restock: the VA finalizes the standard refund. | m6-l6, m7-l5 |
+| P5 | A returned item that is unopened and marked Restock: the VA finalizes the standard refund. | m6-l2, m7-l5 (first stated in the retired m6-l6) |
 | P6 | A return marked Inspection Required: the refund waits until the inspection is complete. | m7-l5 |
 | P7 | Damaged on arrival, with photos: the VA documents the case and Sofia decides between a refund and a replacement. Damage that repeats across orders goes to Maya as a possible pattern. | m7-l5, m7-l6 |
-| P8 | A refund without the item coming back is Sofia's decision. | m6-l6 |
-| P9 | Exchanges: the returned item is processed like any return. If the replacement is not available to ship, offer to wait for restock (no date promised) or to return for a refund, and let the customer choose. | m6-l5, m7-l4 |
-| P10 | A confirmed mis-ship: the correct item goes out at no cost and the wrong item comes back. The VA requests the replacement through Maya. | m6-l7, m7-l7 |
+| P8 | A refund without the item coming back is Sofia's decision. | m6-l2, m6-l9 (first stated in the retired m6-l6) |
+| P9 | Exchanges: the returned item is processed like any return. If the replacement is not available to ship, offer to wait for restock (no date promised) or to return for a refund, and let the customer choose. | m7-l4 (first stated in the retired m6-l5) |
+| P10 | A confirmed mis-ship: the correct item goes out at no cost and the wrong item comes back. The VA requests the replacement through Maya. | m7-l7 (first stated in the retired m6-l7) |
 | P11 | Delivered but not received: share the carrier's delivery details with the customer and ask them to check. If it still has not turned up, Maya decides on a carrier claim or a reship. | m4-l7, m7-l8 |
 | P12 | Returned to sender: confirm the full address with the customer, then request the reship through Maya. | m7-l9 |
 
@@ -240,6 +242,7 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar` (or the lesson's own `workDate`); desk records dated after the desk day (or the lesson's work date); a work date not on the timeline or after the module's day. Month-aware across September and October (decision C1) |
 | Module 5 day stays in its ranges | A Module 5 order outside #4023–#4027 (except the shared #4021), or any return other than the shared Return #229 |
 | Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
+| Module 6 day stays in its ranges | A Module 6 order outside #5483–#5495, tracking outside CP-7731-08xx, any return other than the shared Return #229, stock figures for any SKU but EF-105, or any EF-103 |
 | Module 13 week stays in its ranges | A Module 13 order outside #5465–#5482, a return below #241, tracking outside CP-7731-07xx, or EF-103 anywhere except Lesson 2's earlier-week reference example (C2) |
 
 Each check was confirmed to fail on an injected defect (17 mutations, all caught). The month-aware date check (C1) was proven not to change any earlier result: with `EVERFIELD_TRACE=1` the checker prints every date judgement, and the September-only and month-aware versions produced identical traces for Modules 4, 5, 7 and 9 (802 judgements), identical verdicts on every other check, and identical failures on a set of planted bad dates; only the month-aware version catches a wrong October weekday. Current result: all checks pass, plus one deferred warning (correction #4, Module 7).

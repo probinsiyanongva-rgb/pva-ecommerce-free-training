@@ -320,6 +320,28 @@ rows.forEach(function(r){
   check("Module 5 day stays in its ranges", probs);
 })();
 
+// 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
+// tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
+// EF-105 only, and no EF-103 anywhere.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-6/desk-data.js")){ check("Module 6 day stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 6; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5483 && n <= 5495)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 6's #5483-#5495" }); }
+    rx = /Return #(\d+)|#(\d{3})\b/g;
+    while((mm = rx.exec(r.text))){ if((mm[1] || mm[2]) !== "229") probs.push({ loc: r.loc, msg: "return #" + (mm[1] || mm[2]) + " in " + where + " (Module 6 uses only the shared Return #229)" }); }
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^08\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 6's CP-7731-08xx" }); }
+    if(/EF-103\b/.test(r.text)) probs.push({ loc: r.loc, msg: "EF-103 in " + where + " (the Module 6 day never names EF-103)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b/.test(r.text)){
+      var skus = (r.text.match(/EF-\d{3}/g) || []).filter(function(x){ return x !== "EF-105"; });
+      if(skus.length) probs.push({ loc: r.loc, msg: "stock figures for " + skus.join(", ") + " in " + where + " (Module 6's only stock line is EF-105)" });
+    }
+  });
+  check("Module 6 day stays in its ranges", probs);
+})();
+
 // 6d. Module 13's week stays inside its own ranges (design map W1-a): orders #5465-#5482,
 // returns #241 onward, tracking CP-7731-07xx, and no EF-103 on any line, so nothing can
 // contradict the capstone's later EF-103. The one exception is Lesson 2's reference
