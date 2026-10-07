@@ -24,7 +24,7 @@ Sources of truth, one per kind of fact:
 
 **Partners and channels.** ClearPath Fulfillment is the only partner named (3PL: receive, store, pick, pack, ship). Pinecrest Manufacturing is named once as EF-103's supplier (m2-l2). Channels on the hub: Brand store, Online marketplace, B2B / bulk. Module 4 uses the first two.
 
-**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization (m2-l3), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m2-l4, m11-l7); EF-105 Travel Organization (m2-l3), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
+**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m3-l4), Home Organization (m2-l2), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m3-l2); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m11-l7); EF-105 Travel Organization (m2-l7), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m3-l6); no size or color variants on any SKU (m2-l1).
 
 **Policies and authority.** Consistent across modules (§6). No module defines a return window, a refund threshold, shipping times or carriers.
 
@@ -80,7 +80,7 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | EF-103 dimensions | M6 m6-l4, m6-l9 apply | 16in x 11in x 9in | Customer answer | M4 desk ships EF-103 in a 12×9×3 in carton | **GC** — the record could not fit its carton; values copied from EF-101 | **Fixed**: M6 now asks about EF-101 (§5) |
 | Variants | M2 m2-l1 vs M7 m7-l4 | "no size/color variants" vs "exchange EF-105 for a different color" | Catalog fact | Yes | **GC** | Fix when Module 7 is converted (§5) |
 | Kit recipe | Product canon §6 (was M5 m5-l4 "Recall…"; removed from Module 5 after break test M5-DATA-04) | 2/1/1 | Company fact | M3 (category), M4 (EF-200 order) | No; "Recall" points at nothing earlier | `productFacts["EF-200"]`; note §7 |
-| EF-104 pack | M2 m2-l4, M11 m11-l7 | 12-Piece | Product fact | Yes | No | IC; `productFacts` |
+| EF-104 pack | M11 m11-l7 (the retired m2-l4 also stated it) | 12-Piece | Product fact | Yes | No | IC; `productFacts` |
 | EF-106 piece count | M12 m12-l9 placeholder | "corrected it from 8 to 6" | Placeholder sample | M14 t9 (no number) | No | LO; not canon (placeholder) |
 | Refund / exception authority | M4, M6, M7, M10, M11, M12, M14 | §6 | Policy | Yes | No | Canon in §6 |
 | Weekly report day | M13 m13-l2 ("Friday's weekly summary"), M7 m7-l10 ("by Friday") | Friday | Operating rhythm | Yes | No | `operating.weeklyReport` |
@@ -101,6 +101,8 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 (kept in Lesson 2's reference as a worked example from an earlier week, decision C2) |
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
+| Thu, Sep 3 – Tue, Sep 8 | Module 2 records (all Module 2-local): product reference lines, a marketplace listing-ID cross-reference (MKT-44xx), a supplier specification and quote, approved and draft catalogs, a carrier adjustment notice on orders #5496–#5498 with tracking CP-7731-09xx. No returns, no stock figures | M2 desk |
+| Tue, Sep 8 | **Module 2 desk day** (the product desk; each lesson shows its own clock time) | M2 desk; `calendar.m2` |
 | Thu, Sep 3 – Thu, Sep 10 | Module 6 records (all Module 6-local except the shared Return #229): customer messages, orders #5483–#5495, tracking CP-7731-08xx, an EF-105 stock card (0 available, more on order, no date). No returns created | M6 desk |
 | Thu, Sep 10, 9:30 AM – 3:15 PM | **Module 6 desk day** (the support inbox) | M6 desk; `calendar.m6` |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
@@ -242,6 +244,7 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar` (or the lesson's own `workDate`); desk records dated after the desk day (or the lesson's work date); a work date not on the timeline or after the module's day. Month-aware across September and October (decision C1) |
 | Module 5 day stays in its ranges | A Module 5 order outside #4023–#4027 (except the shared #4021), or any return other than the shared Return #229 |
 | Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
+| Module 2 day stays in its ranges | A Module 2 order outside #5496–#5498, tracking outside CP-7731-09xx, a marketplace listing ID outside MKT-44xx (or an MKT ID in any other module), any return, or any stock figure |
 | Module 6 day stays in its ranges | A Module 6 order outside #5483–#5495, tracking outside CP-7731-08xx, any return other than the shared Return #229, stock figures for any SKU but EF-105, or any EF-103 |
 | Module 13 week stays in its ranges | A Module 13 order outside #5465–#5482, a return below #241, tracking outside CP-7731-07xx, or EF-103 anywhere except Lesson 2's earlier-week reference example (C2) |
 
