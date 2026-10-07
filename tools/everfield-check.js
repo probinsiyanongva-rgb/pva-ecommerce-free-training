@@ -340,6 +340,25 @@ rows.forEach(function(r){
   check("Module 2 day stays in its ranges", probs);
 })();
 
+// 6g. Module 3's day stays inside its own ranges (design map D2/D5/D11): a listing desk with
+// no orders, returns, tracking numbers, stock figures, marketplace IDs or prices, and no
+// EF-106 piece count outside Lesson 1's draft evidence (the count is undefined canon).
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-3/desk-data.js")){ check("Module 3 day stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 3; }).forEach(function(r){
+    var where = r.loc.split(".")[0];
+    if(/#\d{3,}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "an order or return number in " + where + " (Module 3 has none)" });
+    if(/\bCP-\d{4}-\d{4}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a tracking number in " + where + " (Module 3 has none)" });
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 3 shows none)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a price or cost in " + where + " (Module 3 shows none, decision D5)" });
+    if(/(EF-106|Closet Divider)[^.]{0,80}\b\d+[- ]?(pack|pieces?|dividers)\b/i.test(r.text) && r.loc.indexOf("M3 m3-l2.stages[1].records") !== 0)
+      probs.push({ loc: r.loc, msg: "an EF-106 piece count in " + where + " outside Lesson 1's draft evidence (undefined canon)" });
+  });
+  check("Module 3 day stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
