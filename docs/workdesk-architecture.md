@@ -39,6 +39,20 @@ A module page loads, in order: `progress.js`, `everfield-data.js`, `workdesk.js`
 
 Known limitation: a `triage` stage renders only its rows, so it has no open side card. Module 7's triage tasks that need policy (l5) carry the clauses in the task reference shown with the brief, and the stage intro points back to it.
 
+## Release status
+
+A **regression-locked** module's learner-facing content and design are frozen: it is an approved reference implementation. Shared engine changes stay allowed, but every one must keep each locked module's regression suite green (`tests/run_all.sh`).
+
+| Module | Status | Release |
+| --- | --- | --- |
+| Module 4 · Orders & Fulfillment | Released · regression-locked | Released together with Modules 7 and 9 |
+| Module 7 · Returns, Refunds & Exceptions | Released · regression-locked | Released together with Modules 4 and 9 |
+| Module 9 · Operational Data | Released · regression-locked | Released together with Modules 4 and 7 |
+| Module 5 · Inventory Basics | Released · regression-locked | Production `9780c00` |
+| Module 13 · Client Communication & Reporting | **Released · reference implementation ready · regression-locked** (2026-10-07) | Implementation `7e09594`, merged to `main` as `444c6e7`, deployed to production |
+
+**Module 13 release record.** Independent Gemini break test of `7e09594`: A, reference implementation ready, 0 confirmed defects. Two non-blocking observations were deliberately left unchanged: possible focus trapping in the evidence drawer on very narrow screens, and the phone keyboard pushing Lesson 3's submit button below the fold at 320 px. Regression was fully green before and after the merge: continuity checks; content lint for M4, M5, M7, M9 and M13; shared engine 39/39; number field 17/17; M4 136/136 plus 111/111 behaviour states; M5 188/188; M7 186/186; M9 196/196; M13 194/194. The production smoke test passed for Lessons 1–3, portfolio and persistence, and deployment integrity. Production: https://pva-ecommerce-free-training.pages.dev/module-13/
+
 ## Configuration boundary (`config` in a module's source)
 
 ```jsonc
