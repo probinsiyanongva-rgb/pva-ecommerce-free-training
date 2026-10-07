@@ -52,15 +52,15 @@
     productFacts: {
       catalog:  { variants: "none -- no size/color variants on any SKU", src: ["module-2 m2-l1"] },
       "EF-101": { category: "Home Organization", unitCost: "$4.20", dimensions: "16in x 11in x 9in", weight: "2.2 lb",
-                  src: ["docs everfield-continuity.md", "module-2 m2-l2", "module-3 m3-l4", "module-6 m6-l4"] },
-      "EF-102": { pack: "40 Pieces", src: ["module-3 m3-l2"] },
+                  src: ["docs everfield-continuity.md", "module-2 m2-l2", "module-3 m3-l2", "module-6 m6-l4"] },
+      "EF-102": { pack: "40 Pieces", src: ["module-2 m2-l1", "module-3 m3-l8"] },
       "EF-103": { category: "Home Organization", supplier: "Pinecrest Manufacturing", leadTime: "14 days", unit: "Each",
                   src: ["module-2 m2-l2"] },
       "EF-104": { pack: "12-Piece", src: ["module-11 m11-l7"] },
       "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["docs everfield-continuity.md", "module-2 m2-l7"] },
       "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
       "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
-                  src: ["docs everfield-continuity.md", "module-3 m3-l6"] }
+                  src: ["docs everfield-continuity.md", "module-2 m2-l2", "module-3 m3-l8"] }
     },
     /* Simulated working day per converted module. The desk engine reads
        calendar[moduleId].date; keep this a plain module -> date map. */
@@ -70,6 +70,7 @@
       m5: { date: "Wed, Sep 2" },
       m9: { date: "Fri, Sep 25" },
       m2: { date: "Tue, Sep 8" },
+      m3: { date: "Wed, Sep 9" },
       m6: { date: "Thu, Sep 10" },
       m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
@@ -92,6 +93,8 @@
         { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
         { date: "Thu, Sep 3 - Tue, Sep 8", what: "Module 2 records: product master rows, Pinecrest's spec sheet and a superseded draft, a marketplace listing-ID cross-reference, three EF-200 shipments (orders #5496-#5498) and a carrier weight notice (Module 2-local)", src: ["module-2 desk-data"] },
         { date: "Tue, Sep 8", what: "Module 2 desk day (product data, 9:00 AM - 2:30 PM)", src: ["module-2 desk-data"] },
+        { date: "Mon, Sep 7 - Wed, Sep 9", what: "Module 3 records: approved product records, draft listings, supplier copy, image files and a listing QA queue (Module 3-local; no orders, stock figures or prices)", src: ["module-3 desk-data"] },
+        { date: "Wed, Sep 9", what: "Module 3 desk day (listings, 9:30 AM - 3:00 PM)", src: ["module-3 desk-data"] },
         { date: "Mon, Sep 7 - Thu, Sep 10", what: "Module 6 records: customer messages, orders #5483-#5495, an EF-105 stock card (Module 6-local)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 10", what: "Module 6 desk day (the support inbox, 9:30 AM - 3:15 PM)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
