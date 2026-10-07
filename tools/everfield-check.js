@@ -320,6 +320,26 @@ rows.forEach(function(r){
   check("Module 5 day stays in its ranges", probs);
 })();
 
+// 6f. Module 2's day stays inside its own ranges (design map D2/D4): orders #5496-#5498,
+// tracking CP-7731-09xx, marketplace listing IDs MKT-44xx, no returns and no stock figures.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-2/desk-data.js")){ check("Module 2 day stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 2; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5496 && n <= 5498)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 2's #5496-#5498" }); }
+    if(/Return #\d+|#\d{3}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a return in " + where + " (Module 2 has none)" });
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^09\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 2's CP-7731-09xx" }); }
+    rx = /\bMKT-(\d+)\b/g;
+    while((mm = rx.exec(r.text))){ if(!/^44\d\d$/.test(mm[1])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 2's MKT-44xx" }); }
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 2 shows none)" });
+  });
+  // marketplace listing IDs are Module 2-local
+  rows.filter(function(r){ return modOf(r.loc) !== 2 && /\bMKT-\d+/.test(r.text); }).forEach(function(r){ probs.push({ loc: r.loc, msg: "Module 2's listing IDs appear in " + r.loc.split(".")[0] }); });
+  check("Module 2 day stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
