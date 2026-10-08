@@ -504,21 +504,25 @@ with sync_playwright() as p:
     for why, t in GOOD:
         okk, fbx = attempt_in(pg, P3, **{"sum.text": t})
         check("l3-summary", "passes -- %s" % why, okk, (t, fbx[:200]))
-    BAD = [("is filler", "I spent the day looking around both of the admins today. It was a really useful and interesting exercise overall."),
-           ("says what we should do", "temp-helper is still active after her contract ended. We should remove temp-helper's access today."),
-           ("recommends", "The ClearPath link shows an error. I recommend reconnecting it before the weekend."),
-           ("tells Sofia what to do", "My account can open Payments. Sofia should take that off my role."),
-           ("says let's", "The ClearPath link is failing. Let's reconnect it this afternoon."),
-           ("gives advice", "EF-102 is still a draft. My advice is to publish it today."),
-           ("claims temp-helper's access was removed", "I removed temp-helper's access because her contract ended. The banner is down too."),
-           ("claims Payments was revoked", "I revoked Payments access on my own account. The summer code is ended."),
-           ("claims her account was deactivated", "Her contract ended on Fri, Sep 4, so I deactivated her account. The banner is down."),
-           ("claims ClearPath was reconnected", "I reconnected the ClearPath link and it is syncing again. The banner is down."),
-           ("claims the link was fixed", "I've fixed the ClearPath connection. Everything else is with Sofia."),
-           ("claims EF-102 was published", "I published EF-104 and EF-102 today. The banner is down."),
-           ("gives no finding", "The check is complete and the results are in the table. Everything is listed by area for review.")]
-    for why, t in BAD:
-        check("l3-summary", "rejected -- a summary that %s" % why, not attempt_in(pg, P3, **{"sum.text": t})[0], t)
+    REC, CHG, FIND, KW = "what to do about it", "isn't yours to make", "state at least one finding", "list of keywords"
+    BAD = [
+           ("is filler", "I spent the day looking around both of the admins today. It was a really useful and interesting exercise overall.", FIND),
+           ("says what we should do", "temp-helper is still active after her contract ended. We should remove temp-helper's access today.", REC),
+           ("recommends", "The ClearPath link shows an error. I recommend reconnecting it before the weekend.", REC),
+           ("tells Sofia what to do", "My account can open Payments. Sofia should take that off my role.", REC),
+           ("says let's", "The ClearPath link has been failing since Wednesday. Let's reconnect it this afternoon before the weekend.", REC),
+           ("gives advice", "EF-102 is still a draft. My advice is to publish it today.", REC),
+           ("claims temp-helper's access was removed", "I removed temp-helper's access because her contract ended on Fri, Sep 4. The summer banner is down too.", CHG),
+           ("claims Payments was revoked", "I revoked Payments access on my own account. The summer code is ended.", CHG),
+           ("claims her account was deactivated", "Her contract ended on Fri, Sep 4, so I deactivated her account. The banner is down.", CHG),
+           ("claims ClearPath was reconnected", "I reconnected the ClearPath link and it is syncing again. The banner is down.", CHG),
+           ("claims the link was fixed", "I've fixed the ClearPath connection this morning. Everything else on the list is with Sofia for now.", CHG),
+           ("claims EF-102 was published", "I published EF-104 and EF-102 today as planned. The summer banner is down and the code has ended.", CHG),
+           ("gives no finding", "The check is complete and the results are in the table. Everything is listed by area for review.", FIND),
+           ("is a fragment list (by design: the field asks for sentences; format message, not a keyword puzzle)", "Ended SUMMERTIDY10, removed summer banner, published approved EF-104 update. Temp-helper access, Payments access, EF-102 draft: Sofia. ClearPath sync error: Maya.", KW)]
+    for why, t, want in BAD:
+        okk, fbx = attempt_in(pg, P3, **{"sum.text": t})
+        check("l3-summary", "rejected with the matching reason -- a summary that %s" % why, not okk and want in fbx.lower(), (t, fbx[:200]))
     ctx.close()
 
     # ---------- answer encoding / leakage ----------
