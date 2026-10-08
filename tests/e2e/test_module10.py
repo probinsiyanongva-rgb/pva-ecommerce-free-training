@@ -364,6 +364,30 @@ with sync_playwright() as p:
     check("retry", "l3-b: corrected summary passes with no attempt limit", attempt_in(pg, P3)[0])
     ctx.close()
 
+    # ---------- Gemini re-test F3 / F4: reload during a pause; the discount box on phones ----------
+    RECHECK = """()=>{var p=document.querySelector('#stagePanel');var re=[...p.querySelectorAll('.desk-evidence-card.is-recheck')];
+      return [re.length, re.filter(c=>!c.querySelector('.desk-ev-body').hidden).length, re.filter(c=>!/^Re-open/.test(c.querySelector('.desk-ev-head button').innerText)).length]}"""
+    for ti, st in [(0, A1), (2, R3)]:
+        ctx, pg, _ = fresh(br)
+        to_stage(pg, ti, st["id"]); fail_once(pg, st)
+        rb = panel(pg).get_by_role("button", name="Reconsider and try again")
+        if rb.count(): rb.click(); pg.wait_for_timeout(30)
+        fail_once(pg, st)
+        pg.reload(); pg.wait_for_timeout(200); pg.click("#btnNext"); pg.wait_for_timeout(100)
+        n, shown, unlabelled = pg.evaluate(RECHECK)
+        locked = (panel(pg).locator("section.desk-group").first.locator("select").first.is_disabled() if st["type"] == "compose"
+                  else all(x.is_disabled() for x in panel(pg).locator("select.desk-select").all()))
+        check("reload", "%s: after a reload during the pause, the cards to re-check stay closed, say 'Re-open', and their calls stay locked (re-test F3)" % st["id"],
+              n >= 1 and shown == 0 and unlabelled == 0 and locked, (n, shown, unlabelled, locked))
+        open_all(pg); solve(pg, st)
+        check("reload", "%s: re-opening them after the reload lets a corrected answer pass" % st["id"], pg.is_enabled("#btnNext"))
+        ctx.close()
+    ctx, pg, _ = fresh(br, viewport={"width": 375, "height": 800}, is_mobile=True, has_touch=True)
+    to_stage(pg, 1, "l2-a"); open_all(pg)
+    box = panel(pg).get_by_label(number_label(field(C2, "promo.pct")), exact=True)
+    check("mobile", "the discount box asks phones for the number keypad (inputmode numeric; re-test F4)", box.get_attribute("inputmode") == "numeric")
+    ctx.close()
+
     # ---------- transfer, principle-only feedback ----------
     ctx, pg, _ = fresh(br)
     for ti, st in ALL:
@@ -489,37 +513,65 @@ with sync_playwright() as p:
     ctx.close()
     ctx, pg, _ = fresh(br)
     to_stage(pg, 2, "l3-b"); open_all(pg)
-    GOOD = [("terse", "Summer code ended and banner down. EF-104 published; access and EF-102 wait for Sofia."),
-            ("owners named", summary(0, 0, 0, 0)),
-            ("'could not remove' is not a change claim", "I could not remove her access, so temp-helper is still active and waiting for Sofia. The ClearPath link shows an error and is with Maya."),
+    GOOD = [
+            ("terse", "Summer code ended and banner down. EF-104 published; access and EF-102 wait for Sofia."),
+            ("owners named", "I ended SUMMERTIDY10, took the summer banner down and published the approved EF-104 update. temp-helper's access, my Payments access and the EF-102 draft are with Sofia, and the ClearPath link is with Maya."),
+            ("could not remove", "I could not remove her access, so temp-helper is still active and waiting for Sofia. The ClearPath link shows an error and is with Maya."),
             ("ended and took down", "I ended the summer code and took the banner down. Everything else is waiting for Sofia or Maya."),
-            ("a fix, then a waiting item in the same sentence", "I removed the summer banner; temp-helper is still active and with Sofia. The ClearPath sync is failing."),
-            ("turned off the code; Payments is Sofia's", "I turned off the expired code and the banner; Payments access on my account is Sofia's call. EF-102 is still a draft."),
-            ("fixed two things; ClearPath is Maya's", "I fixed the banner and the code; the ClearPath link still shows an error. That one is with Maya."),
-            ("'per her note' is not a change to her access", "I removed the banner per her note from last week. The EF-104 update is now published."),
-            ("published EF-104; EF-102 waits", "I published EF-104 as approved. EF-102 is still a draft waiting for Sofia's review."),
+            ("removed the banner; temp next", "I removed the summer banner; temp-helper is still active and with Sofia. The ClearPath sync is failing."),
+            ("turned off code; payments next", "I turned off the expired code and the banner; Payments access on my account is Sofia's call. EF-102 is still a draft."),
+            ("fixed list; clearpath next", "I fixed the banner and the code; the ClearPath link still shows an error. That one is with Maya."),
+            ("removed banner per her note", "I removed the banner per her note from last week. The EF-104 update is now published."),
+            ("published EF-104, EF-102 waits", "I published EF-104 as approved. EF-102 is still a draft waiting for Sofia's review."),
             ("store-health phrasing", "Two admins checked. The brand store had a live summer banner past its end date and a failing ClearPath link; the rest is in the table."),
             ("no internal codes", "The old summer promotion was still running, so I ended it and took its banner down. Access questions are with Sofia and the warehouse link is with Maya."),
-            ("accepted by design (indirect directive; self-check and human review)", "The temp helper still has access and the ClearPath link is down. Time to lock down access before the weekend.")]
+            ("accepted by design (indirect)", "The temp helper still has access and the ClearPath link is down. Time to lock down access before the weekend."),
+            ("could not remove, waiting for Sofia", "I could not remove temp-helper's access, so it is waiting for Sofia. The ClearPath link shows an error and is with Maya."),
+            ("didn't touch the access", "I didn't change temp-helper's access or my own Payments access; both are Sofia's. The ClearPath link is Maya's."),
+            ("ended the code; temp-helper is Sofia's", "I ended the summer code, and temp-helper's account is still active for Sofia to decide. The ClearPath link is with Maya."),
+            ("ended the day by checking access", "I ended the day by checking temp-helper's access and the Payments setting on my account. Both are waiting for Sofia."),
+            ("updated Sofia on access", "I updated Sofia on temp-helper's access and my Payments permission. The ClearPath link is waiting for Maya."),
+            ("published EF-104; EF-102 update waits", "I published the EF-104 update as approved. The EF-102 update is still a draft and waits for Sofia."),
+            ("published EF-104 and EF-102 goes to Sofia", "I published EF-104, and EF-102 goes to Sofia for review. The summer code has ended and the banner is down."),
+            ("fixed the banner; link needs Maya", "I fixed the banner by taking it down. The ClearPath link needs Maya because its authorization expired."),
+            ("newsletter link connected", "The newsletter link is connected and fine. The ClearPath connection shows an error, which is waiting for Maya."),
+            ("ClearPath needs to be fixed by Maya", "The ClearPath link needs to be fixed by Maya. The summer banner is down and the code has ended."),
+            ("I'll ask Sofia about access", "I'll ask Sofia whether temp-helper's access should be removed. The summer banner is down and the code has ended."),
+            ("natural first-person sentences (keyword filter at 0.10)", "I ended SUMMERTIDY10, removed the summer banner and published EF-104. Temp-helper, my Payments access and EF-102 need Sofia; ClearPath needs Maya.")]
     for why, t in GOOD:
         okk, fbx = attempt_in(pg, P3, **{"sum.text": t})
         check("l3-summary", "passes -- %s" % why, okk, (t, fbx[:200]))
     REC, CHG, FIND, KW = "what to do about it", "isn't yours to make", "state at least one finding", "list of keywords"
     BAD = [
-           ("is filler", "I spent the day looking around both of the admins today. It was a really useful and interesting exercise overall.", FIND),
-           ("says what we should do", "temp-helper is still active after her contract ended. We should remove temp-helper's access today.", REC),
-           ("recommends", "The ClearPath link shows an error. I recommend reconnecting it before the weekend.", REC),
-           ("tells Sofia what to do", "My account can open Payments. Sofia should take that off my role.", REC),
-           ("says let's", "The ClearPath link has been failing since Wednesday. Let's reconnect it this afternoon before the weekend.", REC),
-           ("gives advice", "EF-102 is still a draft. My advice is to publish it today.", REC),
-           ("claims temp-helper's access was removed", "I removed temp-helper's access because her contract ended on Fri, Sep 4. The summer banner is down too.", CHG),
-           ("claims Payments was revoked", "I revoked Payments access on my own account. The summer code is ended.", CHG),
-           ("claims her account was deactivated", "Her contract ended on Fri, Sep 4, so I deactivated her account. The banner is down.", CHG),
-           ("claims ClearPath was reconnected", "I reconnected the ClearPath link and it is syncing again. The banner is down.", CHG),
-           ("claims the link was fixed", "I've fixed the ClearPath connection this morning. Everything else on the list is with Sofia for now.", CHG),
-           ("claims EF-102 was published", "I published EF-104 and EF-102 today as planned. The summer banner is down and the code has ended.", CHG),
-           ("gives no finding", "The check is complete and the results are in the table. Everything is listed by area for review.", FIND),
-           ("is a fragment list (by design: the field asks for sentences; format message, not a keyword puzzle)", "Ended SUMMERTIDY10, removed summer banner, published approved EF-104 update. Temp-helper access, Payments access, EF-102 draft: Sofia. ClearPath sync error: Maya.", KW)]
+           ("filler", "I spent the day looking around both of the admins today. It was a really useful and interesting exercise overall.", FIND),
+           ("we should", "temp-helper is still active after her contract ended. We should remove temp-helper's access today.", REC),
+           ("I recommend", "The ClearPath link shows an error. I recommend reconnecting it before the weekend.", REC),
+           ("Sofia should", "My account can open Payments. Sofia should take that off my role.", REC),
+           ("let's", "The ClearPath link has been failing since Wednesday. Let's reconnect it this afternoon before the weekend.", REC),
+           ("my advice", "EF-102 is still a draft. My advice is to publish it today.", REC),
+           ("removed temp-helper", "I removed temp-helper's access because her contract ended on Fri, Sep 4. The summer banner is down too.", CHG),
+           ("revoked payments", "I revoked Payments access on my own account. The summer code is ended.", CHG),
+           ("deactivated her account", "Her contract ended on Fri, Sep 4, so I deactivated her account. The banner is down.", CHG),
+           ("reconnected ClearPath", "I reconnected the ClearPath link and it is syncing again. The banner is down.", CHG),
+           ("fixed the link", "I've fixed the ClearPath connection this morning. Everything else on the list is with Sofia for now.", CHG),
+           ("published EF-102", "I published EF-104 and EF-102 today as planned. The summer banner is down and the code has ended.", CHG),
+           ("no finding", "The check is complete and the results are in the table. Everything is listed by area for review.", FIND),
+           ("fragment list (format message by design)", "Ended SUMMERTIDY10, removed summer banner, published approved EF-104 update. Temp-helper access, Payments access, EF-102 draft: Sofia. ClearPath sync error: Maya.", KW),
+           ("G-F1 exact: have published the draft for EF-102", "I ended SUMMERTIDY10 and took down the summer banner. I have published the draft for EF-102 today.", CHG),
+           ("G-F1: went ahead and published", "I went ahead and published EF-102 today. The summer banner is down and the code has ended.", CHG),
+           ("G-F1: I publish", "I publish EF-102 today as well. The summer banner is down and the summer code has ended.", CHG),
+           ("G-F1: decided to publish", "I decided to publish EF-102 too. The summer banner is down and the summer code has ended.", CHG),
+           ("G-F1: published the EF-102 update", "I published the EF-104 update and the EF-102 update. The summer banner is down as well.", CHG),
+           ("G-F1: passive, EF-102 is now live", "The summer banner is down and the code has ended. EF-102 is now live on the brand store as well.", CHG),
+           ("G-F2 exact: removed the user temp-helper", "I removed the user temp-helper because their contract ended. The banner has been taken down as well.", CHG),
+           ("G-F2: ended the account for temp-helper", "I ended the account for temp-helper today. The banner is removed and ClearPath is waiting for Maya.", CHG),
+           ("G-F2: ended temp-helper's access", "I ended temp-helper's access because her contract ended. The summer banner is down too.", CHG),
+           ("G-F2: closed her account", "Her contract was over, so I closed her account this morning. The summer banner is down too.", CHG),
+           ("G-F2: passive, access has been removed", "The summer banner is down. Temp-helper's access has been removed since her contract ended on Fri, Sep 4.", CHG),
+           ("passive: Payments access was taken off", "The summer banner is down. My Payments access was taken off my account this morning as well.", CHG),
+           ("I'll reconnect the link", "The ClearPath link shows an error since Wednesday. I'll reconnect the link this afternoon myself.", CHG),
+           ("passive: ClearPath link is fixed", "The summer banner is down and the code has ended. The ClearPath link is fixed and syncing again.", CHG),
+           ("re-authorized ClearPath", "I re-authorized ClearPath this morning after the error. The summer banner is down and the code has ended.", CHG)]
     for why, t, want in BAD:
         okk, fbx = attempt_in(pg, P3, **{"sum.text": t})
         check("l3-summary", "rejected with the matching reason -- a summary that %s" % why, not okk and want in fbx.lower(), (t, fbx[:200]))
