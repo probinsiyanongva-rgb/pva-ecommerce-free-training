@@ -179,6 +179,8 @@ with sync_playwright() as p:
     paired = all(any(f["type"] == "select" and "basis" in f["id"] for f in s["fields"]) for _, s in ALL if s["type"] == "compose" and any(x["type"] == "number" for x in s["fields"]))
     check("design", "typed per-unit prices, each stage pairing them with a choice about what the figures are (D7)", len(nums) == 5 and paired, nums)
     check("design", "the report declares a self-check and human review", len(P3["confirm"]) >= 2 and P3.get("humanReview"))
+    check("design", "break test F4: every Lesson 1 question card carries EF-101's full record, so the card's evidence gate covers it",
+          all(all("%s: %s" % (k, v) in (fields_of(r).get("EF-101 record (approved, current)") or "") for k, v in RECV.items() if k != "SKU") for r in A1["rows"]))
     check("design", "both triage stages use every call", all(set(r["answer"] for r in st["rows"]) == set(c["id"] for c in st["choices"]) for st in (A1, R3)))
     check("design", "one research question across the day: EF-101's category (D4)", all("EF-101" in learner_text(t) for t in TASKS) and "stackable" in EVERY.lower())
 
@@ -486,6 +488,9 @@ with sync_playwright() as p:
     GOOD = [("both findings", obs_text(0, 0, 0, 0)),
             ("range alone, with its basis", "Per-unit prices for comparable bins run from %s to %s before shipping. Shipping is listed separately for each store." % (LOW, HIGH)),
             ("the pattern alone", "Corners cracking is the one real pattern in the reviews. It came up at three separate stores."),
+            ("break test F2: rounded prices in words", "Comparable bins are priced between eight and eleven dollars before delivery costs. Most competitor units demonstrate fairly consistent per-unit margins across the board."),
+            ("break test F2: the defect in other words", "Multiple reviews describe structural wall splits when the storage units were stacked three high. In contrast, odor and color feedback represented isolated complaints."),
+            ("'could not verify' is not advice", "I could not verify the 50 lb claim, so it stays the store's own claim. Comparable bins cost $%s to $%s per unit before shipping." % (LOW, HIGH)),
             ("the claim reported as a claim", "The four comparable listings range from $%s to $%s a unit, shipping not included. One store claims its bins hold 50 lb, but nothing verifies that." % (LOW, HIGH))]
     for why, t in GOOD:
         okk, fbx = attempt_in(pg, P3, **{"obs.text": t})
@@ -495,6 +500,9 @@ with sync_playwright() as p:
            ("recommends matching", "Prices run from $%s to $%s per unit before shipping. I recommend matching the lowest price." % (LOW, HIGH)),
            ("tells Sofia what to do", "Three stores' reviews mention cracked corners. Sofia should look at a stronger bin."),
            ("states the claim as fact", "Comparable bins range from $%s to $%s per unit and hold up to 50 lb. Corners crack in some reviews." % (LOW, HIGH)),
+           ("break test F1: gives advice", "Comparable bins range from %s to %s per unit. My advice for Everfield is to undercut Tidewell to win market volume." % (LOW, HIGH)),
+           ("break test F1: names an opportunity to act", "Shoppers reported corners cracked on competitive units. We have an opportunity to discount EF-101 immediately."),
+           ("says EF-101 should be priced somewhere", "Prices run from $%s to $%s per unit before shipping. EF-101 should be priced at the low end." % (LOW, HIGH)),
            ("gives no finding", "The research is done and the listings are in the table. Shipping is shown separately for each store."),
            ("adds hype", "Corners crack at three stores! Prices are $%s to $%s per unit before shipping." % (LOW, HIGH))]
     for why, t in BAD:
