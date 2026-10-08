@@ -491,7 +491,16 @@ with sync_playwright() as p:
             ("break test F2: rounded prices in words", "Comparable bins are priced between eight and eleven dollars before delivery costs. Most competitor units demonstrate fairly consistent per-unit margins across the board."),
             ("break test F2: the defect in other words", "Multiple reviews describe structural wall splits when the storage units were stacked three high. In contrast, odor and color feedback represented isolated complaints."),
             ("'could not verify' is not advice", "I could not verify the 50 lb claim, so it stays the store's own claim. Comparable bins cost $%s to $%s per unit before shipping." % (LOW, HIGH)),
-            ("the claim reported as a claim", "The four comparable listings range from $%s to $%s a unit, shipping not included. One store claims its bins hold 50 lb, but nothing verifies that." % (LOW, HIGH))]
+            ("the claim reported as a claim", "The four comparable listings range from $%s to $%s a unit, shipping not included. One store claims its bins hold 50 lb, but nothing verifies that." % (LOW, HIGH)),
+            ("'match' describing size is not a recommendation", "Two comparable listings match EF-101's size almost exactly. Their prices run from $%s to $%s per unit before shipping." % (LOW, HIGH)),
+            ("re-test F2: 'worth of matching containers'", "Comparable bins are priced between 8.50 and 10.50 dollars per unit. A customer noted twenty dollars worth of matching containers cracked when stacked."),
+            ("re-test F2: 'worth considering' is not a recommendation", "Comparable bins range from $%s to $%s per unit before shipping. Three customer reviews describe corner cracks, which is worth considering alongside the prices." % (LOW, HIGH)),
+            ("re-test F3: the store 'lists' the figure, without confirmation", "Comparable units range from 8.50 to 10.50 per unit. Marigold and Pine lists capacity at 50 lb without any independent lab confirmation."),
+            ("re-test F3: 'states that' far from the figure", "One store states that its stackable clear plastic bins hold up to 50 lb under normal use. Bramblewick and Tidewell prices range from 8.50 to 10.50 each."),
+            ("the claim attributed, with a price inside the sentence", "%s claims its $9.00 bins hold 50 lb. Comparable listings run from $%s to $%s per unit before shipping." % (st_name, LOW, HIGH)),
+            ("quoting the listing's own words", "The %s listing says \"Holds 50 lb!\" but gives no test. Comparable bins cost $%s to $%s per unit before shipping." % (st_name, LOW, HIGH)),
+            ("re-test F1, accepted by design (indirect directive; self-check and human review)", "Comparable bins sell from 8.50 to 10.50 per unit across stores. Target the 8.50 price point to protect our market position."),
+            ("re-test F1, accepted by design (indirect directive; self-check and human review)", "Shoppers reported corners cracked during multi-tier stacking. It is time to adjust our listing catalog accordingly.")]
     for why, t in GOOD:
         okk, fbx = attempt_in(pg, P3, **{"obs.text": t})
         check("l3-observation", "passes -- %s" % why, okk, (t, fbx[:200]))
@@ -503,10 +512,14 @@ with sync_playwright() as p:
            ("break test F1: gives advice", "Comparable bins range from %s to %s per unit. My advice for Everfield is to undercut Tidewell to win market volume." % (LOW, HIGH)),
            ("break test F1: names an opportunity to act", "Shoppers reported corners cracked on competitive units. We have an opportunity to discount EF-101 immediately."),
            ("says EF-101 should be priced somewhere", "Prices run from $%s to $%s per unit before shipping. EF-101 should be priced at the low end." % (LOW, HIGH)),
-           ("gives no finding", "The research is done and the listings are in the table. Shipping is shown separately for each store."),
-           ("adds hype", "Corners crack at three stores! Prices are $%s to $%s per unit before shipping." % (LOW, HIGH))]
+           ("says 'lowering our price'", "Comparable bins cost $%s to $%s per unit before shipping. Lowering our price would win shoppers." % (LOW, HIGH)),
+           ("states the claim as fact about one store's bins", "%s's bins hold 50 lb. Comparable listings run from $%s to $%s per unit before shipping." % (st_name, LOW, HIGH)),
+           ("gives no finding", "The research is done and the listings are in the table. Shipping is shown separately for each store.")]
     for why, t in BAD:
         check("l3-observation", "rejected -- an observation that %s" % why, not attempt_in(pg, P3, **{"obs.text": t})[0], t)
+    okk, fbx = attempt_in(pg, P3, **{"obs.text": "Comparable bins range from 8.50 to 10.50 per unit. Three customer reviews note issues worth considering when evaluating plastic bins."})
+    check("l3-observation", "re-test F2 (Gemini's exact text): 'worth considering' never triggers the recommendation guard",
+          "leave the recommendation out" not in fbx, fbx[:200])
     ctx.close()
 
     # ---------- answer encoding / leakage ----------
