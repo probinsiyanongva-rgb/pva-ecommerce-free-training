@@ -24,7 +24,7 @@ Sources of truth, one per kind of fact:
 
 **Partners and channels.** ClearPath Fulfillment is the only partner named (3PL: receive, store, pick, pack, ship). Pinecrest Manufacturing is named once as EF-103's supplier (m2-l2). Channels on the hub: Brand store, Online marketplace, B2B / bulk. Module 4 uses the first two.
 
-**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m2-l2, m3-l2), Home Organization (m2-l2), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m2-l1, m3-l8); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m11-l7); EF-105 Travel Organization (m2-l7), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m8-l4); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m2-l2, m3-l8); no size or color variants on any SKU (m2-l1).
+**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m2-l2, m3-l2), Home Organization (m2-l2), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m2-l1, m3-l8); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m11-l7); EF-105 Travel Organization (m2-l7), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m6-l9; the retired m8-l4 first stated it); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m2-l2, m3-l8); no size or color variants on any SKU (m2-l1).
 
 **Policies and authority.** Consistent across modules (§6). No module defines a return window, a refund threshold, shipping times or carriers.
 
@@ -106,6 +106,8 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | Tue, Sep 8 | **Module 2 desk day** (the product desk; each lesson shows its own clock time) | M2 desk; `calendar.m2` |
 | Mon, Sep 7 – Wed, Sep 9 | Module 3 records (all Module 3-local): approved product records, a marketing sheet and an old draft, an EF-106 draft title from supplier copy, image files and the approved asset library, a listing QA queue. No orders, returns, tracking, stock figures, marketplace IDs or prices | M3 desk |
 | Wed, Sep 9 | **Module 3 desk day** (the listing desk; each lesson shows its own clock time) | M3 desk; `calendar.m3` |
+| Thu, Sep 10 – Fri, Sep 11 | Module 8 research material (all Module 8-local): simulated outside stores' listings, prices, shipping terms and reviews, labelled as fictional training data wherever they appear. No Everfield orders, returns, tracking, stock figures, marketplace IDs, unit costs or retail prices | M8 desk |
+| Fri, Sep 11 | **Module 8 desk day** (the research desk; each lesson shows its own clock time) | M8 desk; `calendar.m8` |
 | Thu, Sep 3 – Thu, Sep 10 | Module 6 records (all Module 6-local except the shared Return #229): customer messages, orders #5483–#5495, tracking CP-7731-08xx, an EF-105 stock card (0 available, more on order, no date). No returns created | M6 desk |
 | Thu, Sep 10, 9:30 AM – 3:15 PM | **Module 6 desk day** (the support inbox) | M6 desk; `calendar.m6` |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
@@ -247,6 +249,7 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Dates | Weekday and date disagree; a numeric date not on the timeline; desk clock vs `calendar` (or the lesson's own `workDate`); desk records dated after the desk day (or the lesson's work date); a work date not on the timeline or after the module's day. Month-aware across September and October (decision C1) |
 | Module 5 day stays in its ranges | A Module 5 order outside #4023–#4027 (except the shared #4021), or any return other than the shared Return #229 |
 | Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
+| Module 8 day stays in its ranges | Any Everfield order, return or tracking number, stock figure, marketplace listing ID or unit cost in Module 8; a dollar amount in a Module 8 lesson that labels no outside data as simulated; a simulated outside store named in any other module |
 | Module 3 day stays in its ranges | Any order, return or tracking number, stock figure, marketplace listing ID or dollar amount in Module 3, or an EF-106 piece count outside Lesson 1's draft evidence |
 | Module 2 day stays in its ranges | A Module 2 order outside #5496–#5498, tracking outside CP-7731-09xx, a marketplace listing ID outside MKT-44xx (or an MKT ID in any other module), any return, or any stock figure |
 | Module 6 day stays in its ranges | A Module 6 order outside #5483–#5495, tracking outside CP-7731-08xx, any return other than the shared Return #229, stock figures for any SKU but EF-105, or any EF-103 |

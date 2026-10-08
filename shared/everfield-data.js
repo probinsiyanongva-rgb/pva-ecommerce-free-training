@@ -58,7 +58,7 @@
                   src: ["module-2 m2-l2"] },
       "EF-104": { pack: "12-Piece", src: ["module-11 m11-l7"] },
       "EF-105": { category: "Travel Organization", unitCost: "$3.85", src: ["docs everfield-continuity.md", "module-2 m2-l7"] },
-      "EF-107": { pack: "3-piece set", src: ["module-8 m8-l4"] },
+      "EF-107": { pack: "3-piece set", src: ["module-6 m6-l9"] },
       "EF-200": { kit: { "EF-101": 2, "EF-102": 1, "EF-103": 1 }, listingCategory: "Kits",
                   src: ["docs everfield-continuity.md", "module-2 m2-l2", "module-3 m3-l8"] }
     },
@@ -71,6 +71,7 @@
       m9: { date: "Fri, Sep 25" },
       m2: { date: "Tue, Sep 8" },
       m3: { date: "Wed, Sep 9" },
+      m8: { date: "Fri, Sep 11" },
       m6: { date: "Thu, Sep 10" },
       m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
@@ -95,6 +96,8 @@
         { date: "Tue, Sep 8", what: "Module 2 desk day (product data, 9:00 AM - 2:30 PM)", src: ["module-2 desk-data"] },
         { date: "Mon, Sep 7 - Wed, Sep 9", what: "Module 3 records: approved product records, draft listings, supplier copy, image files and a listing QA queue (Module 3-local; no orders, stock figures or prices)", src: ["module-3 desk-data"] },
         { date: "Wed, Sep 9", what: "Module 3 desk day (listings, 9:30 AM - 3:00 PM)", src: ["module-3 desk-data"] },
+        { date: "Thu, Sep 10 - Fri, Sep 11", what: "Module 8 research material: simulated outside stores' listings, prices, shipping terms and reviews (fictional training data, Module 8-local; no Everfield orders, stock or prices)", src: ["module-8 desk-data"] },
+        { date: "Fri, Sep 11", what: "Module 8 desk day (research, 9:30 AM - 3:30 PM)", src: ["module-8 desk-data"] },
         { date: "Mon, Sep 7 - Thu, Sep 10", what: "Module 6 records: customer messages, orders #5483-#5495, an EF-105 stock card (Module 6-local)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 10", what: "Module 6 desk day (the support inbox, 9:30 AM - 3:15 PM)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
