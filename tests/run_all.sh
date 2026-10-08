@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs every check: Everfield continuity, content lint, core unit tests, the engine number
-# field, the Module 4 browser suite and behavioral snapshot, and the Module 2, 3, 5, 6, 7, 9 and 13 suites. Needs node, python3, playwright.
+# field, the Module 4 browser suite and behavioral snapshot, and the Module 2, 3, 5, 6, 7, 8, 9 and 13 suites. Needs node, python3, playwright.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PORT="${PORT:-8765}"
@@ -16,6 +16,7 @@ echo "== content lint m5";     node tools/desk-codec.js check module-5/desk-data
 echo "== content lint m6";     node tools/desk-codec.js check module-6/desk-data.js
 echo "== content lint m4";     node tools/desk-codec.js check module-4/desk-data.js
 echo "== content lint m7";     node tools/desk-codec.js check module-7/desk-data.js
+echo "== content lint m8";     node tools/desk-codec.js check module-8/desk-data.js
 echo "== content lint m9";     node tools/desk-codec.js check module-9/desk-data.js
 echo "== content lint m13";    node tools/desk-codec.js check module-13/desk-data.js
 echo "== core unit tests";     node tests/unit/core.test.js
@@ -27,5 +28,6 @@ echo "== module 3 browser";    python3 tests/e2e/test_module3.py | tail -1
 echo "== module 5 browser";    python3 tests/e2e/test_module5.py | tail -1
 echo "== module 6 browser";    python3 tests/e2e/test_module6.py | tail -1
 echo "== module 7 browser";    python3 tests/e2e/test_module7.py | tail -1
+echo "== module 8 browser";    python3 tests/e2e/test_module8.py | tail -1
 echo "== module 9 browser";    python3 tests/e2e/test_module9.py | tail -1
 echo "== module 13 browser";   python3 tests/e2e/test_module13.py | tail -1

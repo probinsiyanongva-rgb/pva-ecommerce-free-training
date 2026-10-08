@@ -359,6 +359,35 @@ rows.forEach(function(r){
   check("Module 3 day stays in its ranges", probs);
 })();
 
+// 6h. Module 8's research day stays inside its own ranges (design map D2/D5/D6): no
+// Everfield orders, returns, tracking, stock figures, marketplace IDs or unit costs;
+// dollar amounts only in lessons whose outside data is labelled simulated; and the
+// simulated outside stores ("<Name> · simulated store") appear in no other module.
+(function(){
+  var probs = [], stores = {};
+  if(!fs.existsSync("module-8/desk-data.js")){ check("Module 8 day stays in its ranges", probs); return; }
+  var m8 = rows.filter(function(r){ return modOf(r.loc) === 8; }), simLessons = {};
+  m8.forEach(function(r){
+    var mm, rx = /([A-Z][A-Za-z&' ]+?) · simulated store/g;
+    while((mm = rx.exec(r.text))) stores[mm[1].trim()] = 1;
+    if(/simulated/i.test(r.text)) simLessons[r.loc.split(".")[0]] = 1;
+  });
+  m8.forEach(function(r){
+    var where = r.loc.split(".")[0];
+    if(/#\d{3,}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "an order or return number in " + where + " (Module 8 has none)" });
+    if(/\bCP-\d{4}-\d{4}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a tracking number in " + where + " (Module 8 has none)" });
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 8 shows none)" });
+    if(/\$4\.20\b|\$3\.85\b/.test(r.text)) probs.push({ loc: r.loc, msg: "an Everfield unit cost in " + where + " (internal data, decision D5)" });
+    if(/\$\s?\d/.test(r.text) && !simLessons[where]) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + ", which labels no outside data as simulated (D6)" });
+  });
+  if(!Object.keys(stores).length) probs.push({ msg: "Module 8 names no simulated outside store" });
+  rows.filter(function(r){ return modOf(r.loc) !== 8; }).forEach(function(r){
+    Object.keys(stores).forEach(function(n){ if(r.text.indexOf(n) !== -1) probs.push({ loc: r.loc, msg: "Module 8's simulated store " + n + " appears in " + r.loc.split(".")[0] }); });
+  });
+  check("Module 8 day stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
