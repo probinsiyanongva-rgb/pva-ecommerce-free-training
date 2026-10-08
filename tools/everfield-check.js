@@ -57,6 +57,8 @@ var hub = fs.readFileSync("index.html", "utf8").replace(/<script[\s\S]*?<\/scrip
   .replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&mdash;/g, "--").replace(/\s+/g, " ");
 rows.push({ loc: "hub", text: hub });
 
+var SCHEDULE_RX = /^(Starts|Ends|Goes live)$/;
+var textOf = {}; rows.forEach(function(r){ textOf[r.loc] = r.text; });
 function modOf(loc){ var x = /^M(\d+) /.exec(loc); return x ? +x[1] : null; }
 function lessonOf(loc){ var x = /^M\d+ ([\w-]+)/.exec(loc); return x ? x[1] : loc; }
 function textAt(ref){ // "module-5 m5-l7" -> concatenated text of that lesson; "docs <file>" -> approved canon document
@@ -388,6 +390,28 @@ rows.forEach(function(r){
   check("Module 8 day stays in its ranges", probs);
 })();
 
+// 6i. Module 10's admin day stays inside its own ranges (design map D2/D5/D12): no order,
+// return or tracking numbers, stock figures, marketplace listing IDs, dollar amounts or refunds.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-10/desk-data.js")){ check("Module 10 day stays in its ranges", probs); return; }
+  rows.filter(function(r){ return modOf(r.loc) === 10; }).forEach(function(r){
+    var where = r.loc.split(".")[0];
+    if(/#\d{3,}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "an order or return number in " + where + " (Module 10 has none)" });
+    if(/\bCP-\d{4}-\d{4}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a tracking number in " + where + " (Module 10 has none)" });
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 10 shows none)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + " (decision D5: percentage and item-count only)" });
+    if(/\brefund/i.test(r.text)) probs.push({ loc: r.loc, msg: "a refund in " + where + " (refund authority is Module 7's)" });
+    // no person outside the canon team: the global people check catches "Name (… Manager)";
+    // here also "Name, <role>" and "Name -- <role>", the shapes an admin's user list would use
+    var rx = /\b([A-Z][a-z]+ [A-Z][a-z]+)(?:,| --| –| \()\s*(?:[A-Z][\w&-]* )*(Manager|Assistant|Lead|Owner|Admin|Administrator|Helper|Staff|Specialist|Coordinator|VA)\b/g, mm;
+    while((mm = rx.exec(r.text))){ var nm = mm[1];
+      if(!Object.keys(EVERFIELD.team).some(function(k){ return EVERFIELD.team[k].name === nm; })) probs.push({ loc: r.loc, msg: "a person outside the team (" + nm + ") in " + where }); }
+  });
+  check("Module 10 day stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
@@ -496,12 +520,22 @@ rows.forEach(function(r){
       var rx = new RegExp(MONTH_RX + " (\\d{1,2})\\b", "g"), mm, day = dayOf(dayFor(r.loc));
       while((mm = rx.exec(r.text))){
         var o = ord(mm[1], +mm[2]);
-        TR("after", mid, r.loc, mm[0], o > day ? (/\.reference\[/.test(r.loc) ? "ref" : "after") : "ok");
-        if(o > day && !/\.reference\[/.test(r.loc)) probs.push({ msg: mon(mm[1]) + " " + mm[2] + " in " + r.loc.split(".")[0] + " is after " + (workDate[lessonOf(r.loc)] ? "its work date" : mid + "'s desk day") });
+        TR("after", mid, r.loc, mm[0], o > day ? (/\.reference\[/.test(r.loc) ? "ref" : isSchedule(r.loc) ? "schedule" : "after") : "ok");
+        if(o > day && !/\.reference\[/.test(r.loc) && !isSchedule(r.loc)) probs.push({ msg: mon(mm[1]) + " " + mm[2] + " in " + r.loc.split(".")[0] + " is after " + (workDate[lessonOf(r.loc)] ? "its work date" : mid + "'s desk day") });
       }
     });
   });
   check("dates agree with the Everfield calendar", probs);
+  // A date after the desk day is allowed only in a field or option explicitly labelled as a
+  // schedule (Module 10 build spec, open point 1, Option A): a record field named Starts / Ends /
+  // Goes live, or an option of a compose field with that label. Everything else keeps the rule.
+  function isSchedule(loc){
+    var x = /^(.*)\[(\d+)\]\[1\]$/.exec(loc);
+    if(x) return SCHEDULE_RX.test(textOf[x[1] + "[" + x[2] + "][0]"] || "");
+    x = /^(.*\.fields\[\d+\])\.options\[\d+\]\.label$/.exec(loc);
+    if(x) return SCHEDULE_RX.test(textOf[x[1] + ".label"] || "");
+    return false;
+  }
 })();
 
 console.log("\n" + (failures ? failures + " problem(s)" : "Everfield continuity: all checks passed") + (warnings ? ", " + warnings + " deferred warning(s)" : ""));
