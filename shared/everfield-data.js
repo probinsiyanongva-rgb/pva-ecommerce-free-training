@@ -72,6 +72,7 @@
       m2: { date: "Tue, Sep 8" },
       m3: { date: "Wed, Sep 9" },
       m8: { date: "Fri, Sep 11" },
+      m10: { date: "Fri, Sep 18" },
       m6: { date: "Thu, Sep 10" },
       m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
@@ -98,6 +99,8 @@
         { date: "Wed, Sep 9", what: "Module 3 desk day (listings, 9:30 AM - 3:00 PM)", src: ["module-3 desk-data"] },
         { date: "Thu, Sep 10 - Fri, Sep 11", what: "Module 8 research material: simulated outside stores' listings, prices, shipping terms and reviews (fictional training data, Module 8-local; no Everfield orders, stock or prices)", src: ["module-8 desk-data"] },
         { date: "Fri, Sep 11", what: "Module 8 desk day (research, 9:30 AM - 3:30 PM)", src: ["module-8 desk-data"] },
+        { date: "Tue, Sep 1 - Fri, Sep 18", what: "Module 10 admin records: two simulated store admins (brand store and marketplace seller center), last month's discount code, Sofia's autumn promotion decision, banners, integration status lines and admin accounts (Module 10-local; no orders, stock or prices)", src: ["module-10 desk-data"] },
+        { date: "Fri, Sep 18", what: "Module 10 desk day (store admin, 9:15 AM - 2:30 PM)", src: ["module-10 desk-data"] },
         { date: "Mon, Sep 7 - Thu, Sep 10", what: "Module 6 records: customer messages, orders #5483-#5495, an EF-105 stock card (Module 6-local)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 10", what: "Module 6 desk day (the support inbox, 9:30 AM - 3:15 PM)", src: ["module-6 desk-data"] },
         { date: "Thu, Sep 3 - Thu, Sep 17", what: "Module 7 order and return records", src: ["module-7 desk-data"] },
