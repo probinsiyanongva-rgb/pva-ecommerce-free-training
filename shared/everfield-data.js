@@ -74,6 +74,7 @@
       m10: { date: "Fri, Sep 18" },
       m6: { date: "Thu, Sep 10" },
       m11: { date: "Mon, Sep 14" },
+      m12: { date: "Wed, Sep 16" },
       m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
@@ -95,6 +96,8 @@
         { date: "Mon, Sep 7 - Mon, Sep 14", what: "Module 11 records: the previous VA's daily-check log, the morning order queue and shared inbox (orders #5501-#5520), and a training SOP that is not Everfield policy (Module 11-local)", src: ["module-11 desk-data"] },
         { date: "Mon, Sep 14", what: "Module 11 desk day (daily order-queue and inbox check, 9:00 AM - 11:30 AM)", src: ["module-11 desk-data"] },
         { date: "Tue, Sep 15", what: "Module 4 desk day", src: ["module-4 desk-data"] },
+        { date: "Thu, Sep 10 - Wed, Sep 16", what: "Module 12 records: requests, a prompt, simulated AI drafts, orders #5521-#5535 and Tuesday's order log, and an AI use note that is a training instruction, not Everfield policy (Module 12-local)", src: ["module-12 desk-data"] },
+        { date: "Wed, Sep 16", what: "Module 12 desk day (AI-assisted work, 9:10 AM - 1:30 PM)", src: ["module-12 desk-data"] },
         { date: "Thu, Sep 3 - Tue, Sep 8", what: "Module 2 records: product master rows, Pinecrest's spec sheet and a superseded draft, a marketplace listing-ID cross-reference, three EF-200 shipments (orders #5496-#5498) and a carrier weight notice (Module 2-local)", src: ["module-2 desk-data"] },
         { date: "Tue, Sep 8", what: "Module 2 desk day (product data, 9:00 AM - 2:30 PM)", src: ["module-2 desk-data"] },
         { date: "Mon, Sep 7 - Wed, Sep 9", what: "Module 3 records: approved product records, draft listings, supplier copy, image files and a listing QA queue (Module 3-local; no orders, stock figures or prices)", src: ["module-3 desk-data"] },

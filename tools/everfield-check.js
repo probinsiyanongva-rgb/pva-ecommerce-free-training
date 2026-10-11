@@ -458,6 +458,75 @@ rows.forEach(function(r){
   check("EF-104 pack count stays undefined", probs);
 })();
 
+// 6l. Module 12's AI-assisted day stays inside its own ranges (design map G3, G5, G9):
+// orders #5521-#5535, tracking CP-7731-12xx (never used by another module), no returns,
+// stock figures, dollar amounts, marketplace listing IDs or EF-103; every card or reference
+// that shows Maya's AI use note carries its training-instruction label (it is not
+// Everfield policy); and the AI drafts' false or unsupported claims appear only inside a
+// card titled "AI draft · simulated" (or the compose group built around one).
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-12/desk-data.js")){ check("Module 12 day stays in its ranges", probs); return; }
+  var m12 = rows.filter(function(r){ return modOf(r.loc) === 12; });
+  var FALSE = [/\b2\.5 ?lb\b/i, /\bthree colou?rs\b/i, /\bBPA\b|\bplastic\b|\bbamboo\b/i, /\bCP-7731-1240\b/, /\b8 of them\b/i, /\bdelivered by Friday\b/i,
+               /\bfits any closet shelf\b/i, /\bcode BIN10\b/i];
+  function container(loc){ // the evidence card, triage row or compose group a string sits in
+    var mm = /^(.*?\.groups\[\d+\])/.exec(loc) || /^(.*?(?:records|rows)\[\d+\])/.exec(loc);
+    return mm ? mm[1] : null;
+  }
+  var text = {};
+  m12.forEach(function(r){
+    var c = container(r.loc); if(c) text[c] = (text[c] || "") + " " + r.text;
+    var tr = /^(M12 [\w-]+\.reference)\[\d+\]$/.exec(r.loc); if(tr) text[tr[1]] = (text[tr[1]] || "") + " " + r.text;
+  });
+  m12.forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5521 && n <= 5535)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 12's #5521-#5535" }); }
+    if(/Return #\d+|#\d{3}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a return number in " + where + " (Module 12 has none)" });
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^12\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 12's CP-7731-12xx" }); }
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 12 shows none)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + " (Module 12 shows none)" });
+    if(/EF-103\b/.test(r.text)) probs.push({ loc: r.loc, msg: "EF-103 in " + where + " (the Module 12 day never names EF-103)" });
+    var c = container(r.loc);
+    FALSE.forEach(function(f){
+      if(f.test(r.text) && !(c && /AI draft · simulated/.test(text[c]))) probs.push({ loc: r.loc, msg: "an AI draft's unsupported claim (" + f.source + ") outside an AI-draft card in " + where });
+    });
+  });
+  Object.keys(text).forEach(function(k){
+    var t = text[k];
+    if(/\bN2 ·|AI use for this exercise/.test(t) && !(/TRAINING INSTRUCTION|training instruction/.test(t) && /not Everfield policy/.test(t)))
+      probs.push({ loc: k, msg: "Maya's AI use note without its training-instruction label in " + k.split(".")[0] });
+  });
+  rows.filter(function(r){ var m = modOf(r.loc); return m !== 12 && m !== null; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(n >= 5521 && n <= 5535) probs.push({ loc: r.loc, msg: "Module 12's order #" + n + " appears in " + r.loc.split(".")[0] }); }
+    if(/\bCP-7731-12\d\d\b/.test(r.text)) probs.push({ loc: r.loc, msg: "Module 12's tracking range appears in " + r.loc.split(".")[0] });
+  });
+  check("Module 12 day stays in its ranges", probs);
+})();
+
+// 6m. EF-106's piece count is undefined canon everywhere (Module 12 design map G4), not only
+// in Module 3. A count may appear only as unapproved evidence: Module 3 Lesson 1's draft and
+// supplier copy, and a Module 12 card titled "AI draft · simulated". Number words and up to two
+// words between the number and the noun ("8 adjustable dividers") are caught too; a count that
+// another SKU named in between owns (EF-102's 40 pieces in a Module 13 work log) is not EF-106's.
+(function(){
+  var probs = [];
+  var RX = /(EF-106|Closet Divider)(?:(?!EF-\d{3})[^.]){0,80}\b(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)[- ]?(?:[a-z]+ ){0,2}(?:pack|pieces?|dividers)\b/i;
+  var cardText = {};
+  rows.forEach(function(r){ var mm = /^(M12 .*?(?:records|rows)\[\d+\])/.exec(r.loc); if(mm) cardText[mm[1]] = (cardText[mm[1]] || "") + " " + r.text; });
+  rows.forEach(function(r){
+    if(!RX.test(r.text)) return;
+    if(r.loc.indexOf("M3 m3-l2.stages[1].records") === 0) return;
+    var mm = /^(M12 .*?(?:records|rows)\[\d+\])/.exec(r.loc);
+    if(mm && /AI draft · simulated/.test(cardText[mm[1]])) return;
+    probs.push({ loc: r.loc, msg: "an EF-106 piece count in " + (r.loc === "hub" ? "the hub" : r.loc.split(".")[0]) + " (undefined canon; allowed only as unapproved draft evidence)" });
+  });
+  check("EF-106 piece count stays undefined", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
