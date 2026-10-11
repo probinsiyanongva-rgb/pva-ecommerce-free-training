@@ -24,11 +24,11 @@ Sources of truth, one per kind of fact:
 
 **Partners and channels.** ClearPath Fulfillment is the only partner named (3PL: receive, store, pick, pack, ship). Pinecrest Manufacturing is named once as EF-103's supplier (m2-l2). Channels on the hub: Brand store, Online marketplace, B2B / bulk. Module 4 uses the first two.
 
-**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m2-l2, m3-l2), Home Organization (m2-l2), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m2-l1, m3-l8); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m11-l7); EF-105 Travel Organization (m2-l7), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m6-l9; the retired m8-l4 first stated it); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m2-l2, m3-l8); no size or color variants on any SKU (m2-l1).
+**Products.** Eight SKUs (EF-101…EF-107, EF-200). Every name used anywhere matches the catalog. Stated product facts: EF-101 16in x 11in x 9in, 2.2 lb (m2-l2, m3-l2), Home Organization (m2-l2), unit cost $4.20 (product canon, §6); EF-102 40 pieces (m2-l1, m3-l8); EF-103 Pinecrest, 14-day lead time, Each, Home Organization (m2-l2); EF-104 12-Piece (m11-l7; undefined since the Module 11 conversion, see §6); EF-105 Travel Organization (m2-l7), unit cost $3.85 (product canon, §6); EF-107 3-piece set (m6-l9; the retired m8-l4 first stated it); EF-200 kit = 2 x EF-101 + 1 x EF-102 + 1 x EF-103 (product canon, §6; first stated in the original m5-l4), listed under Kits (m2-l2, m3-l8); no size or color variants on any SKU (m2-l1).
 
 **Policies and authority.** Consistent across modules (§6). No module defines a return window, a refund threshold, shipping times or carriers.
 
-**Records.** Module 4 owns orders #5401–#5419, tracking CP-7731-04xx, customers J. Alvarez and R. Okafor, and PO EG-1047 (reference example). Other records: Order #4021 (M5, M9), #4022 (M9), Return #229 (M11, M5 — shared since the Module 5 conversion), #5192 (M7), #5310 (M14). Stock figures: M5 snapshot (EF-101 34/6/50, EF-103 0/2/25), M5 Wed Sep 2 stock sheet and cycle count (incl. EF-104 40 vs 36; Module 5-local), the retired M5 kit example (EF-101 100, EF-102 80, EF-103 25), M9 snapshot (EF-102 60/5/0, EF-106 8/2/40), M13 inbound (EF-103 25 expected 9/6), M14 (EF-103 0/0).
+**Records.** Module 4 owns orders #5401–#5419, tracking CP-7731-04xx, customers J. Alvarez and R. Okafor, and PO EG-1047 (reference example). Other records: Order #4021 (M5, M9), #4022 (M9), Return #229 (M5, M6; first stated by the retired M11 m11-l4), #5192 (M7), #5310 (M14). Stock figures: M5 snapshot (EF-101 34/6/50, EF-103 0/2/25), M5 Wed Sep 2 stock sheet and cycle count (incl. EF-104 40 vs 36; Module 5-local), the retired M5 kit example (EF-101 100, EF-102 80, EF-103 25), M9 snapshot (EF-102 60/5/0, EF-106 8/2/40), M13 inbound (EF-103 25 expected 9/6), M14 (EF-103 0/0).
 
 **Dates.** All simulated dates fall in September and none states a year.
 
@@ -36,7 +36,7 @@ Sources of truth, one per kind of fact:
 | --- | --- | --- |
 | M5 m5-l7 | 9/2 | Inventory row: EF-101 −2, customer shipment, Order #4021, balance 32 |
 | M9 m9-l3 | 9/2 | Order table: #4021 EF-101 x2 Shipped; #4022 EF-200 x1 Processing |
-| M11 m11-l4 | 9/2 | Documentation example: Return #229 processed, EF-101 x2, Restock |
+| M11 m11-l4 (retired with the Module 11 conversion) | 9/2 | Documentation example: Return #229 processed, EF-101 x2, Restock |
 | M13 m13-l5 | 9/6 | Report line: EF-103 0 available, 25 inbound expected 9/6 |
 | M4 desk (all tasks) | Sat Sep 5 – Tue Sep 15 | Order, payment, fulfillment and carrier records |
 | M4 desk (all tasks) | Tue, Sep 15 · 11:40 AM | Desk day ("now") |
@@ -54,7 +54,7 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | Desk day | M4 desk; `calendar.m4` | Tue, Sep 15 | M4 working day | No | No — see calendar | Keep (IC with the timeline) |
 | 9/2 stock row | M5 m5-l7 | #4021, EF-101 −2, balance 32 | Inventory row example | Yes (M9) | No | Shared record (IC) |
 | 9/2 order table | M9 m9-l3 | #4021 Shipped, #4022 Processing | Order data example | Yes (M5) | No | #4021 shared (IC); #4022 LO |
-| 9/2 return | M11 m11-l4; M5 m5-l7 | Return #229, EF-101 x2, unopened, Restock | Documentation example; restocked in Module 5's EF-101 tracker | Yes (since the Module 5 conversion) | No; it is not #4021's return (shipped the same day) | **Shared record** (R1) |
+| 9/2 return | M5 m5-l7; M6 m6-l2 (first stated by the retired M11 m11-l4) | Return #229, EF-101 x2, unopened, Restock | Restocked in Module 5's EF-101 tracker; answered from in Module 6 | Yes (since the Module 5 conversion) | No; it is not #4021's return (shipped the same day) | **Shared record** (R1) |
 | 9/6 inbound | M13 m13-l5 | EF-103 25 inbound expected 9/6 | Report line example | Yes (M5) | No | Shared record (IC) |
 | M5 stock snapshot | M5 desk (8:00 AM stock sheet, m5-l7; cards in m5-l2, m5-l8) | EF-101 34/6/50; EF-103 0/2/25 | Inventory snapshot | Yes (M13, M14 "earlier example") | No | Shared record (IC) |
 | M5 kit example | M5 m5-l4 (retired) | EF-101 100, EF-102 80, EF-103 25 | Hypothetical ("if…") | No | Differed from the snapshot | **Retired** with the Module 5 conversion (K1) |
@@ -80,7 +80,7 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | EF-103 dimensions | M6 m6-l4, m6-l9 apply | 16in x 11in x 9in | Customer answer | M4 desk ships EF-103 in a 12×9×3 in carton | **GC** — the record could not fit its carton; values copied from EF-101 | **Fixed**: M6 now asks about EF-101 (§5) |
 | Variants | M2 m2-l1 vs M7 m7-l4 | "no size/color variants" vs "exchange EF-105 for a different color" | Catalog fact | Yes | **GC** | Fix when Module 7 is converted (§5) |
 | Kit recipe | Product canon §6 (was M5 m5-l4 "Recall…"; removed from Module 5 after break test M5-DATA-04) | 2/1/1 | Company fact | M3 (category), M4 (EF-200 order) | No; "Recall" points at nothing earlier | `productFacts["EF-200"]`; note §7 |
-| EF-104 pack | M11 m11-l7 (the retired m2-l4 also stated it) | 12-Piece | Product fact | Yes | No | IC; `productFacts` |
+| EF-104 pack | Retired M11 m11-l7 and retired M2 m2-l4 (quiz and example text only) | 12-Piece | Product fact | No | No | **Undefined** since the Module 11 conversion (design map G9): no authoritative source; the checker forbids a count (6k) |
 | EF-106 piece count | M12 m12-l9 placeholder | "corrected it from 8 to 6" | Placeholder sample | M14 t9 (no number) | No | LO; not canon (placeholder) |
 | EF-106 piece count | Retired M3 m3-l2 and m3-l8 ("6-Pack") | A count in a model title | Listing example | Contradicted undefined canon (M6, M12, M14 rely on it) | **GC** | **Fixed** by the Module 3 conversion: the count now appears only as unapproved draft evidence in m3-l2 (decision D11) |
 | Refund / exception authority | M4, M6, M7, M11, M12, M14 | §6 | Policy | Yes | No | Canon in §6 |
@@ -98,7 +98,7 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | On or before Wed, Sep 2 | Early-September stock snapshot: EF-101 34 available / 6 reserved / 50 inbound; EF-103 0 / 2 / 25. Before #4021 ships, because the 9/2 row starts from EF-101's 34 | M5 desk (8:00 AM stock sheet) |
 | Tue, Sep 1 – Wed, Sep 2 | Module 5 records (all Module 5-local except the shared rows): orders #4023–#4027, EF-101's movements (#4021 −2, Return #229 +2, #4024 shipped from reserved stock, one approved write-off), ClearPath's 7:00 AM cycle count. The 8:00 AM stock sheet keeps the snapshot's EF-101 and EF-103 rows and adds Module 5-local rows and alert levels | M5 desk |
 | Wed, Sep 2, 9:15 AM – 4:30 PM | **Module 5 desk day** (EF-103's inbound shown as "due Sun", never as a later date) | M5 desk; `calendar.m5` |
-| Wed, Sep 2 | Order #4021 (EF-101 x2) ships, EF-101 balance 34 → 32. Same day: #4022 (EF-200 x1) is Processing; Return #229 (EF-101 x2) is restocked | M5 m5-l7; M9 m9-l3 (desk reference); M11 m11-l4 |
+| Wed, Sep 2 | Order #4021 (EF-101 x2) ships, EF-101 balance 34 → 32. Same day: #4022 (EF-200 x1) is Processing; Return #229 (EF-101 x2) is restocked | M5 m5-l7; M9 m9-l3 (desk reference); M6 m6-l2 (the retired M11 m11-l4 first stated Return #229) |
 | Before Sun, Sep 6 | Weekly report line: EF-103 0 available, 25 inbound expected 9/6, covering backorders | M13 m13-l5 (kept in Lesson 2's reference as a worked example from an earlier week, decision C2) |
 | Sun, Sep 6 | EF-103 inbound (25) expected | M13 m13-l5 |
 | Sat, Sep 5 – Mon, Sep 14 | Module 4 order, payment, fulfillment and carrier records | M4 desk |
@@ -110,6 +110,8 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | Fri, Sep 11 | **Module 8 desk day** (the research desk; each lesson shows its own clock time) | M8 desk; `calendar.m8` |
 | Thu, Sep 3 – Thu, Sep 10 | Module 6 records (all Module 6-local except the shared Return #229): customer messages, orders #5483–#5495, tracking CP-7731-08xx, an EF-105 stock card (0 available, more on order, no date). No returns created | M6 desk |
 | Thu, Sep 10, 9:30 AM – 3:15 PM | **Module 6 desk day** (the support inbox) | M6 desk; `calendar.m6` |
+| Mon, Sep 7 – Mon, Sep 14 | Module 11 records (all Module 11-local): the previous VA's daily-check log (Mon Sep 7 – Fri Sep 11), the morning order queue and shared inbox (orders #5501–#5520, tracking CP-7731-11xx), carrier events, and a training SOP that is not Everfield policy. No returns, stock figures, dollar amounts, marketplace IDs or EF-103 | M11 desk |
+| Mon, Sep 14, 9:00 – 11:30 AM | **Module 11 desk day** (the daily order-queue and inbox check) | M11 desk; `calendar.m11` |
 | Tue, Sep 15, 11:40 AM | **Module 4 desk day** | M4 desk; `calendar.m4` |
 | Thu, Sep 3 – Wed, Sep 16 | Module 7 order, return and carrier records (orders #5420–#5444, returns #230–#240, tracking CP-7731-05xx; all Module 7-local) | M7 desk |
 | Thu, Sep 17, 10:15 AM | **Module 7 desk day** | M7 desk; `calendar.m7` |
@@ -167,13 +169,13 @@ As stated in the course. Not in `everfield-data.js`, which desk pages load, beca
 
 - **Sofia Ramirez**: closest contact. Customer-facing work, online sales, listings, promotions; support issues beyond a VA's documented authority (m1-l6, m6-l9, m14 brief).
 - **Maya Collins**: Operations. Escalations; owns the ClearPath relationship; packaging and 3PL patterns (m4-l3, m4-l7, m7-l6, m14 brief).
-- **The VA may**: process a standard, in-policy refund for a returned unopened item (m6-l2 policy card, m7-l5); set up a promotion Sofia has already decided on (m10-l6); carry out a specific, unambiguous listing edit (m11-l7, m11-l8); report and document facts.
+- **The VA may**: process a standard, in-policy refund for a returned unopened item (m6-l2 policy card, m7-l5); set up a promotion Sofia has already decided on (m10-l6); carry out a specific, unambiguous listing edit (m3-l8; formerly also the retired m11-l7, m11-l8); report and document facts.
   (Module 10 keeps both m10-l6 citations: the converted Lesson 2, "Set Up What Sofia Decided", states this rule in its reference. The legacy Module 10 listed refunds among routine admin actions; that implication is retired, and refund authority stays with P5–P8.)
-- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l2, m6-l9, m11-l8, m12-l1, m14 brief); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
-- **Order of steps**: a refund is finalized only after disposition. "Inspection Required" waits (m7-l5). Return flow: log → reason → inspect → disposition → inventory action → refund status (m7-l3, m11-l1, m14-t8).
+- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l2, m6-l9, m12-l1, m14 brief); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
+- **Order of steps**: a refund is finalized only after disposition. "Inspection Required" waits (m7-l5). Return flow: log → reason → inspect → disposition → inventory action → refund status (m7-l3, m14-t8).
 - **Out of scope for this Foundation**: supplier negotiation, purchase orders, warehouse logistics (m1-l6, M5 page note).
 - **Cadence**: daily, order and inventory monitoring and urgent follow-ups; weekly (report on Friday), inventory, replenishment, open POs, shipments, 3PL performance, KPIs (m13-l2, m13-l8).
-- **Undefined (add here before any module uses it)**: return window, refund amount thresholds, shipping service levels, carrier names, EF-103's own dimensions (it must fit a 12×9×3 in carton), EF-106 piece count, any SKU's material or retail price (Module 3, decision D5).
+- **Undefined (add here before any module uses it)**: return window, refund amount thresholds, shipping service levels, carrier names, EF-103's own dimensions (it must fit a 12×9×3 in carton), EF-106 piece count, EF-104's pack count (no authoritative source; the retired m2-l4 and m11-l7 stated it only in quiz and example text), any SKU's material or retail price (Module 3, decision D5).
 
 ### Returns and exceptions policy (approved 2026-10-04)
 
@@ -213,7 +215,7 @@ Approved with the Module 9 curriculum audit (decision D5, adjusted; design map d
 - `orders["#4021"]`: Wed Sep 2, EF-101 x2, Shipped (M5 m5-l7; M9 m9-l3, desk reference)
 - `stock.snapshots["stock-early-sep"]`: EF-101 34/6/50, EF-103 0/2/25 (M5; referred to by M13 and M14)
 - `stock.movements["mv-sep2-4021"]`: EF-101 −2, balance 32 (M5 m5-l7; derived from #4021)
-- `returns["Return #229"]`: Wed Sep 2, EF-101 x2, unopened, Restock, refund issued (M11 m11-l4; M5 m5-l7, which restocks it in EF-101's tracker; decision R1)
+- `returns["Return #229"]`: Wed Sep 2, EF-101 x2, unopened, Restock, refund issued (M5 m5-l7, which restocks it in EF-101's tracker, decision R1; M6 m6-l2; first stated by the retired M11 m11-l4)
 - `stock.inbound["inbound-ef103-sep6"]`: EF-103 25, expected Sun Sep 6 (M13 m13-l5; M5 inbound column)
 
 **Module-local** (stay in their modules): Module 4's orders, tracking, customers and PO example; #4022; #5192; #5310; Module 5's day (except the shared rows, #4021 and Return #229); the Module 9 week; M12 and M13 report figures.
@@ -254,6 +256,8 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Module 9 week stays in its ranges | A Module 9 order outside #5450–#5462 (except #4021/#4022), tracking outside CP-7731-06xx, or any EF-102, EF-103 or EF-106 in Module 9 |
 | Module 8 day stays in its ranges | Any Everfield order, return or tracking number, stock figure, marketplace listing ID or unit cost in Module 8; a dollar amount in a Module 8 lesson that labels no outside data as simulated; a simulated outside store named in any other module |
 | Module 10 day stays in its ranges | Any order, return or tracking number, stock figure, marketplace listing ID, dollar amount or refund in Module 10; a person outside the canon team named with a role ("Name, Role" or "Name -- Role"; the people check above covers "Name (… Manager)") |
+| Module 11 day stays in its ranges | A Module 11 order outside #5501–#5520, tracking outside CP-7731-11xx (or either range in any other module), any return, stock figure, dollar amount, marketplace listing ID or EF-103, or an SOP v1 card without its training-document label |
+| EF-104 pack count stays undefined | Any module stating an EF-104 pack or piece count (undefined canon since the Module 11 conversion) |
 | Module 3 day stays in its ranges | Any order, return or tracking number, stock figure, marketplace listing ID or dollar amount in Module 3, or an EF-106 piece count outside Lesson 1's draft evidence |
 | Module 2 day stays in its ranges | A Module 2 order outside #5496–#5498, tracking outside CP-7731-09xx, a marketplace listing ID outside MKT-44xx (or an MKT ID in any other module), any return, or any stock figure |
 | Module 6 day stays in its ranges | A Module 6 order outside #5483–#5495, tracking outside CP-7731-08xx, any return other than the shared Return #229, stock figures for any SKU but EF-105, or any EF-103 |

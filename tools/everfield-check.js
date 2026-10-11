@@ -412,6 +412,52 @@ rows.forEach(function(r){
   check("Module 10 day stays in its ranges", probs);
 })();
 
+// 6j. Module 11's daily-check day stays inside its own ranges (design map G5): orders
+// #5501-#5520, tracking CP-7731-11xx (never used by another module), no returns, stock
+// figures, dollar amounts, marketplace listing IDs or EF-103; and every card that shows
+// the SOP v1 carries its training-document label (it is not Everfield policy).
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-11/desk-data.js")){ check("Module 11 day stays in its ranges", probs); return; }
+  var cards = {};
+  rows.filter(function(r){ return modOf(r.loc) === 11; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5501 && n <= 5520)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 11's #5501-#5520" }); }
+    if(/Return #\d+|#\d{3}\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a return number in " + where + " (Module 11 has none)" });
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^11\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 11's CP-7731-11xx" }); }
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\b\d+ available\b|\bAvailable\b|\bInbound\b|\bReserved\b|\bon hand\b/.test(r.text)) probs.push({ loc: r.loc, msg: "stock figures in " + where + " (Module 11 shows none; stock is out of scope)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + " (Module 11 shows none)" });
+    if(/EF-103\b/.test(r.text)) probs.push({ loc: r.loc, msg: "EF-103 in " + where + " (the Module 11 day never names EF-103)" });
+    var cm = /^(.*?(?:records|rows|reference)\[\d+\])/.exec(r.loc);
+    if(cm){ (cards[cm[1]] = cards[cm[1]] || []).push(r.text); }
+  });
+  Object.keys(cards).forEach(function(k){
+    var t = cards[k].join(" ");
+    if(/SOP v1/.test(t) && !/training document/i.test(t)) probs.push({ loc: k, msg: "an SOP v1 card without its training-document label in " + k.split(".")[0] });
+  });
+  rows.filter(function(r){ var m = modOf(r.loc); return m !== 11 && m !== null; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(n >= 5501 && n <= 5520) probs.push({ loc: r.loc, msg: "Module 11's order #" + n + " appears in " + r.loc.split(".")[0] }); }
+    if(/\bCP-7731-11\d\d\b/.test(r.text)) probs.push({ loc: r.loc, msg: "Module 11's tracking range appears in " + r.loc.split(".")[0] });
+  });
+  check("Module 11 day stays in its ranges", probs);
+})();
+
+// 6k. EF-104's pack count is undefined canon (Module 11 design map G9): no authoritative
+// source exists, so no module may state one until it is verified and recorded in
+// docs/everfield-continuity.md section 6. Same pattern as the EF-106 guard in 6g.
+(function(){
+  var probs = [];
+  rows.forEach(function(r){
+    if(r.loc === "hub") return;
+    if(/(EF-104|Cable Management Set)[^.]{0,80}\b\d+[- ]?(piece|pieces|pack|pc)\b/i.test(r.text))
+      probs.push({ loc: r.loc, msg: "an EF-104 pack count in " + r.loc.split(".")[0] + " (undefined canon: no authoritative source)" });
+  });
+  check("EF-104 pack count stays undefined", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
@@ -486,7 +532,7 @@ rows.forEach(function(r){
   var known = {};
   JSON.stringify([EVERFIELD.timeline, RECORDS]).replace(/(Sep|Oct) (\d+)/g, function(_, m, d){ known[MONTH[m].n + "/" + d] = 1; });
   TR("known", Object.keys(known).sort().join(","));
-  var LOCAL_NUMERIC = { "M11 m11-l4": "9/2" }; // Return #229: illustrative, same day as #4021 (not its return)
+  var LOCAL_NUMERIC = {}; // module-local numeric dates the timeline does not hold (none since the Module 11 conversion retired m11-l4)
   rows.forEach(function(r){
     if(/\.(rules|when)\[/.test(r.loc)) return; // desk validation keywords (accepted spellings), not statements
     var rx = /(?:^|[^\d/])(\d{1,2}\/\d{1,2})(?![\d/])/g, mm;
