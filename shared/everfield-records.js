@@ -42,12 +42,12 @@
         "inbound-ef103-sep6": { sku: "EF-103", qty: 25, expected: "Sun, Sep 6", src: ["module-13 m13-l5", "module-5 m5-l2", "module-5 m5-l8"] }
       }
     },
-    /* Return #229: first stated by Module 11 (m11-l4); Module 5's EF-101 tracker for
+    /* Return #229: first stated by the retired Module 11 m11-l4; Module 5 and Module 6 state it now. Module 5's EF-101 tracker for
        the same day records its restock (decision R1); Module 6's support inbox answers
        the customer's "has my refund gone through?" from it (decision D4). Facts unchanged. */
     returns: {
       "Return #229": { date: "Wed, Sep 2", sku: "EF-101", qty: 2, condition: "Unopened", disposition: "Restock", refund: "Issued",
-                       src: ["module-11 m11-l4", "module-5 m5-l7", "module-6 m6-l2"] }
+                       src: ["module-5 m5-l7", "module-6 m6-l2"] }
     },
     customers: {},
     cases: {}
