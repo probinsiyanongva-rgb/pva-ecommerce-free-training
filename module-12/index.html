@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/style.css">
+<link rel="stylesheet" href="../shared/workdesk.css">
 <style>
   .lesson-title-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
   .lesson-title-row .k{ font-family: var(--font-mono); color: var(--gold); font-size:0.85rem; }
@@ -24,6 +25,20 @@
     font-size: 0.92rem;
   }
   main{ padding: 34px 0 80px; }
+  #lessonTitle:focus{ outline: none; }
+  #lessonTitle:focus-visible{ outline: 3px solid var(--gold); outline-offset: 2px; }
+  .noscript{ padding: 16px; border:1px solid var(--line-strong); border-radius: var(--radius-m); background: var(--surface); }
+  /* Same page-level repairs as Module 7 (break test M7-05, M7-03): the shared
+     tokens measure 3.3-3.8:1 for small text; these keep the same hues at
+     >= 4.7:1 on every page background. Keyboard focus never lands under the
+     sticky top bar. */
+  :root{ --ink-faint: #5A6657; --gold: #7E5A1C; }
+  .portfolio-badge{ background: #5A6833; }
+  html{ scroll-padding-top: 72px; }
+  /* Module 12's evidence is short records, AI drafts and a note: two side by side
+     when both fit, one per row otherwise; any table's text wraps inside its card. */
+  .desk-records{ grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+  .desk-table{ min-width: 0; }
 </style>
 </head>
 <body>
@@ -43,488 +58,60 @@
 <main class="wrap">
   <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Module 12</p>
   <h1>AI-Assisted E-commerce VA Work</h1>
-  <p style="max-width:62ch">AI can speed up almost every task in this course -- drafting, cleaning, summarizing. None of that changes who's responsible for the result. This module is about using AI as a fast first draft, never as the final answer.</p>
+  <p style="max-width:62ch">An AI assistant can draft fast. It can't tell you whether what it wrote is true, and it decides nothing. This module has you decide where the assistant may help, keep customer details out of it, and check every claim it produces against the record before anything goes on.</p>
+  <p style="max-width:62ch">You do it on a Wednesday: eight requests, a prompt to clean up, AI drafts to check claim by claim, and a QA record for Sofia.</p>
 
-  <div class="everfield-note">
-    <strong>The rule that runs through this whole module:</strong> AI can produce a draft. A human -- you -- verifies it against real data before it goes anywhere near a customer, a listing, or a report.
+  <div class="everfield-note" id="trainingNote">
+    <strong>Training instruction:</strong> Maya's AI use note in this module is written for this exercise. It is not Everfield policy. The AI assistant and every AI draft are simulated. Every order, message and record is fictional training data.
   </div>
 
-  <nav class="lesson-nav" id="lessonNav" aria-label="Lessons in this module"></nav>
+  <div class="desk-bar" aria-label="Simulated workplace context">
+    <span><strong>Everfield Goods</strong> · AI-assisted work</span>
+    <span>Work date: <strong id="deskDate">Wed, Sep 16</strong> (simulated)</span>
+    <span>You: <strong>E-commerce VA</strong></span>
+  </div>
 
-  <section class="card card-pad" id="lessonCard">
+  <nav class="lesson-nav" id="lessonNav" aria-label="Desk tasks in this module"></nav>
+
+  <section class="card card-pad" id="lessonCard" aria-labelledby="lessonTitle">
     <div class="lesson-title-row">
-      <span class="k" id="lessonKicker">Lesson 1 of 10</span>
+      <span class="k" id="lessonKicker">Task 1 of 3</span>
     </div>
     <div id="portfolioBadgeSlot"></div>
-    <h2 id="lessonTitle">--</h2>
+    <h2 id="lessonTitle" tabindex="-1">--</h2>
     <p class="lesson-objective" id="lessonObjective">--</p>
+    <p class="desk-status" id="taskStatus" aria-live="polite"></p>
 
-    <div class="step-bar" id="stepBar"></div>
-    <div class="step-label" id="stepLabel">LEARN</div>
+    <div class="step-bar" id="stepBar" aria-hidden="true"></div>
+    <div class="step-label" id="stepLabel">BRIEF</div>
 
-    <div class="step-panel active" data-step="0" id="panelLearn"></div>
-    <div class="step-panel" data-step="1" id="panelObserve"></div>
-    <div class="step-panel" data-step="2" id="panelPractice"></div>
-    <div class="step-panel" data-step="3" id="panelCheck"></div>
-    <div class="step-panel" data-step="4" id="panelApply"></div>
+    <div class="step-panel active" id="stagePanel">
+      <noscript><p class="noscript">This module's desk tasks need JavaScript turned on.</p></noscript>
+    </div>
 
     <div class="step-actions">
-      <button class="btn btn-ghost btn-small" id="btnPrev">Back</button>
-      <button class="btn btn-primary btn-small" id="btnNext">Continue</button>
+      <button type="button" class="btn btn-ghost btn-small" id="btnPrev">Back</button>
+      <p class="desk-next-hint" id="nextHint"></p>
+      <button type="button" class="btn btn-primary btn-small" id="btnNext" aria-describedby="nextHint">Continue</button>
     </div>
   </section>
 
-  <div class="done-banner" id="doneBanner">
-    You've completed this lesson. Use the lesson pills above to keep going, or head back to the <a href="../index.html">course map</a>.
-  </div>
+  <div class="done-banner" id="doneBanner" role="status"></div>
 </main>
 
 <script src="../shared/progress.js"></script>
-<script src="../shared/activities.js"></script>
+<script src="../shared/everfield-data.js"></script>
+<script src="../shared/workdesk.js"></script>
+<script src="../shared/workdesk-ui.js"></script>
+<script src="../shared/workdesk-page.js"></script>
+<script src="desk-data.js"></script>
 <script>
-/* ================= LESSON DATA ================= */
-var MODULE_ID = "m12";
-var LESSONS = [
-{
-  id: "m12-l1",
-  title: "Where AI Can Help",
-  objective: "Identify appropriate e-commerce use cases.",
-  learn: [
-    "AI is a strong fit for drafting, organizing, and summarizing -- a first pass a human then checks. It's a poor fit for making final decisions, approving exceptions, or serving as the sole source of truth about a fact that real data already answers."
-  ],
-  observe: [
-    "Drafting a first-pass description for EF-104 is a good use of AI -- a VA still checks it against the real product record before publishing. Letting AI decide whether to approve a policy exception is not -- that decision was never within a VA's own authority to begin with, let alone an AI's."
-  ],
-  practiceKind: "match",
-  practiceData: {
-    prompt: "Match each task to whether AI assistance is appropriate here.",
-    leftLabel: "Task",
-    rightLabel: "Appropriate for AI?",
-    left: [
-      { id: "a", label: "Draft a first-pass product description" },
-      { id: "b", label: "Approve a refund policy exception" },
-      { id: "c", label: "Summarize a week of order data for review" }
-    ],
-    right: [
-      { id: "yes", label: "Good use of AI (with human verification)" },
-      { id: "no", label: "Not appropriate -- outside VA authority entirely" }
-    ],
-    pairs: { a: "yes", b: "no", c: "yes" },
-    completeFeedback: "Correct -- AI helps with drafting and summarizing, never with decisions outside your own authority."
-  },
-  checkNote: "You can now sort e-commerce tasks into good AI use cases and ones AI shouldn't touch at all."
-},
-{
-  id: "m12-l2",
-  title: "Product Data Cleanup",
-  objective: "Use AI to assist with structured cleanup.",
-  learn: [
-    "AI can help standardize formatting and flag obvious inconsistencies across a product dataset. The human step doesn't disappear -- every suggested change still gets checked against the actual source data before it's accepted."
-  ],
-  observe: [
-    "If AI suggests standardizing a unit-of-measure column, a VA still confirms each corrected value against the real product record -- not just accepting the suggestion because it looks plausible."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "AI suggests a cleanup fix for a messy product data column. What's the right next step?",
-        options: [
-          { text: "Verify each suggested change against the actual source data before accepting it.", correct: true },
-          { text: "Accept all suggested changes automatically, since AI already checked them.", correct: false }
-        ],
-        correctFeedback: "Right -- AI's suggestion is a draft, not a verified fact.",
-        incorrectFeedback: "Not quite -- AI-suggested changes still need to be checked against real data before they're accepted."
-      }
-    ]
-  },
-  checkNote: "You can now use AI for cleanup suggestions without skipping the verification step."
-},
-{
-  id: "m12-l3",
-  title: "Listing Drafts",
-  objective: "Use AI to create drafts while verifying accuracy.",
-  learn: [
-    "AI can draft listing copy quickly. Every fact in that draft -- dimensions, material, what's included -- still needs to be checked against the real product record, exactly like Module 2 and 3 taught for any listing."
-  ],
-  observe: [
-    "An AI-drafted description for EF-106 might state a plausible-sounding piece count that isn't actually correct. Publishing it without checking against the real product record would repeat the exact mistake Module 2 warned against -- just with a new source."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "An AI-drafted description states a specific piece count for EF-106. What should happen before publishing?",
-        options: [
-          { text: "Verify that piece count against the actual product record.", correct: true },
-          { text: "Publish it as-is, since it reads smoothly.", correct: false }
-        ],
-        correctFeedback: "Right -- a smooth-sounding claim isn't the same as a verified one.",
-        incorrectFeedback: "Not quite -- how polished a draft sounds says nothing about whether its facts are correct."
-      }
-    ]
-  },
-  checkNote: "You can now use AI to speed up listing drafts without letting an unverified fact slip through."
-},
-{
-  id: "m12-l4",
-  title: "Research Organization",
-  objective: "Use AI to structure research findings.",
-  learn: [
-    "AI can turn a pile of loose research notes into a clean, structured table quickly. It can't verify those facts for you -- that's still the human's job, exactly as Module 8 covered."
-  ],
-  observe: [
-    "AI can format scattered competitor notes into a clean comparison table. Whether the prices and features in that table are actually accurate still needs a human check against the original sources."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "AI neatly organizes messy competitor research into a table. Does that mean the facts inside it are verified?",
-        options: [
-          { text: "No -- organizing and verifying are two separate steps.", correct: true },
-          { text: "Yes -- a clean table means the information is accurate.", correct: false }
-        ],
-        correctFeedback: "Right -- formatting says nothing about accuracy. Verification is still a separate, necessary step.",
-        incorrectFeedback: "Not quite -- a clean-looking table can still contain unverified or incorrect information."
-      }
-    ]
-  },
-  checkNote: "You can now use AI to organize research without mistaking organization for verification."
-},
-{
-  id: "m12-l5",
-  title: "Customer Response Drafts",
-  objective: "Use AI to draft but verify customer-facing responses.",
-  learn: [
-    "AI can draft a fast, well-phrased customer response. It doesn't know your real order or product data unless you give it that data -- so every fact in the draft needs the same check any support response needs, per Module 6."
-  ],
-  observe: [
-    "An AI-drafted reply to an order-status question might confidently state a delivery date it has no way of actually knowing. Sending it without checking against the real order record repeats exactly the mistake Module 6 warned against."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "An AI-drafted customer reply states a specific delivery date. What should the VA do before sending it?",
-        options: [
-          { text: "Confirm that date against the actual order and tracking data.", correct: true },
-          { text: "Send it -- AI drafts are already accurate.", correct: false }
-        ],
-        correctFeedback: "Right -- AI has no independent access to real order data unless you give it that data and verify the result.",
-        incorrectFeedback: "Not quite -- an AI draft can state a confident-sounding detail that isn't actually true."
-      }
-    ]
-  },
-  checkNote: "You can now use AI to draft customer responses without skipping the same verification Module 6 taught."
-},
-{
-  id: "m12-l6",
-  title: "Spreadsheet Assistance",
-  objective: "Use AI to assist with formulas or data tasks.",
-  learn: [
-    "AI can suggest a formula or approach for a spreadsheet task. The output still gets checked against numbers you already know are correct, before it's trusted for a real report."
-  ],
-  observe: [
-    "If AI suggests a formula to total weekly shipped units, spot-checking the result against a manual count for a small sample is what confirms the formula is actually working correctly."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "AI suggests a formula for a spreadsheet task. What confirms it's actually correct?",
-        options: [
-          { text: "Spot-checking the result against numbers you already know are right.", correct: true },
-          { text: "Trusting it because AI wrote it.", correct: false }
-        ],
-        correctFeedback: "Right -- a spot-check against known-correct numbers is what actually confirms the formula works.",
-        incorrectFeedback: "Not quite -- the source of a formula doesn't guarantee it's correct for your specific data."
-      }
-    ]
-  },
-  checkNote: "You can now use AI-suggested formulas without skipping the spot-check that confirms they're right."
-},
-{
-  id: "m12-l7",
-  title: "SOP Drafting",
-  objective: "Use AI to draft process documentation.",
-  learn: [
-    "AI can draft a reasonable first-pass SOP structure quickly. A human still reviews it against how the process actually works in practice before it's used for real -- a generic-sounding draft can miss steps specific to how Everfield actually operates."
-  ],
-  observe: [
-    "An AI-drafted SOP for processing a return might miss Everfield's specific disposition step from Module 7 entirely, since AI wasn't given that detail. Reviewing against the real process is what catches that gap."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "An AI-drafted SOP for handling returns is missing the disposition step Everfield actually uses. What does this show?",
-        options: [
-          { text: "A human review against the real process is what catches gaps like this.", correct: true },
-          { text: "AI-drafted SOPs are always complete and don't need review.", correct: false }
-        ],
-        correctFeedback: "Right -- a generic draft can easily miss a process's real, specific steps.",
-        incorrectFeedback: "Not quite -- this exact scenario is why a human review step is necessary."
-      }
-    ]
-  },
-  checkNote: "You can now use AI to speed up SOP drafting without skipping the review that catches missing steps."
-},
-{
-  id: "m12-l8",
-  title: "Operational Summaries",
-  objective: "Use AI to summarize operational data.",
-  learn: [
-    "AI can produce a fast summary of a dataset. The numbers inside that summary still need to be checked against the source before they're shared with anyone who'll act on them."
-  ],
-  observe: [
-    "If an AI-generated weekly summary claims 42 orders shipped, a quick check against the actual order sheet is what confirms that number is real before it goes into a report Maya or Sofia will read."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "An AI-generated summary states a specific number of orders shipped this week. What should happen before sharing it?",
-        options: [
-          { text: "Check that number against the actual source data.", correct: true },
-          { text: "Share it as-is, since it's already summarized.", correct: false }
-        ],
-        correctFeedback: "Right -- a summary is only as trustworthy as its underlying numbers, and those still need checking.",
-        incorrectFeedback: "Not quite -- being summarized doesn't make a number correct. It still needs verification."
-      }
-    ]
-  },
-  checkNote: "You can now use AI for fast summaries without passing along an unverified number."
-},
-{
-  id: "m12-l9",
-  title: "Human Review",
-  objective: "Apply systematic verification to AI outputs.",
-  learn: [
-    "A real review of AI output checks three things: are the facts accurate against the real source, is anything invented or plausible-sounding but unconfirmed, and does the tone and content match policy. A quick skim isn't the same as an actual review."
-  ],
-  observe: [
-    "Skimming an AI-drafted customer response for typos isn't the same as checking whether it accurately reflects the customer's real order status and Everfield's actual policy -- the second is what a real review requires."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "Which is a genuine review of an AI-drafted response, not just a skim?",
-        options: [
-          { text: "Checking the facts against real data, flagging anything unconfirmed, and confirming policy compliance.", correct: true },
-          { text: "Quickly scanning for typos.", correct: false }
-        ],
-        correctFeedback: "Right -- that's what a systematic review actually requires, well beyond a typo check.",
-        incorrectFeedback: "Not quite -- a typo check catches spelling, not factual accuracy or policy compliance."
-      }
-    ]
-  },
-  checkNote: "You can now apply a real, systematic review to AI output -- not just a surface-level skim.",
-  apply: {
-    portfolioLabel: "Portfolio piece: AI-Assisted Task + QA Record",
-    title: "Everfield Goods -- AI + QA Record",
-    intro: "Document one real AI-assisted task: what you asked AI to help with, what it produced, what you checked, and what (if anything) you corrected before using it.",
-    fields: [
-      { id: "task", label: "What you used AI for", placeholder: "e.g. Drafted a first-pass description for EF-106...", rows: 2 },
-      { id: "output", label: "What AI produced (summarize it)", placeholder: "e.g. A description stating a specific piece count and material...", rows: 3 },
-      { id: "review", label: "What you checked, and what you corrected", placeholder: "e.g. Verified the piece count against the product record; corrected it from 8 to 6...", rows: 3 }
-    ]
-  }
-},
-{
-  id: "m12-l10",
-  title: "Privacy & Responsible Use",
-  objective: "Recognize privacy, accuracy, and responsibility issues.",
-  learn: [
-    "Responsible AI use means not pasting customer personal information into ungoverned AI tools, not treating AI output as fact without verification, and remembering that the VA -- not the AI -- remains responsible for anything sent out under their or the company's name."
-  ],
-  observe: [
-    "Pasting a customer's full name, address, and order history into an AI tool with no data agreement in place is a privacy risk Everfield would need to avoid entirely -- regardless of how convenient it might seem in the moment."
-  ],
-  practiceKind: "quiz",
-  practiceData: {
-    questions: [
-      {
-        q: "Is it appropriate to paste a customer's full personal details into an AI tool with no data agreement in place?",
-        options: [
-          { text: "No -- that's a real privacy risk that should be avoided.", correct: true },
-          { text: "Yes, as long as it saves time.", correct: false }
-        ],
-        correctFeedback: "Right -- convenience doesn't outweigh a genuine privacy risk with customer data.",
-        incorrectFeedback: "Not quite -- saving time doesn't justify exposing customer personal data to an ungoverned tool."
-      }
-    ]
-  },
-  checkNote: "You can now recognize privacy and responsibility risks in everyday AI use -- and that responsibility for the output stays with you, not the tool."
-}
-];
-
-/* ================= APP STATE ================= */
-var currentLessonIndex = 0;
-var currentStep = 0;
-var BASE_STEP_LABELS = ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK"];
-var stepLabels = BASE_STEP_LABELS;
-
-var navEl = document.getElementById("lessonNav");
-var kickerEl = document.getElementById("lessonKicker");
-var titleEl = document.getElementById("lessonTitle");
-var objectiveEl = document.getElementById("lessonObjective");
-var stepBarEl = document.getElementById("stepBar");
-var stepLabelEl = document.getElementById("stepLabel");
-var badgeSlot = document.getElementById("portfolioBadgeSlot");
-var panels = [
-  document.getElementById("panelLearn"),
-  document.getElementById("panelObserve"),
-  document.getElementById("panelPractice"),
-  document.getElementById("panelCheck"),
-  document.getElementById("panelApply")
-];
-var btnPrev = document.getElementById("btnPrev");
-var btnNext = document.getElementById("btnNext");
-var doneBanner = document.getElementById("doneBanner");
-
-var practiceComplete = false;
-var applyComplete = false;
-
-function buildNav(){
-  navEl.innerHTML = "";
-  LESSONS.forEach(function(lesson, i){
-    var pill = document.createElement("button");
-    pill.type = "button";
-    pill.className = "lesson-pill" + (PVAEcom.isLessonDone(lesson.id) ? " done" : "");
-    pill.textContent = (i + 1) + ". " + lesson.title;
-    pill.addEventListener("click", function(){ loadLesson(i); });
-    navEl.appendChild(pill);
-  });
-  highlightNav();
-}
-
-function highlightNav(){
-  Array.prototype.forEach.call(navEl.children, function(pill, i){
-    pill.setAttribute("aria-current", i === currentLessonIndex ? "true" : "false");
-    pill.classList.toggle("done", PVAEcom.isLessonDone(LESSONS[i].id));
-  });
-}
-
-function paragraphs(arr){
-  return arr.map(function(t){ return "<p>" + t + "</p>"; }).join("");
-}
-
-function el_p(text){
-  var p = document.createElement("p");
-  p.style.fontWeight = "600";
-  p.style.color = "var(--forest-dark)";
-  p.textContent = text;
-  return p;
-}
-
-function loadLesson(i){
-  currentLessonIndex = i;
-  currentStep = 0;
-  practiceComplete = false;
-  applyComplete = false;
-  var lesson = LESSONS[i];
-  stepLabels = lesson.apply ? ["LEARN", "EXAMPLE", "ACTIVITY", "CHECK", "APPLY"] : BASE_STEP_LABELS;
-
-  kickerEl.textContent = "Lesson " + (i + 1) + " of " + LESSONS.length;
-  titleEl.textContent = lesson.title;
-  objectiveEl.textContent = "Objective: " + lesson.objective;
-  badgeSlot.innerHTML = lesson.apply ? '<span class="portfolio-badge">Portfolio</span>' : "";
-
-  panels[0].innerHTML = paragraphs(lesson.learn);
-  panels[1].innerHTML = paragraphs(lesson.observe);
-  panels[2].innerHTML = "";
-  panels[3].innerHTML = "<p>" + lesson.checkNote + "</p>";
-  panels[4].innerHTML = "";
-
-  var practiceHost = document.createElement("div");
-  panels[2].appendChild(practiceHost);
-  var onDone = function(){
-    practiceComplete = true;
-    if (currentStep === 2) updateNextButton();
-  };
-  if(lesson.practiceKind === "quiz"){
-    PVAActivities.renderQuiz(practiceHost, lesson.practiceData, onDone);
-  } else if (lesson.practiceKind === "sequence"){
-    PVAActivities.renderSequence(practiceHost, lesson.practiceData, onDone);
-  } else if (lesson.practiceKind === "match"){
-    PVAActivities.renderMatch(practiceHost, lesson.practiceData, onDone);
-  }
-
-  if(lesson.apply){
-    var applyHost = document.createElement("div");
-    panels[4].appendChild(el_p(lesson.apply.portfolioLabel));
-    panels[4].appendChild(applyHost);
-    PVAActivities.renderWorkSample(applyHost, lesson.apply, function(){
-      applyComplete = true;
-      if (currentStep === 4) updateNextButton();
-    });
-  }
-
-  doneBanner.style.display = "none";
-  renderStep();
-  highlightNav();
-  window.scrollTo({ top: document.getElementById("lessonCard").offsetTop - 20, behavior: "smooth" });
-}
-
-function renderStep(){
-  var totalSteps = stepLabels.length;
-  panels.forEach(function(p, idx){ p.classList.toggle("active", idx === currentStep); });
-  stepLabelEl.textContent = stepLabels[currentStep];
-  stepBarEl.innerHTML = "";
-  stepLabels.forEach(function(_, idx){
-    var seg = document.createElement("div");
-    seg.className = "seg" + (idx < currentStep ? " past" : idx === currentStep ? " active" : "");
-    stepBarEl.appendChild(seg);
-  });
-  btnPrev.disabled = false;
-  btnPrev.style.visibility = currentStep === 0 ? "hidden" : "visible";
-  updateNextButton();
-}
-
-function updateNextButton(){
-  var lastStep = stepLabels.length - 1;
-  if(currentStep === 2 && !practiceComplete){
-    btnNext.textContent = "Complete the activity to continue";
-    btnNext.disabled = true;
-  } else if(currentStep === 4 && !applyComplete){
-    btnNext.textContent = "Generate your work sample to continue";
-    btnNext.disabled = true;
-  } else if (currentStep === lastStep){
-    btnNext.textContent = (currentLessonIndex < LESSONS.length - 1) ? "Next lesson" : "Finish module";
-    btnNext.disabled = false;
-  } else {
-    btnNext.textContent = "Continue";
-    btnNext.disabled = false;
-  }
-}
-
-btnPrev.addEventListener("click", function(){
-  if(currentStep > 0){ currentStep--; renderStep(); }
-});
-
-btnNext.addEventListener("click", function(){
-  var lastStep = stepLabels.length - 1;
-  if(currentStep < lastStep){
-    currentStep++;
-    renderStep();
-  } else {
-    var lesson = LESSONS[currentLessonIndex];
-    PVAEcom.markLessonDone(lesson.id);
-    highlightNav();
-    if(currentLessonIndex < LESSONS.length - 1){
-      loadLesson(currentLessonIndex + 1);
-    } else {
-      doneBanner.style.display = "block";
-      doneBanner.textContent = "Module 12 complete. You can now use AI as a genuine productivity tool without losing the verification habit -- Module 13 turns everything you've learned into client-facing reporting.";
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    }
-  }
-});
-
-buildNav();
-loadLesson(0);
+/* Module 12 -- AI-Assisted E-commerce VA Work (Work Desk).
+   All mechanics live in the shared engine; all Module 12 content and wording
+   lives in desk-data.js. Three tasks: m12-l1, m12-l3, m12-l9, all existing
+   ids, so earlier completions keep their checkmarks ("earlier version"); the
+   course map lists these three. */
+PVADeskPage.mount({ module: "m12" });
 </script>
 </body>
 </html>
