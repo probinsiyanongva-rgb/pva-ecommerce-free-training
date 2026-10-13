@@ -208,7 +208,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "Operations Tracker survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Operations Tracker (Weekly Summary)") and "fictional company" in ev and
-          "Work date: Fri, Sep 25 (simulated)" in ev and "Maya Collins" in ev and "human review" in ev, ev[:300])
+          "Work date: Fri, Sep 25 (simulated)" in ev and "Maya Collins" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:300])
     check("work-sample", "the sample keeps the three tracker headings",
           all(h in ev for h in ["Overall volume this week", "Any stockouts or inventory issues", "What's still open or flagged for next week"]))
     check("work-sample", "the sample prints the typed figures with their units",

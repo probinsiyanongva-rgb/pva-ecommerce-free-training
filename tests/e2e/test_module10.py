@@ -156,8 +156,12 @@ with sync_playwright() as p:
     check("design", "exactly one own-words field: the audit summary", texts == [("l3-b", "sum.text")], texts)
     check("design", "the audit declares a self-check and human review", len(P3["confirm"]) >= 2 and P3.get("humanReview"))
     check("design", "the triage uses every call", set(r["answer"] for r in R3["rows"]) == set(c["id"] for c in R3["choices"]))
-    check("design", "no Work Desk engine change: the shared engine files match main",
-          subprocess.run(["git", "diff", "--quiet", "origin/main", "--", "shared/workdesk.js", "shared/workdesk-ui.js", "shared/workdesk-page.js", "shared/workdesk.css"], cwd=ROOT).returncode == 0)
+    # The only engine change allowed since Module 10's release is the approved shared work-sample
+    # line (Module 14 design map, decision B2): one copy string, sampleHumanReview, nothing else.
+    eng = subprocess.run(["git", "diff", "-U0", "origin/main", "--", "shared/workdesk.js", "shared/workdesk-ui.js", "shared/workdesk-page.js", "shared/workdesk.css"], cwd=ROOT, capture_output=True, text=True).stdout
+    changed = [l for l in eng.splitlines() if l[:1] in "+-" and not l.startswith(("+++", "---"))]
+    check("design", "no Work Desk engine change beyond the approved shared review line",
+          all("sampleHumanReview:" in l for l in changed) and len(changed) in (0, 2), changed)
 
     # ---------- D7: generic simulated admins; D5: percentage and item count only ----------
     check("d7", "no real platform is named anywhere in Module 10",
@@ -284,7 +288,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "the audit survives reload with an honest training header that says both admins are simulated",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — E-commerce Store Operations Audit") and "simulated training tools" in ev and
-          "Work date: Fri, Sep 18 (simulated)" in ev and "Sofia Ramirez" in ev and "human review" in ev, ev[:400])
+          "Work date: Fri, Sep 18 (simulated)" in ev and "Sofia Ramirez" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:400])
     check("work-sample", "the audit carries what was fixed, what waits for whom, and the learner's summary",
           all(x in ev for x in acc_labels(P3, "done.items") + acc_labels(P3, "wait.sofia") + [acc_label(P3, "wait.maya"), summary(0, 0, 0, 0)]), ev[:900])
     check("flow", "no JS errors", not errs, errs)

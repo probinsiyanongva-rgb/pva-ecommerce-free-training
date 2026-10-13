@@ -190,7 +190,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "Inventory Tracker survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Inventory Tracker (EF-101, Wed Sep 2)") and "fictional company" in ev and
-          "Work date: Wed, Sep 2 (simulated)" in ev and "Maya Collins" in ev and "human review" in ev, ev[:300])
+          "Work date: Wed, Sep 2 (simulated)" in ev and "Maya Collins" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:300])
     check("work-sample", "the sample prints each movement with its balance", all(("Available after: %s units" % b) in ev for b in got) and "Return #229" in ev, ev[:600])
     check("flow", "no JS errors", not errs, errs)
     ctx.close()

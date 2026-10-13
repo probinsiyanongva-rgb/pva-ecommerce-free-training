@@ -269,7 +269,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "the Listing Pack survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Listing Pack") and "fictional company" in ev and
-          "Work date: Wed, Sep 9 (simulated)" in ev and "Sofia Ramirez" in ev and "human review" in ev, ev[:400])
+          "Work date: Wed, Sep 9 (simulated)" in ev and "Sofia Ramirez" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:400])
     check("work-sample", "the pack carries every listing line and the change note",
           all(acc_label(P3, f["id"]) in ev for f in P3["fields"] if f["type"] == "select") and all(a in ev for a in acc_notes), ev[:900])
     check("flow", "no JS errors", not errs, errs)

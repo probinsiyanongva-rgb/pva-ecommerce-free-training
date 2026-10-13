@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Progress | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  :root{ --ink-faint: #5A6657; --gold: #7E5A1C; }
+  main{ padding: 34px 0 80px; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .card + .card{ margin-top: 18px; }
+  .warn{ border-left:4px solid var(--gold); background: var(--gold-soft); padding:12px 16px; border-radius: var(--radius-s); }
+  .warn ul{ margin: 6px 0 0; padding-left: 20px; }
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+  .row[hidden]{ display:none; }
+  .msg{ margin: 10px 0 0; font-size: 0.92rem; }
+  .msg.ok{ color: var(--success); }
+  .msg.err{ color: var(--error); }
+  #verifiedList{ margin: 8px 0 0; padding-left: 20px; font-size: 0.92rem; }
+  label.file{ font-weight:600; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="mark">Probinsiyanong VA</span><span class="sub">PVA Free Training</span></a>
+    <nav><a href="../index.html">Course map</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Your progress</p>
+  <h1>Your progress</h1>
+  <p style="max-width:64ch">Your work is saved in this browser only. There are no accounts and no cloud copy. Back it up here, and restore it on another device or after clearing your browser.</p>
+  <div class="warn" role="note">
+    <strong>Before you rely on it:</strong>
+    <ul>
+      <li>Switching devices or browsers doesn't carry your progress over. Use a backup.</li>
+      <li>Clearing your browser's site data removes your saved progress.</li>
+      <li>Private or incognito windows may not keep your progress at all.</li>
+      <li>Keeping a backup is up to you.</li>
+    </ul>
+  </div>
+
+  <section class="card card-pad" style="margin-top:18px">
+    <h2 style="margin-top:0">What's saved here</h2>
+    <p id="savedCount">Checking…</p>
+    <ul id="verifiedList" aria-live="polite"></ul>
+  </section>
+
+  <section class="card card-pad">
+    <h2 style="margin-top:0">Back up</h2>
+    <p>Download a file with everything this course has saved in this browser.</p>
+    <div class="row"><button type="button" class="btn btn-primary" id="btnExport">Export progress</button></div>
+    <p class="msg" id="exportMsg" aria-live="polite"></p>
+  </section>
+
+  <section class="card card-pad">
+    <h2 style="margin-top:0">Restore</h2>
+    <p>Restoring replaces what's saved in this browser now. Every answer in a backup is re-checked when you open a module, so nothing counts unless it checks out.</p>
+    <label class="file" for="fileRestore">Choose a backup file</label>
+    <div class="row"><input type="file" id="fileRestore" accept="application/json,.json"></div>
+    <p class="msg" id="restoreMsg" aria-live="polite"></p>
+    <div class="row" id="restoreConfirm" hidden>
+      <button type="button" class="btn btn-primary" id="btnRestore">Replace and restore</button>
+      <button type="button" class="btn btn-ghost" id="btnCancel">Cancel</button>
+    </div>
+  </section>
+
+  <section class="card card-pad">
+    <h2 style="margin-top:0">Clear</h2>
+    <p>Remove this course's saved progress from this browser. Other courses aren't touched.</p>
+    <div class="row"><button type="button" class="btn btn-ghost" id="btnClear">Clear progress</button></div>
+    <p class="msg" id="clearMsg" aria-live="polite"></p>
+  </section>
+</main>
+<script src="../shared/workdesk.js"></script>
+<script src="../certificate/requirements.js"></script>
+<script src="../certificate/verify.js"></script>
+<script src="progress.js"></script>
+</body>
+</html>

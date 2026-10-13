@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate of Completion | E-commerce VA Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  :root{ --ink-faint: #5A6657; --gold: #7E5A1C; }
+  main{ padding: 34px 0 80px; }
+  html{ scroll-padding-top: 72px; }
+  .module-crumb{ font-size:0.85rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .module-crumb a{ color: var(--ink-faint); text-decoration:none; }
+  .req-list{ list-style:none; padding:0; margin: 14px 0 0; }
+  .req-list li{ display:flex; gap:12px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; padding:10px 0; border-bottom:1px solid var(--line); }
+  .req-list .st{ font-family: var(--font-mono); font-size:0.8rem; padding:2px 8px; border-radius:999px; border:1px solid var(--line-strong); white-space:nowrap; }
+  .req-list .st.ok{ background: var(--success-bg); border-color: var(--success); color: var(--success); }
+  .req-list .st.no{ background: var(--surface-sunken); color: var(--ink-soft); }
+  .req-list .sub{ display:block; font-size:0.82rem; color: var(--ink-faint); }
+  .notice{ border-left:4px solid var(--gold); background: var(--gold-soft); padding:14px 16px; border-radius: var(--radius-s); margin-top:18px; }
+  .reminder{ border:1px solid var(--line-strong); background: var(--surface-sunken); border-radius: var(--radius-m); padding:18px 20px; margin:18px 0 14px; }
+  .reminder h3{ margin:0 0 8px; }
+  .reminder p{ margin: 0 0 8px; max-width: 66ch; }
+  .ack{ display:flex; gap:10px; align-items:flex-start; margin: 4px 0 16px; font-weight:500; }
+  .ack input{ width:20px; height:20px; margin-top:2px; flex:none; }
+  .field label{ display:block; font-weight:600; margin-bottom:6px; }
+  .field input{ width:100%; max-width:420px; font: inherit; padding:10px 12px; border:1px solid var(--line-strong); border-radius: var(--radius-s); background:#fff; }
+  .field .hint{ font-size:0.85rem; color: var(--ink-faint); margin:6px 0 0; }
+  .cert-wrap{ margin-top: 20px; }
+  .cert-wrap svg{ width:100%; height:auto; display:block; border-radius: var(--radius-s); box-shadow: var(--shadow-card); }
+  .cert-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  @media print{
+    .topbar, .module-crumb, .no-print{ display:none !important; }
+    main{ padding:0; }
+    .cert-wrap svg{ box-shadow:none; }
+    @page{ size: landscape; margin: 10mm; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar no-print">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="mark">Probinsiyanong VA</span><span class="sub">PVA Free Training</span></a>
+    <nav><a href="../index.html">Course map</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="module-crumb"><a href="../index.html">All modules</a> &nbsp;/&nbsp; Certificate of Completion</p>
+  <div class="no-print">
+    <h1>Certificate of Completion</h1>
+    <p style="max-width:64ch">Your certificate unlocks automatically once every module's desk work checks out in this browser. Each module is re-checked from your saved answers whenever this page opens; a checkmark from the earlier version of the course doesn't count on its own.</p>
+    <div class="card card-pad">
+      <h2 style="margin-top:0">Requirements</h2>
+      <p id="reqStatus" aria-live="polite">Checking your work…</p>
+      <ul class="req-list" id="reqList"></ul>
+    </div>
+  </div>
+  <div id="certPanel"></div>
+  <noscript><p>This page needs JavaScript turned on.</p></noscript>
+</main>
+
+<script src="../shared/workdesk.js"></script>
+<script src="requirements.js"></script>
+<script src="verify.js"></script>
+<script src="certificate.js"></script>
+</body>
+</html>

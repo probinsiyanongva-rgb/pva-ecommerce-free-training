@@ -299,7 +299,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "the Weekly Operations Report survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Weekly Operations Report (Mon Sep 28 – Fri Oct 2)") and "fictional company" in ev and
-          "Work date: Fri, Oct 2 (simulated)" in ev and "Maya Collins" in ev and "For: Sofia Ramirez" in ev and "human review" in ev, ev[:400])
+          "Work date: Fri, Oct 2 (simulated)" in ev and "Maya Collins" in ev and "For: Sofia Ramirez" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:400])
     check("work-sample", "the sample carries every section and the learner's own summary",
           all(h in ev for h in titles) and SUMMARY in ev and LOWROW[0] in ev, ev[:900])
     check("flow", "no JS errors", not errs, errs)

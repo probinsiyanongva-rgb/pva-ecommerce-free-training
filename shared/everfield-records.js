@@ -31,7 +31,7 @@
             "EF-101": { available: 34, reserved: 6, inbound: 50 },
             "EF-103": { available: 0, reserved: 2, inbound: 25 }
           },
-          src: ["module-5 m5-l7", "module-5 m5-l2", "module-5 m5-l8", "module-13 m13-l5", "module-14 m14-t4"]
+          src: ["module-5 m5-l7", "module-5 m5-l2", "module-5 m5-l8", "module-13 m13-l5"]
         }
       },
       movements: {
