@@ -101,7 +101,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "Exception Resolution Log survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nException Resolution Log") and "fictional company" in ev and
-          "Work date: Thu, Sep 17 (simulated)" in ev and "Maya Collins" in ev and "human review" in ev, ev[:300])
+          "Work date: Thu, Sep 17 (simulated)" in ev and "Maya Collins" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:300])
     check("work-sample", "the sample covers both investigated cases", "#5437" in ev and "#5440" in ev)
     check("flow", "no JS errors", not errs, errs)
     ctx.close()

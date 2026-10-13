@@ -41,7 +41,7 @@ Sources of truth, one per kind of fact:
 | M4 desk (all tasks) | Sat Sep 5 – Tue Sep 15 | Order, payment, fulfillment and carrier records |
 | M4 desk (all tasks) | Tue, Sep 15 · 11:40 AM | Desk day ("now") |
 | M4 m4-l8 reference | Sep 12 (+5 days) | Example of Everfield's update style: PO EG-1047 expected arrival |
-| M7, M9, M13, M14 | "this week", "Friday", "last/next week" | Relative, no date |
+| M7, M9, M13 | "this week", "Friday", "last/next week" | Relative, no date |
 
 Every weekday-with-date in the course agrees with a calendar in which Sep 15 is a Tuesday.
 
@@ -56,16 +56,16 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | 9/2 order table | M9 m9-l3 | #4021 Shipped, #4022 Processing | Order data example | Yes (M5) | No | #4021 shared (IC); #4022 LO |
 | 9/2 return | M5 m5-l7; M6 m6-l2 (first stated by the retired M11 m11-l4) | Return #229, EF-101 x2, unopened, Restock | Restocked in Module 5's EF-101 tracker; answered from in Module 6 | Yes (since the Module 5 conversion) | No; it is not #4021's return (shipped the same day) | **Shared record** (R1) |
 | 9/6 inbound | M13 m13-l5 | EF-103 25 inbound expected 9/6 | Report line example | Yes (M5) | No | Shared record (IC) |
-| M5 stock snapshot | M5 desk (8:00 AM stock sheet, m5-l7; cards in m5-l2, m5-l8) | EF-101 34/6/50; EF-103 0/2/25 | Inventory snapshot | Yes (M13, M14 "earlier example") | No | Shared record (IC) |
+| M5 stock snapshot | M5 desk (8:00 AM stock sheet, m5-l7; cards in m5-l2, m5-l8) | EF-101 34/6/50; EF-103 0/2/25 | Inventory snapshot | Yes (M13; the retired M14 t4 called it the "earlier example") | No | Shared record (IC) |
 | M5 kit example | M5 m5-l4 (retired) | EF-101 100, EF-102 80, EF-103 25 | Hypothetical ("if…") | No | Differed from the snapshot | **Retired** with the Module 5 conversion (K1) |
 | EF-104 reconciliation | M5 m5-l6 | 40 vs ClearPath 36 | Module 5 desk record (Wed Sep 2, 7:00 AM cycle count) | No | No | LO, now dated |
 | M9 stock snapshot | M9 m9-l4 (retired) | EF-102 60/5/0; EF-106 8/2/40 | Illustration | No | No | **Retired** with the Module 9 conversion (m9-l4 removed) |
-| EF-103 in capstone | M14 m14-t4 | 0 available, 0 inbound | Contrast with M5/M13 | Yes (explicit) | No — after the 9/6 stock sold through | IC; timeline entry |
+| EF-103 in capstone | M14 m14-t1 (Monday stock sheet; m14-t4 retired) | 0 available, 0 inbound | Monday routing case and a stale handoff note | No | No — the capstone week is fixed at Mon Oct 5 – Fri Oct 9, after the 9/6 stock sold through | Module 14-local; timeline entry |
 | PO EG-1047 | M4 m4-l8 reference | Arrival Sep 12, 80 more 5 days later | Style example (original M4 text) | No | No | LO |
 | Orders #5401–#5419 | M4 desk | Sep 5–15 | Desk cases | No | No | LO (in desk data) |
 | Order #5414 | M4 m4-l6, m4-l7 | Desk case (details in desk data) | Desk case | Situation type only (M14) | See §4 | LO |
-| Order #5310 | M14 m14-t3 | Shipped, no tracking | Capstone skill check | Pattern only (M4) | See §4 | LO; decision pending |
-| Order #5192 | M7 m7-l10 | 2 damaged EF-101, 3rd report this week | Escalation note example | Pattern (M7 l6, M13 l6, M14 t6) | No | LO; pattern noted §4 |
+| Order #5310 | Retired M14 m14-t3 | Shipped, no tracking | Capstone skill check | Pattern only (M4) | See §4 | **Retired** by the Module 14 conversion (decision B3: transfer; every capstone case is new) |
+| Order #5192 | M7 m7-l10 | 2 damaged EF-101, 3rd report this week | Escalation note example | Pattern (M7 l6, M13 l6; the retired M14 t6) | No | LO; the capstone now uses a new EF-102 damage pattern |
 | Order #4022 | M9 m9-l3 | 9/2, EF-200 x1, Processing | Quiz answer row | No | No | LO |
 | Customers | M4 desk | J. Alvarez (#5406), R. Okafor (#5419) | Desk messages | No | No | LO |
 | Sofia Ramirez | Hub, M1, M6, M8, M10, M14, M4 | E-commerce Manager | Closest contact | Yes | No | IC; `team.sofia` |
@@ -81,11 +81,11 @@ Classes: **IC** intentional continuity · **AD** accidental duplication · **GC*
 | Variants | M2 m2-l1 vs M7 m7-l4 | "no size/color variants" vs "exchange EF-105 for a different color" | Catalog fact | Yes | **GC** | Fix when Module 7 is converted (§5) |
 | Kit recipe | Product canon §6 (was M5 m5-l4 "Recall…"; removed from Module 5 after break test M5-DATA-04) | 2/1/1 | Company fact | M3 (category), M4 (EF-200 order) | No; "Recall" points at nothing earlier | `productFacts["EF-200"]`; note §7 |
 | EF-104 pack | Retired M11 m11-l7 and retired M2 m2-l4 (quiz and example text only) | 12-Piece | Product fact | No | No | **Undefined** since the Module 11 conversion (design map G9): no authoritative source; the checker forbids a count (6k) |
-| EF-106 piece count | M12 m12-l9 placeholder (retired) | "corrected it from 8 to 6" | Placeholder sample | M14 t9 (no number) | Stated a count as a correction | **Removed** by the Module 12 conversion. The only Module 12 count is the simulated AI draft's unsupported claim in m12-l3, which the learner takes out (decision A2); check 6m guards the count course-wide |
+| EF-106 piece count | M12 m12-l9 placeholder (retired) | "corrected it from 8 to 6" | Placeholder sample | The retired M14 t9 (no number) | Stated a count as a correction | **Removed** by the Module 12 conversion. The only Module 12 count is the simulated AI draft's unsupported claim in m12-l3, which the learner takes out (decision A2); check 6m guards the count course-wide |
 | EF-106 piece count | Retired M3 m3-l2 and m3-l8 ("6-Pack") | A count in a model title | Listing example | Contradicted undefined canon (M6, M12, M14 rely on it) | **GC** | **Fixed** by the Module 3 conversion: the count now appears only as unapproved draft evidence in m3-l2 (decision D11) |
 | Refund / exception authority | M4, M6, M7, M11, M12, M14 | §6 | Policy | Yes | No | Canon in §6 |
 | Weekly report day | M13 m13-l2 ("Friday's weekly summary"), M7 m7-l10 ("by Friday") | Friday | Operating rhythm | Yes | No | `operating.weeklyReport` |
-| Portfolio / capstone | Hub, portfolio, M14 t10 | 14-piece portfolio, capstone final piece | Course structure | Yes | Hub says "13 portfolio deliverables" and "14-piece" | Not Everfield data; reported only (§7) |
+| Portfolio / capstone | Hub, portfolio, M14 m14-t10 (t3-b) | 14-piece portfolio, capstone final piece (13 pieces before it; the retired t10 said 12) | Course structure | Yes | Hub says "13 portfolio deliverables" and "14-piece" | Not Everfield data; reported only (§7) |
 
 ## 3. Everfield calendar
 
@@ -124,7 +124,10 @@ Weekdays follow a calendar in which Sep 15 is a Tuesday (so Oct 2 is a Friday). 
 | Mon, Sep 28 – Fri, Oct 2 | Module 13 week (all Module 13-local, decision W1-a): customer contacts log, returns log (#241 onward), exceptions log, the VA's work log, week-on-week figures and the verified Operations Tracker; orders #5465–#5482, tracking CP-7731-07xx; no EF-103 on any line | M13 desk |
 | Wed, Sep 30, 4:30 PM | **Module 13 Lesson 1 work date** (midweek items; ClearPath's missed carrier pickup). Declared on the lesson as `workDate` | M13 m13-l2 |
 | Fri, Oct 2, 11:20 AM – 2:30 PM | **Module 13 report day** (Lessons 2 and 3; the weekly report for Sofia) | M13 desk; `calendar.m13` |
-| After EF-103's Sep 6 stock sells through | **Capstone week**: EF-103 at 0 available, 0 inbound. Exact week not fixed | M14 m14-t4 |
+| Mon, Sep 28 – Fri, Oct 9 | Module 14 records (all Module 14-local): the capstone week's queue and stock sheets (EF-103 at 0 available, 0 inbound, after the Sep 6 stock sold through), returns #251–#257, orders #5536–#5569, tracking CP-7731-14xx, EF-102 damage reports and one AI draft titled "AI draft · simulated". No dollar amounts or marketplace IDs | M14 desk |
+| Mon, Oct 5, 9:00 – 10:30 AM | **Module 14 Lesson 1 work date** (Monday's queue). Declared on the lesson as `workDate` | M14 m14-t1 |
+| Wed, Oct 7, 9:30 – 11:30 AM | **Module 14 Lesson 2 work date** (returns and exceptions) | M14 m14-t6 |
+| Fri, Oct 9, 2:00 – 3:00 PM | **Module 14 capstone day** (the weekly report and the Final Portfolio) | M14 desk; `calendar.m14` |
 | Undated | Illustrations: M5 kit example, M5 EF-104 reconciliation, M7 EF-105 at 0. (The old M9 EF-102/EF-106 snapshot was retired with the Module 9 conversion, M13's "3 stockouts" example with the Module 13 conversion, and M12's "42 orders" with the Module 12 conversion.) | — |
 
 Rules for authors:
@@ -136,6 +139,8 @@ Rules for authors:
 5. Module 4's PO EG-1047 example is reference material describing an earlier update; its Sep 12 date is not a desk record.
 
 ## 4. Capstone #5310 and Module 4 #5414
+
+**Resolved by the Module 14 conversion (2026-10-13, decision B3).** The capstone now uses new cases throughout, so #5310 and the other restagings (t4, t6, t9) are retired; the question below is answered "transfer". The original analysis is kept for the record.
 
 **Evidence**
 
@@ -161,7 +166,7 @@ The same applies to t6 vs #5192 (M7): same pattern, not established as the same 
 | 2 | `channels` lists 2 | Adds "B2B / bulk" | Hub lists 3 | `shared/everfield-data.js` | No (no page reads `channels`) | **Done** |
 | 3 | M6 m6-l4 observe and question, m6-l9 apply label: "EF-103's exact dimensions … 16in x 11in x 9in" | "EF-101's exact dimensions …" (same numbers) | Physical contradiction: the Module 4 desk packs EF-103 into a 12×9×3 in carton (m4-l4). 16×11×9 is EF-101's record (m3-l4). Swapping the SKU reuses an existing fact instead of inventing new dimensions. Correct answer and option text unchanged | Module 6, lessons 4 and 9 | Yes: three strings name a different SKU; answer unchanged; no stored work affected (apply text isn't saved) | **Done; please confirm** (revert = three-word change) |
 | 4 | M7 m7-l4: "exchange EF-105 for a different color" | Exchange for a different SKU, or the same SKU as a replacement | Contradicts m2-l1 "no size/color variants" | Module 7, lesson 4 | Yes | **Deferred**: Module 7 is frozen. Make the fix in the Module 7 conversion. Checker warns until then |
-| 5 | M14 t3 #5310 | — | §4 | Module 14 | — | **Your decision**, at Module 14 conversion |
+| 5 | M14 t3 #5310 | — | §4 | Module 14 | — | **Closed** by the Module 14 conversion (B3: new cases; #5310 retired) |
 
 Nothing else met the bar for change (contradiction, impossible timeline, duplicate that weakens assessment, clearly shared data, or unsafe for a future module).
 
@@ -169,12 +174,12 @@ Nothing else met the bar for change (contradiction, impossible timeline, duplica
 
 As stated in the course. Not in `everfield-data.js`, which desk pages load, because several lines bear on Module 4 desk questions. Note that `docs/` is served with the site (unlinked), as the architecture notes already are; keep answer specifics out of this file.
 
-- **Sofia Ramirez**: closest contact. Customer-facing work, online sales, listings, promotions; support issues beyond a VA's documented authority (m1-l6, m6-l9, m14 brief).
-- **Maya Collins**: Operations. Escalations; owns the ClearPath relationship; packaging and 3PL patterns (m4-l3, m4-l7, m7-l6, m14 brief).
+- **Sofia Ramirez**: closest contact. Customer-facing work, online sales, listings, promotions; support issues beyond a VA's documented authority (m1-l6, m6-l9; restated in the m14-t1 reference).
+- **Maya Collins**: Operations. Escalations; owns the ClearPath relationship; packaging and 3PL patterns (m4-l3, m4-l7, m7-l6; restated in the m14-t1 reference).
 - **The VA may**: process a standard, in-policy refund for a returned unopened item (m6-l2 policy card, m7-l5); set up a promotion Sofia has already decided on (m10-l6); carry out a specific, unambiguous listing edit (m3-l8; formerly also the retired m11-l7, m11-l8); report and document facts.
   (Module 10 keeps both m10-l6 citations: the converted Lesson 2, "Set Up What Sofia Decided", states this rule in its reference. The legacy Module 10 listed refunds among routine admin actions; that implication is retired, and refund authority stays with P5–P8.)
-- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l2, m6-l9, m12-l1, m14 brief); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
-- **Order of steps**: a refund is finalized only after disposition. "Inspection Required" waits (m7-l5). Return flow: log → reason → inspect → disposition → inventory action → refund status (m7-l3, m14-t8).
+- **The VA escalates or asks**: any policy exception, or a refund without a return (m6-l2, m6-l9, m12-l1); legal threats or unusually large refunds (m6-l9); whether to run a promotion (m10-l6); refunds or reships as a fix for fulfillment problems (m4-l3, m4-l7); patterns across cases (m7-l6).
+- **Order of steps**: a refund is finalized only after disposition. "Inspection Required" waits (m7-l5). Return flow: log → reason → inspect → disposition → inventory action → refund status (m7-l3; restated in full in the m14-t6 reference, which fixed the retired m14-t8's missing inventory action).
 - **Out of scope for this Foundation**: supplier negotiation, purchase orders, warehouse logistics (m1-l6, M5 page note).
 - **Cadence**: daily, order and inventory monitoring and urgent follow-ups; weekly (report on Friday), inventory, replenishment, open POs, shipments, 3PL performance, KPIs (m13-l2, m13-l8).
 - **Undefined (add here before any module uses it)**: return window, refund amount thresholds, shipping service levels, carrier names, EF-103's own dimensions (it must fit a 12×9×3 in carton), EF-106 piece count (guarded course-wide by check 6m since the Module 12 conversion; it appears only as unapproved draft evidence in Module 3 Lesson 1 and in Module 12's simulated AI draft), EF-104's pack count (no authoritative source; the retired m2-l4 and m11-l7 stated it only in quiz and example text), any SKU's material or retail price (Module 3, decision D5).
@@ -215,16 +220,16 @@ Approved with the Module 9 curriculum audit (decision D5, adjusted; design map d
 **Shared now** (`shared/everfield-records.js`). Each record was already shown by two or more modules with identical facts:
 
 - `orders["#4021"]`: Wed Sep 2, EF-101 x2, Shipped (M5 m5-l7; M9 m9-l3, desk reference)
-- `stock.snapshots["stock-early-sep"]`: EF-101 34/6/50, EF-103 0/2/25 (M5; referred to by M13 and M14)
+- `stock.snapshots["stock-early-sep"]`: EF-101 34/6/50, EF-103 0/2/25 (M5; referred to by M13)
 - `stock.movements["mv-sep2-4021"]`: EF-101 −2, balance 32 (M5 m5-l7; derived from #4021)
 - `returns["Return #229"]`: Wed Sep 2, EF-101 x2, unopened, Restock, refund issued (M5 m5-l7, which restocks it in EF-101's tracker, decision R1; M6 m6-l2; first stated by the retired M11 m11-l4)
 - `stock.inbound["inbound-ef103-sep6"]`: EF-103 25, expected Sun Sep 6 (M13 m13-l5; M5 inbound column)
 
-**Module-local** (stay in their modules): Module 4's orders, tracking, customers and PO example; #4022; #5192; #5310; Module 5's day (except the shared rows, #4021 and Return #229); the Module 9 week; Module 12's day (its orders, AI drafts and Maya's training note); M13 report figures.
+**Module-local** (stay in their modules): Module 4's orders, tracking, customers and PO example; #4022; #5192; #5310; Module 5's day (except the shared rows, #4021 and Return #229); the Module 9 week; Module 12's day (its orders, AI drafts and Maya's training note); M13 report figures; the Module 14 capstone week.
 
 **Candidates, not migrated** (needs your call when the owning modules convert):
 
-- The "damaged EF-101, third report this week" pattern (M7 l6, l10 #5192; M13 l6; M14 t6). If Module 7's conversion makes it one case, it becomes `cases[...]` and M13 and M14 refer to it.
+- The "damaged EF-101, third report this week" pattern (M7 l6, l10 #5192; M13 l6; the retired M14 t6). If Module 7's conversion makes it one case, it becomes `cases[...]` and M13 and M14 refer to it.
 - M5's kit math says "Recall", but nothing earlier teaches the recipe. Consider stating it in Module 2 or 3 when those convert. The recipe is in `productFacts` either way.
 
 **Rules**
@@ -265,6 +270,7 @@ Also noted, not Everfield data: the hub says "13 portfolio deliverables" and als
 | Module 6 day stays in its ranges | A Module 6 order outside #5483–#5495, tracking outside CP-7731-08xx, any return other than the shared Return #229, stock figures for any SKU but EF-105, or any EF-103 |
 | Module 12 day stays in its ranges | A Module 12 order outside #5521–#5535 or tracking outside CP-7731-12xx (or either range in any other module), any return, stock figure, dollar amount, marketplace listing ID or EF-103; Maya's AI use note shown anywhere without its training-instruction label; or an AI draft's false or unsupported claim (2.5 lb, three colors, a material, the swapped tracking number, the wrong shipped count, the delivery date, the shelf claim, the discount code) outside a card titled "AI draft · simulated" |
 | EF-106 piece count stays undefined | An EF-106 piece count (digits or number words, up to two words before the noun) anywhere in the course, the hub included, except Module 3 Lesson 1's draft evidence and a Module 12 card titled "AI draft · simulated"; a count that another SKU named in between owns is not EF-106's |
+| Module 14 week stays in its ranges | A Module 14 order outside #5536–#5569, a return outside #250–#259 or tracking outside CP-7731-14xx (or any of those ranges in another module), a dollar amount or marketplace listing ID, a card showing AI output that isn't titled "AI draft · simulated", or the AI draft's promise outside that card |
 | Module 13 week stays in its ranges | A Module 13 order outside #5465–#5482, a return below #241, tracking outside CP-7731-07xx, or EF-103 anywhere except Lesson 2's earlier-week reference example (C2) |
 
-Each check was confirmed to fail on an injected defect (17 mutations, all caught). The month-aware date check (C1) was proven not to change any earlier result: with `EVERFIELD_TRACE=1` the checker prints every date judgement, and the September-only and month-aware versions produced identical traces for Modules 4, 5, 7 and 9 (802 judgements), identical verdicts on every other check, and identical failures on a set of planted bad dates; only the month-aware version catches a wrong October weekday. The Module 10 changes were proven the same way: the full trace before and after (1,398 trace lines before) differs only by additions — Module 10's own judgements, its two timeline rows and Fri Sep 18 joining the known dates — and no earlier judgement changes. Mutation proofs: a future date in a Module 10 note, under a non-schedule label, or in a schedule row whose label is renamed each fails the date check, while the promotion's schedule settings pass; an order number, tracking number, marketplace ID, stock figure, dollar amount, refund, or a person outside the team each fails the Module 10 range check, and a canon person with their role passes. Module 12 proofs: 17 planted defects (an EF-106 count in a Module 12 finding, in Module 14 t9 and on the hub; the AI-draft title removed from the EF-106 card; the training label removed from a note card and from a task reference; AI claims repeated in feedback and in the work-sample note; out-of-range orders and tracking; Module 12 numbers in Module 14; a dollar amount, EF-103, a return and a stock figure in Module 12) were all caught, and the full trace before and after differs only by additions (Module 12's own judgements, its two timeline rows and Wed Sep 16 joining the known dates). Current result: all checks pass, plus one deferred warning (correction #4, Module 7).
+Each check was confirmed to fail on an injected defect (17 mutations, all caught). The month-aware date check (C1) was proven not to change any earlier result: with `EVERFIELD_TRACE=1` the checker prints every date judgement, and the September-only and month-aware versions produced identical traces for Modules 4, 5, 7 and 9 (802 judgements), identical verdicts on every other check, and identical failures on a set of planted bad dates; only the month-aware version catches a wrong October weekday. The Module 10 changes were proven the same way: the full trace before and after (1,398 trace lines before) differs only by additions — Module 10's own judgements, its two timeline rows and Fri Sep 18 joining the known dates — and no earlier judgement changes. Mutation proofs: a future date in a Module 10 note, under a non-schedule label, or in a schedule row whose label is renamed each fails the date check, while the promotion's schedule settings pass; an order number, tracking number, marketplace ID, stock figure, dollar amount, refund, or a person outside the team each fails the Module 10 range check, and a canon person with their role passes. Module 12 proofs: 17 planted defects (an EF-106 count in a Module 12 finding, in Module 14 t9 and on the hub; the AI-draft title removed from the EF-106 card; the training label removed from a note card and from a task reference; AI claims repeated in feedback and in the work-sample note; out-of-range orders and tracking; Module 12 numbers in Module 14; a dollar amount, EF-103, a return and a stock figure in Module 12) were all caught, and the full trace before and after differs only by additions (Module 12's own judgements, its two timeline rows and Wed Sep 16 joining the known dates). Module 14 proofs: 14 planted defects (out-of-range orders, returns and tracking; a dollar amount; a marketplace ID; the AI card's title removed; the AI promise repeated outside it; Module 14 numbers in Module 1; a work date off the timeline; a record dated after its work date; an EF-106 count; a changed policy card) were all caught, and the full trace against `main` differs only by additions. Current result: all checks pass, plus one deferred warning (correction #4, Module 7).

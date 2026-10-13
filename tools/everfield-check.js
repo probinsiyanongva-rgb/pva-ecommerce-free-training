@@ -527,6 +527,41 @@ rows.forEach(function(r){
   check("EF-106 piece count stays undefined", probs);
 })();
 
+// 6n. Module 14's capstone week stays inside its own ranges (design map §4): orders
+// #5536-#5569, returns #250-#259, tracking CP-7731-14xx (none of them used by another
+// module), no dollar amounts or marketplace listing IDs; every card that shows AI output
+// is titled "AI draft · simulated", and the AI draft's promise appears only there.
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-14/desk-data.js")){ check("Module 14 week stays in its ranges", probs); return; }
+  var m14 = rows.filter(function(r){ return modOf(r.loc) === 14; }), cards = {};
+  function card(loc){ var mm = /^(M14 .*?(?:records|rows)\[\d+\])/.exec(loc); return mm ? mm[1] : null; }
+  m14.forEach(function(r){ var c = card(r.loc); if(c) cards[c] = (cards[c] || "") + " ‖ " + r.text; });
+  m14.forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g, where = r.loc.split(".")[0];
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(!(n >= 5536 && n <= 5569)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 14's #5536-#5569" }); }
+    rx = /#(\d{3})\b/g;
+    while((mm = rx.exec(r.text))){ var q = +mm[1]; if(!(q >= 250 && q <= 259)) probs.push({ loc: r.loc, msg: "return #" + q + " in " + where + " is outside Module 14's #250-#259" }); }
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^14\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 14's CP-7731-14xx" }); }
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + " (the capstone shows none)" });
+    var c = card(r.loc);
+    if(/ships today, and you'll have it/i.test(r.text) && !(c && /AI draft · simulated/.test(cards[c]))) probs.push({ loc: r.loc, msg: "the AI draft's promise outside an AI-draft card in " + where });
+  });
+  Object.keys(cards).forEach(function(k){
+    var title = textOf[k + ".title"] || "";
+    if(/\bAI\b|assistant/i.test(title) && title.indexOf("AI draft · simulated") !== 0) probs.push({ loc: k, msg: "a card showing AI output without the 'AI draft · simulated' title in " + k.split(".")[0] });
+  });
+  rows.filter(function(r){ var m = modOf(r.loc); return m !== 14 && m !== null; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(n >= 5536 && n <= 5569) probs.push({ loc: r.loc, msg: "Module 14's order #" + n + " appears in " + r.loc.split(".")[0] }); }
+    if(/\bCP-7731-14\d\d\b/.test(r.text)) probs.push({ loc: r.loc, msg: "Module 14's tracking range appears in " + r.loc.split(".")[0] });
+    if(/(?:Return )?#25\d\b/.test(r.text)) probs.push({ loc: r.loc, msg: "Module 14's return range appears in " + r.loc.split(".")[0] });
+  });
+  check("Module 14 week stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.

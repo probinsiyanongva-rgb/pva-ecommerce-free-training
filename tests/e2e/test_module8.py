@@ -297,7 +297,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "the report survives reload with an honest training header that says the outside data is fictional",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Mini Competitive Research Report") and "fictional training data" in ev and
-          "Work date: Fri, Sep 11 (simulated)" in ev and "Sofia Ramirez" in ev and "human review" in ev, ev[:400])
+          "Work date: Fri, Sep 11 (simulated)" in ev and "Sofia Ramirez" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:400])
     check("work-sample", "the report carries the range, the basis, the findings and the learner's observation",
           all(x in ev for x in [LOW, HIGH, acc_label(P3, "rng.basis"), acc_label(P3, "fnd.rev"), acc_label(P3, "fnd.claim"), obs_text(0, 0, 0, 0)]), ev[:900])
     check("flow", "no JS errors", not errs, errs)

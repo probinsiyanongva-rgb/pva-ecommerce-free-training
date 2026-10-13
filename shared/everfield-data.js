@@ -75,7 +75,8 @@
       m6: { date: "Thu, Sep 10" },
       m11: { date: "Mon, Sep 14" },
       m12: { date: "Wed, Sep 16" },
-      m13: { date: "Fri, Oct 2" }   // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
+      m13: { date: "Fri, Oct 2" },  // the report day; Lesson 1 declares its own work date (Wed, Sep 30)
+      m14: { date: "Fri, Oct 9" }   // the capstone report day; Lessons 1 and 2 declare their own work dates (Mon, Oct 5; Wed, Oct 7)
     },
     /* The canonical operating timeline (docs/everfield-continuity.md has the
        reasoning). One operating period from September into early October; the
@@ -115,7 +116,10 @@
         { date: "Mon, Sep 28 - Fri, Oct 2", what: "Module 13 week: customer contacts, returns, exceptions, the VA work log and the verified Operations Tracker (Module 13-local records)", src: ["module-13 desk-data"] },
         { date: "Wed, Sep 30", what: "Module 13 Lesson 1 work date (midweek items; ClearPath's missed carrier pickup)", src: ["module-13 m13-l2"] },
         { date: "Fri, Oct 2", what: "Module 13 report day (Lessons 2 and 3; the weekly report for Sofia)", src: ["module-13 desk-data"] },
-        { date: "after the EF-103 inbound sells through", what: "Capstone week (EF-103 at 0 available, 0 inbound); exact week not yet fixed", src: ["module-14 m14-t4"] }
+        { date: "Mon, Sep 28 - Fri, Oct 9", what: "Module 14 records: the capstone week's queue, stock sheets (EF-103 at 0 available, 0 inbound), returns #251-#257, orders #5536-#5569, tracking CP-7731-14xx, damage reports and an AI draft (Module 14-local)", src: ["module-14 desk-data"] },
+        { date: "Mon, Oct 5", what: "Module 14 Lesson 1 work date (Monday's queue)", src: ["module-14 m14-t1"] },
+        { date: "Wed, Oct 7", what: "Module 14 Lesson 2 work date (returns and exceptions)", src: ["module-14 m14-t6"] },
+        { date: "Fri, Oct 9", what: "Module 14 capstone day (the weekly report and the Final Portfolio)", src: ["module-14 desk-data"] }
       ]
     },
     /* Operating rhythm stated in the course. */

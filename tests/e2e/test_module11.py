@@ -361,7 +361,7 @@ with sync_playwright() as p:
           sample.startswith("TRAINING WORK SAMPLE\nEverfield Daily Check SOP — proposed revision (training document, not Everfield policy)") and
           "Work date: Mon, Sep 14 (simulated)" in sample and "For her review; not in effect." in sample and "not Everfield policy" in sample.split("\n")[2], sample[:500])
     check("work-sample", "the sample lists all nine steps with the learner's wording and sources, step 9 pending, and the note",
-          all(("Step %d" % n) in sample for n in range(1, 10)) and "Pending Maya's decision: no approved reply time." in sample and GOOD_NOTE in sample and "human review" in sample, sample[-700:])
+          all(("Step %d" % n) in sample for n in range(1, 10)) and "Pending Maya's decision: no approved reply time." in sample and GOOD_NOTE in sample and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in sample, sample[-700:])
     check("flow", "no JS errors", not errs, errs)
     ctx.close()
 

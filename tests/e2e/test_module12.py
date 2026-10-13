@@ -260,10 +260,15 @@ with sync_playwright() as p:
     check("ef106", "the accepted action removes the count and tells Sofia; it supplies no count", acc.startswith("Take out the count") and "Sofia" in acc and not COUNT_WORD.search(acc))
     check("ef106", "no work-sample, field label or option in Task 3 mentions EF-106", "EF-106" not in learner_text(TASKS[2]) and "EF-106" not in json.dumps(P3["evidence"]))
     check("ef106", "EF-106 has no product fact", "EF-106" not in DATA["productFacts"])
-    m14 = open(os.path.join(ROOT, "module-14", "index.html"), encoding="utf-8").read()
-    t9 = m14[m14.index('id: "m14-t9"'):m14.index('checkNote: "AI + QA Record skill: confirmed."')]
-    main14 = subprocess.run(["git", "show", "main:module-14/index.html"], cwd=ROOT, capture_output=True, text=True).stdout
-    check("ef106", "Module 14 t9 is unchanged from main and states no count", m14 == main14 and not COUNT_WORD.search(t9) and "EF-106 states a piece count" in t9)
+    if os.path.exists(os.path.join(ROOT, "module-14", "desk-data.js")):
+        # Module 14 has been converted (its own suite covers it): it must state no EF-106 count anywhere.
+        m14txt = json.dumps(decode("module-14"), ensure_ascii=False)
+        check("ef106", "the converted Module 14 states no EF-106 count", not EF106.search(m14txt) and "Correct it to match" not in m14txt)
+    else:
+        m14 = open(os.path.join(ROOT, "module-14", "index.html"), encoding="utf-8").read()
+        t9 = m14[m14.index('id: "m14-t9"'):m14.index('checkNote: "AI + QA Record skill: confirmed."')]
+        main14 = subprocess.run(["git", "show", "main:module-14/index.html"], cwd=ROOT, capture_output=True, text=True).stdout
+        check("ef106", "Module 14 t9 is unchanged from main and states no count", m14 == main14 and not COUNT_WORD.search(t9) and "EF-106 states a piece count" in t9)
     check("ef106", "the retired '8 to 6' placeholder is gone from Module 12", "from 8 to 6" not in page and "8 to 6" not in EVERY)
 
     # ---------- canon and ranges ----------
@@ -378,7 +383,7 @@ with sync_playwright() as p:
           sample.startswith("TRAINING WORK SAMPLE\nEverfield Goods — AI + QA Record (training work sample)") and "Work date: Wed, Sep 16 (simulated)" in sample and
           "For her review; not published." in sample and "not Everfield policy" in sample, sample[:600])
     check("work-sample", "the sample lists all six claims with verdicts and sources, the corrected weight, the status and the note",
-          all(("Claim %d" % n) in sample for n in range(1, 7)) and "2.2" in sample and "nothing is published yet" in sample and GOOD_NOTE in sample and "human review" in sample, sample[-900:])
+          all(("Claim %d" % n) in sample for n in range(1, 7)) and "2.2" in sample and "nothing is published yet" in sample and GOOD_NOTE in sample and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in sample, sample[-900:])
     check("flow", "no JS errors", not errs, errs)
     ctx.close()
 

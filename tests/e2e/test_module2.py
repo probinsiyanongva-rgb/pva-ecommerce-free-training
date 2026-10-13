@@ -305,7 +305,7 @@ with sync_playwright() as p:
     ev = pg.locator(".ws-preview").inner_text() if pg.locator(".ws-preview").count() else ""
     check("work-sample", "the Product Master Sheet survives reload with an honest training header",
           ev.startswith("TRAINING WORK SAMPLE\nEverfield Goods — Product Master Sheet") and "fictional company" in ev and
-          "Work date: Tue, Sep 8 (simulated)" in ev and "Sofia Ramirez" in ev and "human review" in ev, ev[:400])
+          "Work date: Tue, Sep 8 (simulated)" in ev and "Sofia Ramirez" in ev and "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce." in ev, ev[:400])
     check("work-sample", "the sheet carries both rows and every field's value, flags included",
           all(g["sampleHead"] in ev for g in S3["groups"]) and all(acc_label(S3, f["id"]) in ev for f in S3["fields"]) and ev.count(NR) == sum(1 for f in S3["fields"] if acc_label(S3, f["id"]) == NR), ev[:900])
     check("flow", "no JS errors", not errs, errs)

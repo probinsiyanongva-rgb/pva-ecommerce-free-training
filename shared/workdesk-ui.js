@@ -61,7 +61,7 @@
     sampleCompanyLine: "This is a fictional company used in PVA Free Training. Data is simulated.",
     sampleDateLine: function(date, requestedBy){ return "Work date: " + date + " (simulated)  |  Requested by: " + requestedBy; },
     sampleFooter: "Evidence opened before submitting; self-check completed.",
-    sampleHumanReview: "Quality of this work is judged by human review at certification, not by this course.",
+    sampleHumanReview: "This course checks required facts, decisions, and structure against defined criteria. Use your judgment to evaluate the quality of the work you produce.",
     sampleBadge: "Training work sample",
     sampleAria: "Your work sample", sampleTextAria: "Work sample text",
     copySample: "Copy work sample", downloadSample: "Download as .txt",
