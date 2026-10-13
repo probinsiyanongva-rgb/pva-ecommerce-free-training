@@ -3,12 +3,13 @@
    tasks must all verify (re-checked from the learner's stored answers by the Work
    Desk core); legacy checkmarks never count.
 
-   open: false until the converted Module 1 is released (owner decision, 2026-10-13:
-   no certificate may be issued without Module 1). Releasing Module 1 is the only
-   change that switches this on. While it is false, the certificate page shows the
-   checklist but no name field, acknowledgment or Save button. */
+   open: true from the Module 1 release (owner decision, 2026-10-13: no certificate
+   without Module 1, no interim state). It switched on in the same release that
+   converted Module 1, so there was never a build where the certificate was open
+   while Module 1 was legacy. Setting it to false closes the certificate again:
+   the page then shows the checklist but no name field, acknowledgment or Save. */
 window.PVA_ECOM_CERT = {
-  open: false,
+  open: true,
   course: "E-commerce VA — Beginner Foundations",
   issuer: "PVA Free Training · Probinsiyanong VA",
   signature: "Kuya Lito",

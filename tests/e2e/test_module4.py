@@ -216,9 +216,13 @@ with sync_playwright() as p:
     check("legacy", "desk work never rewrites legacy progress", pg.evaluate("JSON.parse(localStorage.getItem('pva-ecom-ft-progress'))") == legacy)
     goto(pg, BASE + "/index.html")
     s = pg.locator(".module-status").all_inner_texts()
-    check("legacy", "course map unchanged", s[0] == "Completed" and s[3] == "Completed", s[:4])
+    # Module 1 was the last unconverted module (Module 1 design map D8, test-only): its old
+    # lesson checkmarks (m1-l1 - m1-l7, stored above) must not count as verified desk work.
+    check("legacy", "course map: Module 4 still Completed; old Module 1 checkmarks don't complete Module 1", s[3] == "Completed" and s[0] == "Start module", s[:4])
     goto(pg, BASE + "/module-1/index.html")
-    check("legacy", "an unconverted module still reads progress", pg.locator(".lesson-pill.done").count() == 7)
+    vw1 = pg.evaluate("PVADesk.verifiedWork()")
+    check("legacy", "old Module 1 checkmarks give no done pill and no verified desk work",
+          pg.locator(".lesson-pill.done").count() == 0 and not any(v["verified"] for v in vw1.values()), vw1)
     ctx.close()
 
     # ---------- shared authored state, engine boundaries, extensibility ----------
