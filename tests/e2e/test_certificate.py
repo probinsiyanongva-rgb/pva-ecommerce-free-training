@@ -5,7 +5,9 @@ Run from the repo root with a static server on :8765:
 Eligibility is tested against stand-in desk files (one small decision task per module, encoded
 with the real codec into a temporary folder and served through Playwright routes), so every
 combination can be set up exactly: all verified, one unverified, forged flags, legacy checkmarks,
-Module 1 still legacy, Module 1 converted. One integration case runs the real Module 14 capstone.
+Module 1 still legacy, Module 1 converted. Integration cases run the real Module 1 and the real Module 14
+capstone. The shipped requirements are open (since the Module 1 release); the closed path is still
+tested through a served open: false copy.
 Nothing is written to the repository."""
 import os, sys, re, json, subprocess, tempfile
 from playwright.sync_api import sync_playwright
@@ -15,7 +17,8 @@ from desk_helpers import *  # noqa
 CERT = BASE + "/certificate/index.html"
 PROG = BASE + "/progress/index.html"
 REAL_REQ = open(os.path.join(ROOT, "certificate", "requirements.js"), encoding="utf-8").read()
-OPEN_REQ = REAL_REQ.replace("open: false,", "open: true,")
+OPEN_REQ = REAL_REQ
+CLOSED_REQ = REAL_REQ.replace("open: true,", "open: false,")
 REMINDER = ["A Gentle Reminder Before You Save",
  "You've put time and effort into your learning journey. As you complete this course, take a moment to reflect on what you've learned and the skills you've practiced.",
  "Your certificate records your completion of the course requirements. The real value, however, comes from the knowledge and skills you can carry into your work.",
@@ -97,13 +100,14 @@ with sync_playwright() as p:
     br = p.chromium.launch()
 
     # ---------- requirements file ----------
-    check("requirements", "the shipped certificate is closed (open: false) until Module 1 is released", "open: false," in REAL_REQ and "open: true" not in REAL_REQ)
+    check("requirements", "the shipped certificate is open (open: true) from the Module 1 release", "open: true," in REAL_REQ and "open: false" not in REAL_REQ)
+    check("requirements", "the closed copy used below really is closed", "open: false," in CLOSED_REQ and "open: true," not in CLOSED_REQ)
     req = json.loads(subprocess.run(["node", "-e", "global.window={};require('./certificate/requirements.js');process.stdout.write(JSON.stringify(window.PVA_ECOM_CERT))"], cwd=ROOT, capture_output=True, text=True).stdout)
     check("requirements", "every module 1-14 is required, Module 1 included", [m["n"] for m in req["modules"]] == list(range(1, 15)) and req["modules"][0]["id"] == "m1")
     check("requirements", "issuer signature is Kuya Lito, Probinsiyanong VA", req["signatureCaption"] == "Kuya Lito, Probinsiyanong VA")
 
     # ---------- closed: nothing can be issued, whatever the work ----------
-    ctx, pg, errs = fresh(br); setup(pg, req=REAL_REQ); put(pg, all_good()); open_cert(pg)
+    ctx, pg, errs = fresh(br); setup(pg, req=CLOSED_REQ); put(pg, all_good()); open_cert(pg)
     check("closed", "with every module verified but the certificate closed, there is no name field or Save button",
           pg.locator("#certNotOpen").count() == 1 and pg.locator("#certSave").count() == 0 and pg.locator("#certName").count() == 0)
     check("closed", "the closed notice says certificates open with the updated Module 1", "Module 1" in pg.inner_text("#certNotOpen"))
@@ -205,6 +209,46 @@ with sync_playwright() as p:
     open_cert(pg)
     check("integration", "real Module 14 done through the UI: its row Verified and the form appears", row_state(pg, 14) == "Verified" and pg.locator("#certSave").count() == 1)
     real14 = pg.evaluate("localStorage.getItem('pva-ecom-ft-m14-desk')")
+    ctx.close()
+
+    # ---------- integration: the real Module 1 counts, only once its desk work is done ----------
+    src1 = decode("module-1")
+    TXT1 = {"disc.text": "The customer found the bag set through a search on the marketplace.",
+            "res.text": "Before buying, the shopper asked how many bags come in the set and was told it's a 3-piece set.",
+            "buy.text": "They placed the order on the marketplace and the payment was confirmed.",
+            "conf.text": "They got an order confirmation, then tracking updates after ClearPath shipped it, and it was delivered on Saturday.",
+            "after.text": "The customer left a 5-star review and asked how to order another set.",
+            "va.text": "A VA can answer questions like the bag count straight from the product record, so the shopper buys with confidence."}
+    ctx, pg, _ = fresh(br); setup(pg, fixtures=range(2, 15), real=(1,)); put(pg, all_good(skip=(1,))); open_cert(pg)
+    check("integration-m1", "real Module 1 not done, Modules 2-14 verified: locked, its row 'Not yet'",
+          pg.locator("#certLocked").count() == 1 and pg.locator("#certSave").count() == 0 and row_state(pg, 1) == "Not yet")
+    s = all_good(skip=(1,)); s.update(LEGACY_M1); put(pg, s); open_cert(pg)
+    check("integration-m1", "real Module 1 with only the old m1-l1 - m1-l7 checkmarks: still locked, its row 'Not yet'",
+          pg.locator("#certLocked").count() == 1 and pg.locator("#certSave").count() == 0 and row_state(pg, 1) == "Not yet")
+    for ti, t in enumerate(src1["tasks"]):
+        goto(pg, BASE + "/module-1/index.html#task-%d" % (ti + 1), 1)
+        for si, st in enumerate(t["stages"]):
+            open_all(pg)
+            if st["type"] == "decision": answer_decision(pg, st)
+            elif st["type"] == "triage": answer_triage(pg, st)
+            else:
+                v = {}
+                for f in st["fields"]:
+                    if f["type"] == "text": v[f["id"]] = TXT1[f["id"]]
+                    else: v[f["id"]] = list(f["accept"][0]) if f["type"] == "multi" else f["accept"][0]
+                fill_compose(pg, st, v); confirm_all(pg); submit(pg)
+            pg.click("#btnNext"); pg.wait_for_timeout(60)
+            if ti == 0 and si == 0:
+                open_cert(pg)
+                check("integration-m1", "real Module 1 part-done (one stage): locked, its row 'Not yet'", pg.locator("#certLocked").count() == 1 and row_state(pg, 1) == "Not yet")
+                goto(pg, BASE + "/module-1/index.html#task-1", 1); pg.click("#btnNext"); pg.wait_for_timeout(60)
+    open_cert(pg)
+    check("integration-m1", "real Module 1 done through the UI: every row Verified and the form appears",
+          row_state(pg, 1) == "Verified" and all(row_state(pg, n) == "Verified" for n in range(1, 15)) and pg.locator("#certSave").count() == 1)
+    ctx.close()
+    ctx, pg, _ = fresh(br); setup(pg, req=CLOSED_REQ, fixtures=range(2, 15), real=(1,)); put(pg, all_good(skip=(1,))); open_cert(pg)
+    check("integration-m1", "with the certificate closed, the real Module 1 is listed and nothing can be saved",
+          pg.locator("#certNotOpen").count() == 1 and pg.locator("#certSave").count() == 0 and row_state(pg, 1) == "Not yet")
     ctx.close()
 
     # ---------- progress: export / restore / clear ----------

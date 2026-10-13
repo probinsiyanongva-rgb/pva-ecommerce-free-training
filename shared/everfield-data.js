@@ -22,7 +22,7 @@
   var EVERFIELD = {
     company: "Everfield Goods LLC",
     /* Keys are used by desk briefs (`from`). marcus works for the 3PL, not
-       Everfield; org says so. src: hub "Who you'll hear from"; module-1 m1-l6. */
+       Everfield; org says so. src: hub "Who you'll hear from"; module-1 m1-t1. */
     team: {
       sofia:  { name: "Sofia Ramirez", role: "E-commerce Manager", org: "Everfield Goods" },
       maya:   { name: "Maya Collins",  role: "Operations Manager", org: "Everfield Goods" },
@@ -64,6 +64,7 @@
     /* Simulated working day per converted module. The desk engine reads
        calendar[moduleId].date; keep this a plain module -> date map. */
     calendar: {
+      m1: { date: "Tue, Sep 1" },   // orientation morning, before Module 5's Sep 2 day
       m4: { date: "Tue, Sep 15" },
       m7: { date: "Thu, Sep 17" },
       m5: { date: "Wed, Sep 2" },
@@ -86,6 +87,8 @@
       period: "September – October",
       weekdayAnchor: "Tue, Sep 15",
       entries: [
+        { date: "Tue, Sep 1", what: "Module 1 records: orders #5570-#5579, tracking CP-7731-01xx; earlier events in its customer files are relative (\"last Wednesday\") and never dated (Module 1-local)", src: ["module-1 desk-data"] },
+        { date: "Tue, Sep 1", what: "Module 1 desk day (orientation, 8:30 AM - 11:00 AM)", src: ["module-1 desk-data"] },
         { date: "on or before Wed, Sep 2", what: "Early-September stock snapshot (Module 5's 8:00 AM stock sheet)", ref: "stock-early-sep", src: ["module-5 m5-l7"] },
         { date: "Tue, Sep 1 - Wed, Sep 2", what: "Module 5 records: orders #4023-#4027, EF-101 movements, ClearPath's 7:00 AM cycle count", src: ["module-5 desk-data"] },
         { date: "Wed, Sep 2", what: "Module 5 desk day (inventory check, 9:15 AM - 4:30 PM)", src: ["module-5 desk-data"] },

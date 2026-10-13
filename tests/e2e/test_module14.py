@@ -417,8 +417,12 @@ with sync_playwright() as p:
     check("legacy", "someone who finished the old capstone still sees it Completed", pg.locator(".module-status").nth(13).inner_text() == "Completed")
     ctx.close()
     hub = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read(); port = open(os.path.join(ROOT, "portfolio", "index.html"), encoding="utf-8").read()
-    check("hub", "the course map lists m14-t1, m14-t6, m14-t10 and links the Progress page, not the certificate", 'lessonIds: ["m14-t1","m14-t6","m14-t10"]' in hub and "progress/index.html" in hub and "certificate/" not in hub)
-    check("portfolio", "piece 14 points at Module 14, Lesson 3, and the portfolio keeps 14 pieces", "From Module 14, Lesson 3 -- Report the Week and Package Your Portfolio" in port and len(re.findall(r'class="portfolio-num"', port)) == 14 and "certificate/" not in port)
+    # Module 1 design map D7 (test-only, approved 2026-10-13): the certificate opened with the Module 1
+    # release, so the hub and portfolio now link it, labelled exactly "Certificate of Completion".
+    check("hub", "the course map lists m14-t1, m14-t6, m14-t10, links the Progress page, and links the certificate as 'Certificate of Completion'",
+          'lessonIds: ["m14-t1","m14-t6","m14-t10"]' in hub and "progress/index.html" in hub and re.search(r'href="certificate/index.html">Certificate of Completion\b', hub))
+    check("portfolio", "piece 14 points at Module 14, Lesson 3, the portfolio keeps 14 pieces, and it links the certificate as 'Certificate of Completion'",
+          "From Module 14, Lesson 3 -- Report the Week and Package Your Portfolio" in port and len(re.findall(r'class="portfolio-num"', port)) == 14 and re.search(r'href="../certificate/index.html">Certificate of Completion\b', port))
     ctx, pg, _ = fresh(br)
     goto(pg, M13 + "#task-1", 1); open_all(pg); to_stage(pg, 0, "t1-a"); solve(pg, Q1)
     keys = pg.evaluate("Object.keys(localStorage).sort()")

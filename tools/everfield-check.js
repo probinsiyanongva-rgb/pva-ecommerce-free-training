@@ -562,6 +562,41 @@ rows.forEach(function(r){
   check("Module 14 week stays in its ranges", probs);
 })();
 
+// 6o. Module 1's orientation morning stays inside its own ranges (design map §4): orders
+// #5570-#5579 and tracking CP-7731-01xx (used by no other module); no return numbers,
+// dollar amounts, marketplace listing IDs or stock figures; the only numeric date is its
+// desk day, Sep 1 (earlier events are relative, never dated); and no learner-facing text
+// names a real marketplace or a carrier (validator rule lists are not learner text).
+(function(){
+  var probs = [];
+  if(!fs.existsSync("module-1/desk-data.js")){ check("Module 1 day stays in its ranges", probs); return; }
+  var RULES = /\.(banned|rules|when)\[/;
+  rows.filter(function(r){ return modOf(r.loc) === 1; }).forEach(function(r){
+    var mm, rx = /#(\d{3,4})\b/g, where = r.loc.split(".")[0];
+    if(RULES.test(r.loc)) return;
+    while((mm = rx.exec(r.text))){
+      var n = +mm[1];
+      if(mm[1].length === 3) probs.push({ loc: r.loc, msg: "return #" + n + " in " + where + " (Module 1 shows no return numbers)" });
+      else if(!(n >= 5570 && n <= 5579)) probs.push({ loc: r.loc, msg: "order #" + n + " in " + where + " is outside Module 1's #5570-#5579" });
+    }
+    rx = /\bCP-(\d{4})-(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ if(mm[1] !== "7731" || !/^01\d\d$/.test(mm[2])) probs.push({ loc: r.loc, msg: mm[0] + " in " + where + " is outside Module 1's CP-7731-01xx" }); }
+    if(/\bMKT-\d+/.test(r.text)) probs.push({ loc: r.loc, msg: "a marketplace listing ID in " + where + " (Module 2-local)" });
+    if(/\$\s?\d/.test(r.text)) probs.push({ loc: r.loc, msg: "a dollar amount in " + where + " (Module 1 shows none)" });
+    if(/\b\d+ (available|reserved|inbound|on hand)\b/i.test(r.text)) probs.push({ loc: r.loc, msg: "a stock figure in " + where + " (Module 1 shows none)" });
+    rx = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* (\d{1,2})\b|\b(\d{1,2})\/(\d{1,2})\b/g;
+    while((mm = rx.exec(r.text))){ if(!(mm[1] && mm[1] === "Sep" && mm[2] === "1")) probs.push({ loc: r.loc, msg: "the date '" + mm[0] + "' in " + where + " (Module 1's only date is its desk day, Sep 1)" }); }
+    if(/\b(amazon|walmart|ebay|etsy|shopify|tiktok|temu|shein|lazada|shopee)\b/i.test(r.text)) probs.push({ loc: r.loc, msg: "a real marketplace named in " + where });
+    if(/\b(UPS|FedEx|USPS|DHL|OnTrac)\b/.test(r.text)) probs.push({ loc: r.loc, msg: "a carrier named in " + where + " (carriers are undefined canon)" });
+  });
+  rows.filter(function(r){ var m = modOf(r.loc); return m !== 1 && m !== null; }).forEach(function(r){
+    var mm, rx = /#(\d{4})\b/g;
+    while((mm = rx.exec(r.text))){ var n = +mm[1]; if(n >= 5570 && n <= 5579) probs.push({ loc: r.loc, msg: "Module 1's order #" + n + " appears in " + r.loc.split(".")[0] }); }
+    if(/\bCP-7731-01\d\d\b/.test(r.text)) probs.push({ loc: r.loc, msg: "Module 1's tracking range appears in " + r.loc.split(".")[0] });
+  });
+  check("Module 1 day stays in its ranges", probs);
+})();
+
 // 6e. Module 6's day stays inside its own ranges (design map D3): orders #5483-#5495,
 // tracking CP-7731-08xx, the shared Return #229 as its only return, stock figures for
 // EF-105 only, and no EF-103 anywhere.
